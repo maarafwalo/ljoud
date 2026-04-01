@@ -1,0 +1,2314 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ljoud - كتالوج المنتجات</title>
+<meta name="theme-color" content="#c0392b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ljoud">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="ljoud">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --primary: #c0392b;
+    --primary-light: #e74c3c;
+    --accent: #d4a017;
+    --blue: #c0392b;
+    --blue-dark: #922b21;
+    --bg: #fff8f8;
+    --card-bg: #ffffff;
+    --text: #1a0a0a;
+    --text-muted: #7d4040;
+    --border: #f5c6c6;
+    --badge-bg: #fff0f0;
+    --badge-text: #c0392b;
+    --danger: #922b21;
+    --shadow: 0 2px 12px rgba(192,57,43,0.13);
+    --gold: #d4a017;
+    --cream: #fff8f0;
+    --brown: #7d5a3c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+  /* HEADER */
+  header {
+    background: linear-gradient(160deg, #c0392b 0%, #7b241c 100%);
+    color: #fff;
+    padding: 12px 16px 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 14px rgba(26,58,15,0.45);
+    border-bottom: 2px solid var(--gold);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  /* LOGO */
+  .logo { display: flex; align-items: center; justify-content: center; gap: 10px; flex: 1; }
+  .logo-badge { width: 90px; height: 90px; flex-shrink: 0; filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.35)); }
+  .logo-text { display: flex; flex-direction: column; line-height: 1; }
+  .logo-name {
+    font-size: 1.6rem; font-weight: 900; letter-spacing: 4px; color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    background: linear-gradient(90deg,#fff,#ffd700,#fff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .logo-sub  { font-size: 0.72rem; margin-top: 4px; letter-spacing: 2px; color: #ffd700; font-weight: 600; }
+  .cart-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    border-radius: 24px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+  }
+  .cart-badge {
+    background: #fff;
+    color: var(--accent);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* SEARCH */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    direction: rtl;
+    color: var(--text);
+  }
+  .search-bar span { padding: 0 12px; color: #888; font-size: 1.1rem; }
+  /* CATEGORIES */
+  .cats {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat-btn {
+    white-space: nowrap;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .cat-btn.active { background: #fff; color: var(--primary); font-weight: 700; }
+  /* PRODUCT LIST */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 12px;
+  }
+  @media(min-width: 540px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media(min-width: 780px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+  .card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .card-img {
+    background: linear-gradient(135deg, #fff0f0, #fde8e8);
+    width: 100%;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+  }
+  .card-body {
+    flex: 1;
+    padding: 10px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .card-cat {
+    font-size: 0.68rem;
+    color: var(--badge-text);
+    background: var(--badge-bg);
+    border-radius: 6px;
+    padding: 2px 7px;
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: 700;
+    align-self: flex-start;
+  }
+  .card-name { font-size: 1rem; font-weight: 800; line-height: 1.3; margin-bottom: 2px; }
+  .card-size { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+  .card-price { font-size: 1.3rem; font-weight: 900; color: var(--accent); margin-bottom: 10px; }
+  .card-price span { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); margin-right: 3px; }
+  .card-action { margin-top: auto; }
+  .add-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .add-btn:active { opacity: 0.8; }
+  .card-qty-ctrl {
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+  }
+  .card-qty-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    width: 46px;
+    height: 42px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .card-qty-btn.minus { background: var(--danger); }
+  .card-qty-num {
+    flex: 1;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--text);
+  }
+  /* ADMIN EDIT OVERLAY ON CARD */
+  .card-edit-overlay {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: #1565c0;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 36px; height: 36px;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  }
+  .admin-mode-bar {
+    background: #1565c0;
+    color: #fff;
+    text-align: center;
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    display: none;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .admin-mode-bar.on { display: flex; }
+  .admin-exit-btn {
+    background: rgba(255,255,255,0.2);
+    border: none; color: #fff;
+    border-radius: 6px; padding: 4px 10px;
+    font-size: 0.8rem; cursor: pointer; font-family: inherit;
+  }
+  /* PWA INSTALL */
+  .pwa-bar {
+    display: none;
+    background: linear-gradient(135deg, #b8860b, #8b6508);
+    color: #fff;
+    padding: 10px 16px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .pwa-bar-text { font-size: 0.85rem; font-weight: 700; }
+  .pwa-install-btn {
+    background: #fff;
+    color: #b8860b;
+    border: none;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  /* CART MINI BAR */
+  .cart-mini-bar {
+    background: #7b241c;
+    color: #fff;
+    padding: 9px 16px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .mini-bar-info { display: flex; flex-direction: column; gap: 1px; }
+  .mini-bar-count { font-size: 0.8rem; opacity: 0.85; }
+  .mini-bar-total { font-size: 1.05rem; font-weight: 900; }
+  .mini-bar-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  /* EMPTY */
+  .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 1rem; }
+  /* CART OVERLAY */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+  }
+  .overlay.open { display: block; }
+  .cart-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    background: #fff;
+    border-radius: 22px 22px 0 0;
+    z-index: 201;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .cart-panel.open { transform: translateY(0); }
+  .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-header h2 { font-size: 1.1rem; font-weight: 700; }
+  .close-btn {
+    background: var(--bg);
+    border: none;
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cart-items { overflow-y: auto; flex: 1; padding: 10px 16px; }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-item-emoji { font-size: 1.8rem; }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name { font-size: 0.88rem; font-weight: 700; }
+  .cart-item-size { font-size: 0.75rem; color: var(--text-muted); }
+  .cart-item-price { font-size: 0.88rem; font-weight: 700; color: var(--accent); }
+  .qty-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 4px 8px;
+  }
+  .qty-btn {
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    width: 28px; height: 28px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .qty-btn.minus { background: var(--danger); }
+  .qty-num { font-size: 1rem; font-weight: 700; min-width: 22px; text-align: center; }
+  .cart-footer {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    background: #fff;
+  }
+  .total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .total-label { font-size: 1rem; font-weight: 700; }
+  .total-amount { font-size: 1.3rem; font-weight: 900; color: var(--accent); }
+  .whatsapp-btn {
+    background: #25d366;
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    width: 100%;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .whatsapp-btn:active { background: #1da851; }
+  .clear-btn {
+    background: none;
+    border: none;
+    color: var(--danger);
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 8px;
+    width: 100%;
+    text-align: center;
+    padding: 6px;
+  }
+  .cart-empty { text-align: center; padding: 40px 0; color: var(--text-muted); font-size: 1rem; }
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #333;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 24px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 300;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* PHONE INPUT */
+  .phone-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .phone-row input {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    direction: ltr;
+  }
+  .phone-row input:focus { border-color: var(--primary); }
+  .phone-label { font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; }
+  /* ADMIN BUTTON */
+  .admin-btn {
+    background: rgba(255,255,255,0.18);
+    border: none; color: #fff;
+    border-radius: 8px; padding: 5px 9px;
+    font-size: 1rem; cursor: pointer; line-height: 1;
+  }
+  /* ADMIN PANEL */
+  .admin-panel {
+    position: fixed; inset: 0;
+    background: #fff; z-index: 210;
+    display: flex; flex-direction: column;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  .admin-panel.open { transform: translateX(0); }
+  .admin-header {
+    background: #1565c0; color: #fff;
+    padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .admin-header h2 { font-size: 1.05rem; font-weight: 700; }
+  .admin-body { flex: 1; overflow-y: auto; padding: 16px; }
+  .admin-login { max-width: 300px; margin: 60px auto; text-align: center; }
+  .admin-login h3 { margin-bottom: 20px; font-size: 1.15rem; }
+  .admin-login input {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 1rem; font-family: inherit;
+    text-align: center; margin-bottom: 12px; outline: none;
+  }
+  .admin-login input:focus { border-color: #1565c0; }
+  .admin-login-btn {
+    background: #1565c0; color: #fff; border: none;
+    border-radius: 10px; padding: 12px; width: 100%;
+    font-size: 1rem; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .admin-section { margin-bottom: 24px; }
+  .admin-section h3 {
+    font-size: 0.95rem; font-weight: 700;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 2px solid #1565c0; color: #1565c0;
+  }
+  .admin-form { background: #f8f9fa; border-radius: 12px; padding: 14px; }
+  .admin-form-row { margin-bottom: 10px; }
+  .admin-form-row label {
+    display: block; font-size: 0.8rem;
+    color: var(--text-muted); margin-bottom: 4px; font-weight: 600;
+  }
+  .admin-form-row input,
+  .admin-form-row select {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 12px;
+    font-size: 0.95rem; font-family: inherit; outline: none; background: #fff;
+  }
+  .admin-form-row input:focus,
+  .admin-form-row select:focus { border-color: #1565c0; }
+  .img-preview {
+    width: 80px; height: 80px; border-radius: 10px;
+    object-fit: cover; border: 2px solid var(--border); margin-top: 6px;
+  }
+  .img-placeholder {
+    width: 80px; height: 80px; border-radius: 10px;
+    background: var(--badge-bg); border: 2px dashed var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin-top: 6px; cursor: pointer;
+  }
+  .save-btn {
+    background: #1565c0; color: #fff; border: none;
+    border-radius: 10px; padding: 12px; width: 100%;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 6px;
+  }
+  .admin-product-list { display: flex; flex-direction: column; gap: 8px; }
+  .admin-product-item {
+    background: #f8f9fa; border-radius: 10px;
+    padding: 10px 12px; display: flex; align-items: center; gap: 10px;
+  }
+  .admin-product-thumb {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: var(--badge-bg); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 1.5rem; overflow: hidden; flex-shrink: 0;
+  }
+  .admin-product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .admin-product-info { flex: 1; min-width: 0; }
+  .admin-product-name { font-size: 0.85rem; font-weight: 700; }
+  .admin-product-detail { font-size: 0.72rem; color: var(--text-muted); }
+  .admin-product-price { font-size: 0.85rem; font-weight: 700; color: var(--accent); }
+  .admin-actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .edit-btn {
+    background: #1565c0; color: #fff; border: none;
+    border-radius: 8px; width: 32px; height: 32px;
+    font-size: 0.8rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .del-btn {
+    background: var(--danger); color: #fff; border: none;
+    border-radius: 8px; width: 32px; height: 32px;
+    font-size: 0.8rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hide-btn {
+    background: #757575; color: #fff; border: none;
+    border-radius: 8px; width: 32px; height: 32px;
+    font-size: 0.85rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hide-btn.visible { background: #b8860b; }
+  .admin-product-item.is-hidden { opacity: 0.45; }
+  .admin-product-item.is-hidden .admin-product-name::after {
+    content: ' — مخفي';
+    color: var(--danger);
+    font-size: 0.72rem;
+  }
+  .card.hidden-card { opacity: 0.4; outline: 2px dashed var(--danger); }
+  .admin-search {
+    width: 100%; border: 1px solid var(--border);
+    border-radius: 10px; padding: 9px 12px;
+    font-size: 0.95rem; font-family: inherit; outline: none;
+    margin-bottom: 10px; direction: rtl;
+  }
+  .admin-search:focus { border-color: #1565c0; }
+  /* EDIT MODAL */
+  .edit-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 220;
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .edit-modal.open { display: flex; }
+  .edit-modal-inner {
+    background: #fff; border-radius: 20px 20px 0 0;
+    width: 100%; padding: 20px 16px 30px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .edit-modal-inner h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: #1565c0; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="logo">
+      
+      <div class="logo-text">
+        <span class="logo-name">ljoud</span>
+        <span class="logo-sub">الجوذ والكرم</span>
+      </div>
+      <button class="admin-btn" onclick="openAdmin()" title="الإدارة">⚙️</button>
+    </div>
+    <button class="cart-btn" onclick="openCart()">
+      <span>السلة</span>
+      <span class="cart-badge" id="cartCount">0</span>
+    </button>
+  </div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="renderProducts()">
+    <span>🔍</span>
+  </div>
+  <div class="cats" id="catBar"></div>
+  <!-- CART MINI BAR -->
+  <div class="cart-mini-bar" id="cartMiniBar">
+    <div class="mini-bar-info">
+      <span class="mini-bar-count" id="miniBarCount">0 منتج</span>
+      <span class="mini-bar-total" id="miniBarTotal">0.00 دم</span>
+    </div>
+    <button class="mini-bar-btn" onclick="openCart()">🛒 عرض السلة</button>
+  </div>
+</header>
+
+<div class="pwa-bar" id="pwaInstallBtn">
+  <span class="pwa-bar-text" id="pwaBarText">📲 ثبّت التطبيق على هاتفك</span>
+  <button class="pwa-install-btn" id="pwaInstallBtnAction" onclick="installPWA()">تثبيت</button>
+</div>
+<div id="pwaHint" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:none;align-items:flex-end;justify-content:center">
+  <div style="background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;text-align:center">
+    <div style="font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#b8860b">📲 تثبيت تطبيق ljoud</div>
+    <div style="font-size:0.95rem;line-height:2;color:#333;text-align:right">
+      <b>Android Chrome:</b><br>
+      ١. افتح القائمة ⋮ أعلى اليمين<br>
+      ٢. اختر "إضافة إلى الشاشة الرئيسية"<br>
+      ٣. اضغط "إضافة"<br><br>
+      <b>iPhone / Safari:</b><br>
+      ١. اضغط زر المشاركة ⬆️<br>
+      ٢. اختر "إضافة إلى الشاشة الرئيسية"<br>
+      ٣. اضغط "إضافة"
+    </div>
+    <button onclick="document.getElementById('pwaHint').style.display='none'" style="margin-top:16px;background:#b8860b;color:#fff;border:none;border-radius:10px;padding:10px 32px;font-size:1rem;font-weight:700;cursor:pointer">حسناً</button>
+  </div>
+</div>
+<div class="admin-mode-bar" id="adminModeBar">
+  <span>⚙️ وضع الإدارة — اضغط ✏️ على أي منتج لتعديله</span>
+  <button class="admin-exit-btn" onclick="exitAdminMode()">خروج</button>
+</div>
+<div class="grid" id="productGrid"></div>
+<div class="empty" id="emptyMsg" style="display:none">لا توجد منتجات مطابقة للبحث</div>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <h2>🛒 السلة</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="phone-row">
+      <span class="phone-label">اسم الزبون:</span>
+      <input type="text" id="customerName" placeholder="أدخل الاسم...">
+    </div>
+    <div class="phone-row">
+      <span class="phone-label">رقم الهاتف:</span>
+      <input type="tel" id="customerPhone" placeholder="06XXXXXXXX">
+    </div>
+    <div class="phone-row">
+      <span class="phone-label">العنوان:</span>
+      <input type="text" id="customerAddress" placeholder="المدينة، الحي...">
+    </div>
+    <div class="phone-row">
+      <span class="phone-label">رقم WhatsApp:</span>
+      <input type="tel" id="phoneInput" placeholder="212XXXXXXXXX" value="">
+    </div>
+    <div class="total-row">
+      <span class="total-label">المجموع:</span>
+      <span class="total-amount" id="totalAmount">0.00 درهم</span>
+    </div>
+    <button class="whatsapp-btn" onclick="sendOrder()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      إرسال الطلب عبر WhatsApp
+    </button>
+    <button class="clear-btn" onclick="clearCart()">🗑️ مسح السلة</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h2>⚙️ لوحة الإدارة</h2>
+    <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="admin-body">
+    <div id="adminLoginView">
+      <div class="admin-login">
+        <h3>🔐 دخول الإدارة</h3>
+        <input type="password" id="adminPassInput" placeholder="كلمة السر" onkeydown="if(event.key==='Enter')adminLogin()">
+        <button class="admin-login-btn" onclick="adminLogin()">دخول</button>
+      </div>
+    </div>
+    <div id="adminMainView" style="display:none">
+      <div class="admin-section">
+        <h3>🌐 نشر التغييرات للجميع</h3>
+        <button class="save-btn" style="width:100%;background:#c0392b;font-size:1rem;padding:14px" onclick="publishToGitHub()">
+          🚀 نشر — يظهر لجميع الزوار
+        </button>
+        <p style="font-size:0.75rem;color:#999;margin-top:6px;text-align:center">يتطلب GitHub Token عند أول استخدام</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <button class="save-btn" style="flex:1;min-width:120px;background:#555" onclick="exportData()">📤 تصدير</button>
+          <label class="save-btn" style="flex:1;min-width:120px;text-align:center;cursor:pointer;background:#555">
+            📥 استيراد
+            <input type="file" accept=".json" style="display:none" onchange="importData(this)">
+          </label>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h3>➕ إضافة منتج جديد</h3>
+        <div class="admin-form">
+          <div class="admin-form-row"><label>اسم المنتج</label><input type="text" id="newName" placeholder="مثل: نيسكافي"></div>
+          <div class="admin-form-row"><label>القسم</label><input type="text" id="newCat" placeholder="مثل: القهوة" list="catsList"><datalist id="catsList"></datalist></div>
+          <div class="admin-form-row"><label>الحجم / النوع</label><input type="text" id="newSize" placeholder="مثل: 200غ"></div>
+          <div class="admin-form-row"><label>السعر (درهم)</label><input type="number" id="newPrice" placeholder="0.00" step="0.01" min="0"></div>
+          <div class="admin-form-row"><label>الرمز (emoji)</label><input type="text" id="newEmoji" placeholder="📦" maxlength="4"></div>
+          <div class="admin-form-row">
+            <label>صورة المنتج (اختياري)</label>
+            <div id="newImgPreview"><div class="img-placeholder" onclick="document.getElementById('newImgInput').click()">📷</div></div>
+            <input type="file" id="newImgInput" accept="image/*" style="display:none" onchange="handleNewImgChange(this)">
+          </div>
+          <button class="save-btn" onclick="addNewProduct()">✔ إضافة المنتج</button>
+        </div>
+      </div>
+      <div class="admin-section">
+        <h3>📋 قائمة المنتجات (<span id="adminCount">0</span>)</h3>
+        <input class="admin-search" type="text" id="adminSearch" placeholder="بحث في المنتجات..." oninput="renderAdminProducts()">
+        <div class="admin-product-list" id="adminProductList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="edit-modal" id="editModal">
+  <div class="edit-modal-inner">
+    <h3>✏️ تعديل المنتج</h3>
+    <div class="admin-form-row"><label>الاسم</label><input type="text" id="editName"></div>
+    <div class="admin-form-row"><label>القسم</label><input type="text" id="editCat"></div>
+    <div class="admin-form-row"><label>الحجم / النوع</label><input type="text" id="editSize"></div>
+    <div class="admin-form-row"><label>السعر (درهم)</label><input type="number" id="editPrice" step="0.01" min="0"></div>
+    <div class="admin-form-row">
+      <label>الصورة</label>
+      <div id="editImgPreview"></div>
+      <input type="file" id="editImgInput" accept="image/*" style="display:none" onchange="handleEditImgChange(this)">
+    </div>
+    <button class="save-btn" onclick="saveEdit()" style="margin-top:12px">✔ حفظ التعديل</button>
+    <button class="clear-btn" onclick="closeEditModal()">إلغاء</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// PHONE NUMBER - عدّل هذا الرقم حسب رقمك
+// ============================================================
+const STORE_PHONE = "212761568529";
+const ADMIN_PASS_KEY = 'adminPass';
+const DEFAULT_ADMIN_PASS = '660660';
+
+// ============================================================
+// PRODUCTS DATA — عدّل حسب الحاجة
+// ============================================================
+const PRODUCTS = [
+  {id:1,cat:"الشوكولاتة",name:"لافا كرانشي 24 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-145338-3c81d96c-300x300.jpg"},
+  {id:2,cat:"الللطبخ",name:"صلدور خل المائدة 24*50سل",size:"",price:"60",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-134826-6b0bac29-300x300.jpg"},
+  {id:3,cat:"المشروبات",name:"أيس أناناس 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/ananas-340x340-300x300.png"},
+  {id:4,cat:"العلكة",name:"علكة بنكهة الفواكه سوفت 165 وحدة",size:"",price:"13.9",emoji:"📦",image:"https://suk.ma/storage/sans-titre-17-300x300.jpg"},
+  {id:5,cat:"المربى و العسل",name:"عسل فلور 24*300غ",size:"",price:"107.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-141444-2477c3ec-300x300.jpg"},
+  {id:6,cat:"المعلبات",name:"أبها الأسقمري بالزيت النباتي 125غ",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-162929-300x300.jpeg"},
+  {id:7,cat:"المشروبات",name:"أبطال المانجو 28 * 200 مل",size:"",price:"42.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-170550-f0b35b04-300x300.jpg"},
+  {id:8,cat:"المشروبات",name:"أبطال كوكطيل 28 * 200 مل",size:"",price:"42.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-165909-1ca53c99-300x300.jpg"},
+  {id:9,cat:"المشروبات",name:"أبطال خوخ 28 * 200 مل",size:"",price:"42.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-27-300x300.jpg"},
+  {id:10,cat:"المشروبات",name:"أبطال لب البرتقال 28 * 200 مل",size:"",price:"42.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-165731-d653e8ac-300x300.jpg"},
+  {id:11,cat:"المنظفات المنزلية",name:"أتشي جاڤيل بالخزامة 1ل*18 وحدة",size:"",price:"125.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-130631-dd01b9db-300x300.jpg"},
+  {id:12,cat:"المستلزمات الحلويات",name:"اديال سكر بنكهة الڤانيلا 10*15 وحدة",size:"",price:"58.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-154112-55096159-1-300x300.jpg"},
+  {id:13,cat:"الحلويات",name:"اديال فلان بنكهة الفانيلا  24 وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-163922-300x300.jpeg"},
+  {id:14,cat:"الحلويات",name:"اديال فلان بنكهة الفرولة 24 وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-164514-300x300.jpeg"},
+  {id:15,cat:"الحلويات",name:"اديال فلان بنكهة الشوكولاتة 24 وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-164257-300x300.jpeg"},
+  {id:16,cat:"الحلويات",name:"اديال فلان بنكهة الشوكولاتة 24 وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-164257-300x300.jpeg"},
+  {id:17,cat:"المستلزمات الحلويات",name:"اديال خميرة الحلوة 10*15 وحدة",size:"",price:"58.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-153957-78c79218-1-300x300.jpg"},
+  {id:18,cat:"المستلزمات الحلويات",name:"اديال خميرة الحلوة 100 وحدة",size:"",price:"38",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-200651-d7752b1a-300x300.jpg"},
+  {id:19,cat:"الماء",name:"عين الأطلس 12*33سل",size:"",price:"19.2",emoji:"📦",image:"https://suk.ma/storage/bbb-300x300.jpg"},
+  {id:20,cat:"الماء",name:"عين الأطلس 12*50سل",size:"",price:"28.9",emoji:"📦",image:"https://suk.ma/storage/fghh-300x300.jpg"},
+  {id:21,cat:"الماء",name:"عين الأطلس 2*5ل",size:"",price:"22.9",emoji:"📦",image:"https://suk.ma/storage/llllll-300x300.jpg"},
+  {id:22,cat:"الماء",name:"عين الأطلس 6*1.5ل",size:"",price:"25",emoji:"📦",image:"https://suk.ma/storage/ain-atlas-pack-6x15l-300x300.png"},
+  {id:23,cat:"الشوكولاتة",name:"إكستريم  الكاراميل و البندق 24 وحدة",size:"",price:"39",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-195450-38096eb5-300x300.jpg"},
+  {id:24,cat:"الشوكولاتة",name:"إكستريم نوڭة بالشكلاطة 24 وحدة",size:"",price:"39",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-184557-c13e1556-300x300.jpg"},
+  {id:25,cat:"الشوكولاتة",name:"إكستريم نوڭة و الكاراميل 24 وحدة",size:"",price:"39",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-184802-5d804f86-300x300.jpg"},
+  {id:26,cat:"الشوكولاتة",name:"ڭالا  شوكولاتة سوداء 900غ",size:"",price:"21.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-181631-89cc0bad-300x300.jpg"},
+  {id:27,cat:"القطنيات",name:"العدس 25كغ",size:"",price:"257.5",emoji:"📦",image:"https://suk.ma/storage/u83552fe0bea640f48977d4f6cd31163dl-1-300x300.jpg"},
+  {id:28,cat:"الجبن",name:"الأطفال 96 وحدة",size:"",price:"65",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-192032-64b73310-300x300.jpg"},
+  {id:29,cat:"الدقيق و سميدة",name:"الإتقان  كسكس متوسطة 1كغ",size:"",price:"12",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160105-7493d4b3-300x300.jpg"},
+  {id:30,cat:"الدقيق و سميدة",name:"الإتقان  كسكس متوسطة 500غ",size:"",price:"6.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160112-fad52ef4-300x300.jpg"},
+  {id:31,cat:"الدقيق و سميدة",name:"الإتقان  كسكس متوسطة 25كغ",size:"",price:"250",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-22-a-152736-caf71de1-300x300.jpg"},
+  {id:32,cat:"الدقيق و سميدة",name:"الإتقان  كسكس رقيقة 1كغ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160112-e14a1d0e-300x300.jpg"},
+  {id:33,cat:"الدقيق و سميدة",name:"الإتقان  كسكس رقيق 25كغ",size:"",price:"250",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-22-a-152937-e8921575-300x300.jpg"},
+  {id:34,cat:"الجبن",name:"لاڤاش كيري 88 وحدة",size:"",price:"75",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-192202-49256ac4-300x300.jpg"},
+  {id:35,cat:"المربى و العسل",name:"البركة مربى بالفرولة 12*240غ",size:"",price:"102",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-182555-3dd79bc1-300x300.jpg"},
+  {id:36,cat:"المربى و العسل",name:"البركة مربى بالفرولة 6*830غ",size:"",price:"153",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-180602-0b7bcfba-300x300.jpg"},
+  {id:37,cat:"المربى و العسل",name:"البركة مربى بالفرولة 12*430غ",size:"",price:"174",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-194114-83ef1722-300x300.jpg"},
+  {id:38,cat:"المربى و العسل",name:"البركة مربى بالفرولة 6*830غ",size:"",price:"161.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-142806-300x300.jpeg"},
+  {id:39,cat:"المربى و العسل",name:"البركة مربى بالمشماش 12 * 240  غ",size:"",price:"101.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-194214-4cb72445-300x300.jpg"},
+  {id:40,cat:"المربى و العسل",name:"البركة مربى بالمشماش 12*430غ",size:"",price:"161.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-14-at-193724-300x300.jpeg"},
+  {id:41,cat:"المربى و العسل",name:"البركة مربى بالمشماش 6*830غ",size:"",price:"146.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-142515-300x300.jpeg"},
+  {id:42,cat:"القطنيات",name:"الفاصوليا 25كغ",size:"",price:"400",emoji:"📦",image:"https://suk.ma/storage/haricotsblancs-300x300.webp"},
+  {id:43,cat:"القطنيات",name:"الفول رقيق 25كغ",size:"",price:"305",emoji:"📦",image:"https://suk.ma/storage/71mlr9kua2l-ac-uf10001000-ql80-300x300.jpg"},
+  {id:44,cat:"المعجنات",name:"طورصاد الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-133341-b47e23b9-300x300.jpg"},
+  {id:45,cat:"الشوكولاتة",name:"ألموندرا شوكولاتة باللوز 60وحدة",size:"",price:"52.5",emoji:"📦",image:"https://suk.ma/storage/thr-300x300.jpg"},
+  {id:46,cat:"المعجنات",name:"النجمة  الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-134414-f417e392-300x300.jpg"},
+  {id:47,cat:"المنظفات المنزلية",name:"ألو مزيل البقع 750مل",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-20-at-200343-300x300.jpeg"},
+  {id:48,cat:"المستلزمات الإستحمام",name:"السادا جل استحمام بالفانيليا 600 مل",size:"",price:"16.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-25-at-161726-300x300.jpeg"},
+  {id:49,cat:"المستلزمات الإستحمام",name:"السادا جل استحمام بالفرولة 600 مل",size:"",price:"16.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-25-at-161921-300x300.jpeg"},
+  {id:50,cat:"المستلزمات الإستحمام",name:"السادا جل استحمام بالكاراميل 600 مل",size:"",price:"16.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-25-at-162032-300x300.jpeg"},
+  {id:51,cat:"المستلزمات الإستحمام",name:"السادا جل استحمام سويت كاندي 600 مل",size:"",price:"16.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-25-at-161825-300x300.jpeg"},
+  {id:52,cat:"المعجنات",name:"السفة جد رقيقة الاتقان 6*1كغ",size:"",price:"105",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-171442-d196abe9-300x300.jpg"},
+  {id:53,cat:"المعجنات",name:"السفة الاتقان 10كغ",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-172519-19197b2b-300x300.jpg"},
+  {id:54,cat:"المعجنات",name:"السفة جد رقيقة الاتقان 10كغ",size:"",price:"155",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-172218-f8b0d941-300x300.jpg"},
+  {id:55,cat:"الشاي",name:"الشعب شاي الأخضر 2كغ",size:"",price:"97.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-141601-4d55842d-300x300.jpg"},
+  {id:56,cat:"القطنيات",name:"الذرة  10كغ",size:"",price:"90",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-141856-3a3a18eb-300x300.jpg"},
+  {id:57,cat:"الشوكولاتة",name:"إلترا بو قطعة بكريمة البسكويت 120وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/ujtj-300x300.jpg"},
+  {id:58,cat:"البسكويت",name:"ڭاليط برايطون 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-150009-4157b48c-300x300.jpg"},
+  {id:59,cat:"الشوكولاتة",name:"ام اند امز شوكولاتة 24*45غ",size:"",price:"137.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-155454-5c5325d7-300x300.jpg"},
+  {id:60,cat:"المنظفات المنزلية",name:"إمري مزيل الذهون 750مل",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-20-at-195905-300x300.jpeg"},
+  {id:61,cat:"المعجنات",name:"إندومي اادجاج بالليمون 48 وحدة",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-16-a-154612-eb30ef2c-300x300.jpg"},
+  {id:62,cat:"المعجنات",name:"إندومي اللحم البقري 48 وحدة",size:"",price:"92",emoji:"📦",image:"https://suk.ma/storage/xdf-300x300.png"},
+  {id:63,cat:"المعجنات",name:"إندومي بالدجاج 48 وحدة",size:"",price:"92",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-16-a-154329-fe134141-300x300.jpg"},
+  {id:64,cat:"المعجنات",name:"إندومي روبيان 48 وحدة",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-192306-1e72c9a9-300x300.jpg"},
+  {id:65,cat:"الحلويات",name:"أنيس 800غ",size:"",price:"15.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194825-534cbfbe-300x300.jpg"},
+  {id:66,cat:"الحلويات",name:"أوبيرا كراميل 200 وحدة",size:"",price:"34.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-18-a-182003-ca030591-300x300.jpg"},
+  {id:67,cat:"الشوكولاتة",name:"أولا بالوز 100 وحدة",size:"",price:"38.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-183057-633885b6-300x300.jpg"},
+  {id:68,cat:"الشوكولاتة",name:"أولا  برينش 24وحدة",size:"",price:"19.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-150657-300x300.jpeg"},
+  {id:69,cat:"الصلصات",name:"أولا صلصة الطماطم 30*110غ",size:"",price:"60",emoji:"📦",image:"https://suk.ma/storage/500x500-300x300.png"},
+  {id:70,cat:"الحلويات",name:"أولابولا كولا 570غ",size:"",price:"12",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-195051-253dbe9d-300x300.jpg"},
+  {id:71,cat:"الماء",name:"أولماس 12*33سل",size:"",price:"39.5",emoji:"📦",image:"https://suk.ma/storage/oulmes-pack-12x33cl-300x300.png"},
+  {id:72,cat:"الماء",name:"أولماس 12*50سل",size:"",price:"51",emoji:"📦",image:"https://suk.ma/storage/oulmes-pack-12x50cl-300x300.png"},
+  {id:73,cat:"الرقائق البطاطس والذرة",name:"أونديلاداس 24وحدة",size:"",price:"76.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183606-3529d3e7-300x300.jpg"},
+  {id:74,cat:"الرقائق البطاطس والذرة",name:"أونديلاداس بالفرماج 24 وحدة",size:"",price:"76.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-17-a-173300-56face92-300x300.jpg"},
+  {id:75,cat:"المنظفات المنزلية",name:"أوني  جاڤيل بالحامض 5ل*3 وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-132445-b4810827-300x300.jpg"},
+  {id:76,cat:"المنظفات المنزلية",name:"أوني  جاڤيل بالخزامة 1ل*18 وحدة",size:"",price:"93.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-132319-1dd31391-300x300.jpg"},
+  {id:77,cat:"المنظفات المنزلية",name:"أوني  جاڤيل بالحامض 1ل*18 وحدة",size:"",price:"93.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-130727-4189ea1d-300x300.jpg"},
+  {id:78,cat:"المنظفات المنزلية",name:"أوني  جاڤيل كلاسيك 5ل*3 وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-132402-bf3e23fa-300x300.jpg"},
+  {id:79,cat:"المنظفات المنزلية",name:"أوني للغسيل اليدوي بالفواكه 12*1كغ",size:"",price:"132.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195629-00a6c5cc-300x300.jpg"},
+  {id:80,cat:"المنظفات المنزلية",name:"أوني للغسيل اليدوي بالورد 12*1كغ",size:"",price:"128.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-200046-b3289e6e-300x300.jpg"},
+  {id:81,cat:"المنظفات المنزلية",name:"أوني للغسيل اليدوي بالفواكه  20*500غ",size:"",price:"132.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195733-c86df9c5-300x300.jpg"},
+  {id:82,cat:"المنظفات المنزلية",name:"أوني للغسيل اليدوي بالورد 20*500غ",size:"",price:"132.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-200356-ec0a1dab-300x300.jpg"},
+  {id:83,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالحامض 12*1.25ل",size:"",price:"166.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-131649-75505c51-300x300.jpg"},
+  {id:84,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالحامض 12*750مل",size:"",price:"112.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-164907-b43fa91f-300x300.jpg"},
+  {id:85,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالحامض 24*300مل",size:"",price:"118.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-163946-48815935-300x300.jpg"},
+  {id:86,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالخزامة 12*1.25",size:"",price:"166.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-131541-9262bd5a-300x300.jpg"},
+  {id:87,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالخزامة 12*750مل",size:"",price:"112.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-164243-12f698c0-300x300.jpg"},
+  {id:88,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالخزامة 24*300مل",size:"",price:"118.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-164059-936aa3bd-300x300.jpg"},
+  {id:89,cat:"المنظفات المنزلية",name:"أوني سائل للغسيل الأواني بالصبار 300 مل",size:"",price:"118.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-145945-35e0a475-300x300.jpg"},
+  {id:90,cat:"المنظفات المنزلية",name:"أونيفريش معطر الجو بالحامض 300مل",size:"",price:"11.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-133433-300x300.jpeg"},
+  {id:91,cat:"المنظفات المنزلية",name:"أونيفريش معطر الجو بالورد 300مل",size:"",price:"11.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-1327141-300x300.jpeg"},
+  {id:92,cat:"المشروبات",name:"أورنجينا 6×1 لتر",size:"",price:"54.9",emoji:"📦",image:"https://suk.ma/storage/2181-300x300.png"},
+  {id:93,cat:"المبيدات الحشرات",name:"أورو مبيد الحشرات  بالحامض 1000مل",size:"",price:"28.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160111-29501c08-300x300.jpg"},
+  {id:94,cat:"البسكويت",name:"أوريو أصلي 6*24 وحدة",size:"",price:"69",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-17-a-152120-48d598be-300x300.jpg"},
+  {id:95,cat:"البسكويت",name:"أوريو أصلي 4 * 30  وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-8-300x300.jpg"},
+  {id:96,cat:"البسكويت",name:"أوريو شوكو 6*24 وحدة",size:"",price:"69",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-170943-72bef55b-300x300.jpg"},
+  {id:97,cat:"المبيدات الحشرات",name:"أورو مبيد الحشرات بالحامض 200مل",size:"",price:"12.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-17-at-163420-300x300.jpeg"},
+  {id:98,cat:"المنظفات المنزلية",name:"اريال شبه أوتوماتيكية 17*350غ",size:"",price:"145.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-183100-10d4a9d4-300x300.jpg"},
+  {id:99,cat:"القطنيات",name:"بريستو أرز أصفر 1 كغ",size:"",price:"16.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0006-300x300.jpg"},
+  {id:100,cat:"القطنيات",name:"أرز مستدير 10كغ",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-5346f3c9-300x300.jpg"},
+  {id:101,cat:"الحلويات",name:"إسي بوب بطيخ و التفاح 100 وحدة",size:"",price:"33.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-141542-909e3e68-300x300.jpg"},
+  {id:102,cat:"الحلويات",name:"إسي بوب مانڭا 100 وحدة",size:"",price:"33.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-141750-16615b65-300x300.jpg"},
+  {id:103,cat:"الحلويات",name:"إسي بوب فرولة 100 وحدة",size:"",price:"33.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-141849-1cca5281-300x300.jpg"},
+  {id:104,cat:"الحلويات",name:"إسي بوب فرولة 100 وحدة",size:"",price:"33.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-200009-e95b57ea-300x300.jpg"},
+  {id:105,cat:"الحلويات",name:"إسي بوب باسيون 100 وحدة",size:"",price:"33.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-141431-65f75272-300x300.jpg"},
+  {id:106,cat:"الدقيق و سميدة",name:"إسيل دقيق ممتاز 10 كغ",size:"",price:"37",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-7-300x300.jpg"},
+  {id:107,cat:"الشوكولاتة",name:"إتنا قطعة من الحبوب بالكاكاو 120وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-12-at-181419-300x300.jpeg"},
+  {id:108,cat:"المعلبات",name:"أتون سارما تونة بالزيت النباتي 3*80غ",size:"",price:"18.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-14-at-193954-300x300.jpeg"},
+  {id:109,cat:"المعلبات",name:"أتون سارما تونة بصلصة الطماطم 3*80غ",size:"",price:"16.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-17-at-171536-300x300.jpeg"},
+  {id:110,cat:"المنظفات المنزلية",name:"أتشي جاڤيل كلاسيكي 1ل*18 وحدة",size:"",price:"125.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-130631-979a36a9-300x300.jpg"},
+  {id:111,cat:"المنظفات المنزلية",name:"أتشي جاڤيل بالحامض 1ل*18 وحدة",size:"",price:"125.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-130631-4ac20f2c-300x300.jpg"},
+  {id:112,cat:"الشوكولاتة",name:"إيڭبيل براليني 50*8غ",size:"",price:"47.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-163737-4c2d1186-300x300.jpg"},
+  {id:113,cat:"الشوكولاتة",name:"إيڭبيل فريڭاليور50*15غ",size:"",price:"81.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-163455-21cff16e-300x300.jpg"},
+  {id:114,cat:"الشوكولاتة",name:"إيڭبيل شوكولاتة بالحليب 24*40غ",size:"",price:"114",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-164212-36fe40b6-300x300.jpg"},
+  {id:115,cat:"الشوكولاتة",name:"إيڭبيل شوكولاتة سوداء 24*40غ",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-163927-dc0d5ed6-300x300.jpg"},
+  {id:116,cat:"البسكويت",name:"إيو بالكريمة 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-154300-e7fb5c3b-300x300.jpg"},
+  {id:117,cat:"البسكويت",name:"إيو بالشكلاطة 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-154512-5154d781-300x300.jpg"},
+  {id:118,cat:"البسكويت",name:"إيو كوڤر بالشكلاطة 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-154026-b6fc10e6-300x300.jpg"},
+  {id:119,cat:"الشوكولاتة",name:"اڤيريداي الشوكولاتة محشو بالكريمة  24وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-150443-300x300.jpeg"},
+  {id:120,cat:"المشروبات",name:"أيس ليموناد 6*1.5ل",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-limonade1-4-300x300.jpg"},
+  {id:121,cat:"المشروبات",name:"أيس كولا 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/cola-340x340-300x300.png"},
+  {id:122,cat:"المشروبات",name:"أيس بولب أناناس 6*1.5ل",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-ananas1-3-300x300.jpg"},
+  {id:123,cat:"المشروبات",name:"أيس بالحامض 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/citron-340x340-300x300.png"},
+  {id:124,cat:"المشروبات",name:"أيس بولب بالحامض 6*1.5ل",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-pulpa-citron1-3-300x300.jpg"},
+  {id:125,cat:"المشروبات",name:"أيس باسيون 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/passion-2-300x300.jpg"},
+  {id:126,cat:"المشروبات",name:"أيس باسيون 6*1.5ل",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-passion1-2-300x300.jpg"},
+  {id:127,cat:"المشروبات",name:"أيس بولب 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/pulpa-340x340-1-300x300.jpg"},
+  {id:128,cat:"المشروبات",name:"أيس بولب 6*1.5ل",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-pulpa-orange1-4-300x300.jpg"},
+  {id:129,cat:"المشروبات",name:"أيس برتقال 6*1.5ل",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-orange-4-300x300.jpg"},
+  {id:130,cat:"المشروبات",name:"أيس كولا 6*1.5ل",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-cola-strong-300x300.jpg"},
+  {id:131,cat:"المشروبات",name:"أيس تفاح 12*33سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/pomme-vert-2-300x300.jpg"},
+  {id:132,cat:"المشروبات",name:"أيس تفاح 6*1.5ل",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/tall-bottles-pomme1-3-300x300.jpg"},
+  {id:133,cat:"المعلبات",name:"إيزابيل تونة بالزيت النباتي 3*80غ",size:"",price:"26.7",emoji:"📦",image:"https://suk.ma/storage/isabel-atun-x3-1-300x300.png"},
+  {id:134,cat:"المعلبات",name:"إيزابيل تونة بصلصة الطماطم 3*80غ",size:"",price:"25",emoji:"📦",image:"https://suk.ma/storage/img-1675-300x300.JPG"},
+  {id:135,cat:"الماء",name:"باهية 2*5ل",size:"",price:"21.2",emoji:"📦",image:"https://suk.ma/storage/bahia-pack-2x5l-300x300.png"},
+  {id:136,cat:"الماء",name:"باهية 6*1.5ل",size:"",price:"22.8",emoji:"📦",image:"https://suk.ma/storage/bahia-pack-6x15l-300x300.png"},
+  {id:137,cat:"الرقائق البطاطس والذرة",name:"بارصا 25وحدة",size:"",price:"18.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-16-a-185550-e693dd01-300x300.jpg"},
+  {id:138,cat:"الكعكة",name:"باسيطو كيك بالشوكولاتة 24وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-162223-300x300.jpeg"},
+  {id:139,cat:"الكعكة",name:"باسيطو كيك كابوتشينو 24 وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-16-300x300.jpg"},
+  {id:140,cat:"الخاص بالقطط",name:"باطي للقطط بالدواجن 16*100غ",size:"",price:"68",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-133420-07501556-300x300.jpg"},
+  {id:141,cat:"الخاص بالقطط",name:"باطي للقطط بالسمك 16*100غ",size:"",price:"68",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-133230-5a96c7c4-300x300.jpg"},
+  {id:142,cat:"الشوكولاتة",name:"بلاست شوكو 24 وحدة",size:"",price:"18.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-02-07-a-143540-379c83f3-300x300.jpg"},
+  {id:143,cat:"الكعكة",name:"بوكادييوس 30وحدة",size:"",price:"49.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-163253-300x300.jpeg"},
+  {id:144,cat:"الكعكة",name:"بوكادييوس شوكو 30وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-162743-300x300.jpeg"},
+  {id:145,cat:"الحلويات",name:"بوليكس مصاصة بالتوت 100 وحدة",size:"",price:"31.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-193839-482e4ad4-300x300.jpg"},
+  {id:146,cat:"العلكة",name:"بومي مسكة  165وحدة",size:"",price:"13.9",emoji:"📦",image:"https://suk.ma/storage/dhg-300x300.jpg"},
+  {id:147,cat:"الحلويات",name:"بونبو فواكه 160 وحدة",size:"",price:"14",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-200138-19bb8594-300x300.jpg"},
+  {id:148,cat:"البسكويت",name:"بونو كوڤر محشو بالشوكولاطة 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-150230-2a6cf2bb-300x300.jpg"},
+  {id:149,cat:"البسكويت",name:"بونو وافر بالفانيليا 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-144028-79a621b4-300x300.jpg"},
+  {id:150,cat:"البسكويت",name:"بونو وافر بالشكلاطة 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-144258-83968832-300x300.jpg"},
+  {id:151,cat:"المستلزمات الإستحمام",name:"بري بلوس بزيت الأرغان و زبدة الشيا  6*360مل",size:"",price:"112.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-153306-2951061a-300x300.jpg"},
+  {id:152,cat:"المستلزمات الإستحمام",name:"بونتين عناية ملكي للتلف 400مل",size:"",price:"26.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-20-a-184005-d880699f-300x300.jpg"},
+  {id:153,cat:"المستلزمات الإستحمام",name:"بونتين ضد القشرة 200مل",size:"",price:"16.9",emoji:"📦",image:"https://suk.ma/storage/shampooing-anti-pelliculaire-pro-v-400ml-pantene-pro-v-1-300x300.jpg"},
+  {id:154,cat:"المستلزمات الإستحمام",name:"بونتين كيس 480*5مل",size:"",price:"141.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160111-145ac96b-300x300.jpg"},
+  {id:155,cat:"الرقائق البطاطس والذرة",name:"بوسكاليوس 24*35غ",size:"",price:"71.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-141100-5f8dd8e0-300x300.jpg"},
+  {id:156,cat:"الشوكولاتة",name:"بوز أصابع الويفر مغطى بالكاكاو 24 وحدة",size:"",price:"39.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-17-a-195248-8a6a7a16-300x300.jpg"},
+  {id:157,cat:"الشوكولاتة",name:"بوز أصبع الويفر مغطى بالكاكاو24 وحدة",size:"",price:"39.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-17-a-195230-050fbc44-300x300.jpg"},
+  {id:158,cat:"الشوكولاتة",name:"برالي قهوة 24وحدة",size:"",price:"55.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-15-a-132726-da0a1612-300x300.jpg"},
+  {id:159,cat:"المستلزمات الإستحمام",name:"برانتطومب كريم مأكسد 12*60مل",size:"",price:"32.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155153-9d486898-300x300.jpg"},
+  {id:160,cat:"البقالة",name:"برانتطومب بلسم ملطف للشعر 25*14مل",size:"",price:"32",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-193851-e3287c90-300x300.jpg"},
+  {id:161,cat:"الكعكة",name:"براوني شوكولاتة 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-144746-6466a282-300x300.jpg"},
+  {id:162,cat:"المنظفات المنزلية",name:"بريد صابون سائل بالصبار 20*500مل",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181132-f75249e3-300x300.jpg"},
+  {id:163,cat:"الشوكولاتة",name:"بريك 4 أصابع 12 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-183824-d749bbab-300x300.jpg"},
+  {id:164,cat:"الشوكولاتة",name:"بريك تايم 12 وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-140834-a4392cdf-300x300.jpg"},
+  {id:165,cat:"الشوكولاتة",name:"بريكسطا 12 وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-141324-8b28dc00-300x300.jpg"},
+  {id:166,cat:"البسكويت",name:"بريسك اينو بكريمة الكاكاو 60 وحدة",size:"",price:"49",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-15-a-175437-bbcf5847-300x300.jpg"},
+  {id:167,cat:"البسكويت",name:"بسكويت بنكهة البرتقال 36*52غ XXL ڭولدن",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-17-a-153457-f9fb5ae5-300x300.jpg"},
+  {id:168,cat:"البقالة",name:"بطارية صغيرة 24 وحدة",size:"",price:"20",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181137-c0673547-300x300.jpg"},
+  {id:169,cat:"البقالة",name:"بطارية سوبرلوكس 24 وحدة",size:"",price:"25",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181137-3573f12e-300x300.jpg"},
+  {id:170,cat:"البسكويت",name:"بتي بور أصلي 30 وجدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-154105-ac8cfb0a-300x300.jpg"},
+  {id:171,cat:"الكعكة",name:"بتي بور كايك كعكة محشوة بكريمة الكاكاو 24 وحدة",size:"",price:"59.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-25-a-140816-51012fdf-300x300.jpg"},
+  {id:172,cat:"العلكة",name:"بيڭ بوبل علكة بالفاكهة 1450غ",size:"",price:"32.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-152018-cbbd665c-300x300.jpg"},
+  {id:173,cat:"المستلزمات الإستحمام",name:"بيبي سات كريم للأطفال 12*40غ",size:"",price:"92.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-154751-61582267-300x300.jpg"},
+  {id:174,cat:"المستلزمات الإستحمام",name:"بيبي طالك للأطفال 6*100غ",size:"",price:"32.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-154851-154c6258-300x300.jpg"},
+  {id:175,cat:"البيض و ألعاب",name:"بيضة شوكلاطة الحليب مع لعبة 24 وحدة",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-191520-410ad489-300x300.jpg"},
+  {id:176,cat:"البيض و ألعاب",name:"بيضة شوكلاطة مينيوس مع لعبة 24 وحدة",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-192253-0072a252-300x300.jpg"},
+  {id:177,cat:"المستلزمات مدرسية",name:"بيك قلم حبر أخضر 50 وحدة",size:"",price:"61.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155720-6514c11d-300x300.jpg"},
+  {id:178,cat:"المستلزمات مدرسية",name:"بيك قلم حبر أسود 50 وحدة",size:"",price:"61.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155806-3345c3ad-300x300.jpg"},
+  {id:179,cat:"المستلزمات مدرسية",name:"بيك قلم حبر أزرق 50 وحدة",size:"",price:"61.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155846-775d60d7-300x300.jpg"},
+  {id:180,cat:"البقالة",name:"بيك ولاعة 50 وحدة",size:"",price:"150",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-192914-ccae2871-300x300.jpg"},
+  {id:181,cat:"الحليب و مشتقاته",name:"بيكون فرماج 96 وحدة",size:"",price:"48.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-162537-b8349bf4-300x300.jpg"},
+  {id:182,cat:"البسكويت",name:"بيكرز بالكريمة الحليب و كريمة الكاكاو والبندق 24 وحدة",size:"",price:"59",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-19-a-145946-418e811a-300x300.jpg"},
+  {id:183,cat:"البسكويت",name:"بيكرز بالفول السوداني 24 وحدة",size:"",price:"58.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-170411-b2eff3cb-300x300.jpg"},
+  {id:184,cat:"البسكويت",name:"بيكرز دارك  بالكريمة الحليب و كريمة الكاكاو والبندق 24 وحدة",size:"",price:"59",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-19-a-145946-ef52162e-300x300.jpg"},
+  {id:185,cat:"البسكويت, شوكولاتة",name:"بيكرز طوبرز دارك كريمة الكاكاو والبندق 12 وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-16-a-192653-53f12ac8-300x300.jpg"},
+  {id:186,cat:"البسكويت, شوكولاتة",name:"بيكرز طوبرز كريمة الكاكاو والبندق 12وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-172204-2d5746b3-300x300.jpg"},
+  {id:187,cat:"المعجنات",name:"بيني الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-172558-3d79a945-300x300.jpg"},
+  {id:188,cat:"البسكويت",name:"بيسكوتي 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-184734-44325867-300x300.jpg"},
+  {id:189,cat:"الحلويات",name:"بيتي فواكه 640غ",size:"",price:"13.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-195402-46ed6080-300x300.jpg"},
+  {id:190,cat:"البسكويت",name:"كابري بالحامض 30 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-155821-58f9f3ff-300x300.jpg"},
+  {id:191,cat:"الخاص بالقطط",name:"دونا للقطط بالسمك 20 * 100 غ",size:"",price:"82.8",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0007-300x300.jpg"},
+  {id:192,cat:"المنظفات المنزلية",name:"دابينو مزيل البقع 750مل",size:"",price:"11.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-165557-300x300.jpeg"},
+  {id:193,cat:"التوابل",name:"ضامتي مكعب خاص بالدجاج 36 علبة",size:"",price:"57.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0008-300x300.jpg"},
+  {id:194,cat:"التوابل",name:"ضامتي مكعب خاص بالغنمي 36 علبة",size:"",price:"57.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0007-300x300.jpg"},
+  {id:195,cat:"التوابل",name:"ضامتي مكعب خاص بالسمن الحر 36 علبة",size:"",price:"57.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0009-300x300.jpg"},
+  {id:196,cat:"التوابل",name:"ضامتي مكعب خاص بليباط 36 علبة",size:"",price:"57.9",emoji:"📦",image:"https://suk.ma/storage/sans-titre-15-300x300.jpg"},
+  {id:197,cat:"المنظفات المنزلية",name:"دايمكس سائل غسيل الملابس 5ل",size:"",price:"57.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-22-at-161220-300x300.jpeg"},
+  {id:198,cat:"الدقيق و سميدة",name:"دقيق نوارة 5كغ",size:"",price:"22.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-13-a-174736-80ffd556-300x300.jpg"},
+  {id:199,cat:"الدقيق و سميدة",name:"دقيق القمح الكامل 25كغ",size:"",price:"187.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-bc045931-300x300.jpg"},
+  {id:200,cat:"الدقيق و سميدة",name:"دقيق ممتاز 25كغ",size:"",price:"90",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-69317c60-300x300.jpg"},
+  {id:201,cat:"الدقيق و سميدة",name:"دقيق ممتاز 10كغ",size:"",price:"36.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-214a10e1-300x300.jpg"},
+  {id:202,cat:"الدقيق و سميدة",name:"دقيق نوارة 10كغ",size:"",price:"43.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-1340c001-300x300.jpg"},
+  {id:203,cat:"الدقيق و سميدة",name:"دقيق نوارة 25كغ",size:"",price:"101.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-2fd1f9b8-300x300.jpg"},
+  {id:204,cat:"الدقيق و سميدة",name:"دقيق كامل الإتقان 5 كغ",size:"",price:"38.95",emoji:"📦",image:"https://suk.ma/storage/sans-titre-33-300x300.jpg"},
+  {id:205,cat:"الدقيق و سميدة",name:"دقيق ممتاز 5كغ",size:"",price:"18.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-13-a-175159-f9afd55e-300x300.jpg"},
+  {id:206,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم 2 / 56  وحدة",size:"",price:"51.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-190454-08c50137-300x300.jpg"},
+  {id:207,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم 3 / 46  وحدة",size:"",price:"51.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-190056-04f766a5-300x300.jpg"},
+  {id:208,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم 4 / 42  وحدة",size:"",price:"51.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-190348-39d51440-300x300.jpg"},
+  {id:209,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم4 / 76 وحدة",size:"",price:"89.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-185431-cf496c95-300x300.jpg"},
+  {id:210,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم 5 / 36  وحدة",size:"",price:"51.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-190253-2976a442-300x300.jpg"},
+  {id:211,cat:"الحفاظات الأطفال",name:"دلع حفاظات رقم 5 / 66  وحدة",size:"",price:"89.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-185552-1f3b1566-300x300.jpg"},
+  {id:212,cat:"المناديل ومناشف ورقية",name:"دلع مناديل مبللة للعناية بالأطفال 100وحدة",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/6-f70180c5-24c2-4a75-b64f-ce407d5dd8c2-300x300.webp"},
+  {id:213,cat:"المناديل ومناشف ورقية",name:"دلع مناديل 550 * 20 وحدة",size:"",price:"166.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-15-a-160537-1d2e7ab2-300x300.jpg"},
+  {id:214,cat:"المناديل ومناشف ورقية",name:"دلع ورق المرحاض 4 لفات* 16 وحدة",size:"",price:"77",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160107-e7099886-300x300.jpg"},
+  {id:215,cat:"الكعكة",name:"دولسي شوكوبار ڭولد 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/ryyyh-300x300.jpg"},
+  {id:216,cat:"الكعكة",name:"دولسي شوكوبار 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-145658-eceb89a9-300x300.jpg"},
+  {id:217,cat:"الكعكة",name:"دولسي تيڭولينو كلاسيك 24 وحدة",size:"",price:"58.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-152835-99568f20-300x300.jpg"},
+  {id:218,cat:"الخاص بالقطط",name:"دونا للقطط باللحم 20 * 100 غ",size:"",price:"82.8",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0008-300x300.jpg"},
+  {id:219,cat:"الكعكة",name:"دونات بالحليب 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-161711-8c80efd9-300x300.jpg"},
+  {id:220,cat:"الكعكة",name:"دونات شوكولاتة 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-161622-94968d66-300x300.jpg"},
+  {id:221,cat:"المعلبات",name:"دورى حبوب الذرة الطرية 24 * 150 غ",size:"",price:"115",emoji:"📦",image:"https://suk.ma/storage/sans-titre-26-300x300.jpg"},
+  {id:222,cat:"الخاص بالقطط",name:"باطي للقطط باللحم 16*100غ",size:"",price:"68",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-132644-d6d06797-300x300.jpg"},
+  {id:223,cat:"المستلزمات الإستحمام",name:"شابو جيل دوش ياغورت 600مل",size:"",price:"7.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-135150-300x300.jpeg"},
+  {id:224,cat:"المنظفات المنزلية",name:"دوسي جافيل 1ل",size:"",price:"4.9",emoji:"📦",image:"https://suk.ma/storage/sfsfg-300x300.jpg"},
+  {id:225,cat:"المنظفات المنزلية",name:"دوسي جافيل بالحامض 5ل",size:"",price:"15.85",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-171115-300x300.jpeg"},
+  {id:226,cat:"المنظفات المنزلية",name:"دوسي جافيل بالحامض1ل",size:"",price:"4.95",emoji:"📦",image:"https://suk.ma/storage/thbb-300x300.jpg"},
+  {id:227,cat:"المنظفات المنزلية",name:"دوسي جافيل بالخزامة 1ل",size:"",price:"4.95",emoji:"📦",image:"https://suk.ma/storage/etdt-300x300.jpg"},
+  {id:228,cat:"المنظفات المنزلية",name:"دوسي جافيل  5ل",size:"",price:"15.3",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-171551-300x300.jpeg"},
+  {id:229,cat:"المنظفات المنزلية",name:"دوسي جافيل بالخزامة  5ل",size:"",price:"15.85",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-11-300x300.jpg"},
+  {id:230,cat:"المنظفات المنزلية",name:"دوسي جافيل برائحة صابون مرسيليا 1ل",size:"",price:"4.95",emoji:"📦",image:"https://suk.ma/storage/thfghthgh-300x300.jpg"},
+  {id:231,cat:"المنظفات المنزلية",name:"دوسي منعش الأقمشة إنتعاش طبيعي 1ل",size:"",price:"15.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-a-205635-8994168b-300x300.jpg"},
+  {id:232,cat:"المنظفات المنزلية",name:"دوسي منعش الأقمشة بالخزامى 1ل",size:"",price:"15.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-a-205358-4ee8ee87-300x300.jpg"},
+  {id:233,cat:"المنظفات المنزلية",name:"دوسي منعش الأقمشة بالورد 1ل",size:"",price:"15.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-a-205749-cb1af173-300x300.jpg"},
+  {id:234,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض عطر البحر 1ل",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-164758-300x300.jpeg"},
+  {id:235,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض عطر البحر 5 ل",size:"",price:"22.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-150233-e24577bd-300x300.jpg"},
+  {id:236,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض الخزامة 5 ل",size:"",price:"22.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-150629-4f98370a-300x300.jpg"},
+  {id:237,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض بالحامض1ل",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-174924-300x300.jpeg"},
+  {id:238,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض بالخزامة 1ل",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-175209-300x300.jpeg"},
+  {id:239,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض بالورد 1ل",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-174524-300x300.jpeg"},
+  {id:240,cat:"المنظفات المنزلية",name:"دوسي منظف الأرض بزهر البرتقال 1ل",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-175925-300x300.jpeg"},
+  {id:241,cat:"المنظفات المنزلية",name:"دوسي منظف الزجاج 750مل",size:"",price:"15.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-160348-c00748a4-300x300.jpg"},
+  {id:242,cat:"المنظفات المنزلية",name:"دوسي مزيل الدهون 750غ",size:"",price:"14.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-133235-300x300.jpeg"},
+  {id:243,cat:"المستلزمات الإستحمام",name:"دوسي صابون مرسيليا بالخزامة 4 * 125 غ",size:"",price:"21.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-145759-76ccab27-300x300.jpg"},
+  {id:244,cat:"المستلزمات الإستحمام",name:"دوسي صابون مرسيليا بزت الزيتون 4 * 125 غ",size:"",price:"21.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-145314-7d22bc07-300x300.jpg"},
+  {id:245,cat:"المستلزمات الإستحمام",name:"دوسي صابون مرسيليا طبيعي 4 * 125 غ",size:"",price:"21.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-145522-c16fde6c-300x300.jpg"},
+  {id:246,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني بالحامض 1250غ",size:"",price:"14.1",emoji:"📦",image:"https://suk.ma/storage/sans-titre-11-300x300.jpg"},
+  {id:247,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني بالحامض الأخضر 1250غ",size:"",price:"14.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-192742-300x300.jpeg"},
+  {id:248,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني بالخزامة 1250غ",size:"",price:"14.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-193359-300x300.jpeg"},
+  {id:249,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني برائحة الخزامة 750غ",size:"",price:"8.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-173452-300x300.jpeg"},
+  {id:250,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني برائحة بالحامض 750غ",size:"",price:"8.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-172949-300x300.jpeg"},
+  {id:251,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني برائحة صابون مارسيليا 750غ",size:"",price:"8.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-172212-300x300.jpeg"},
+  {id:252,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني برائحة الحامض الأخضر 750غ",size:"",price:"8.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-172611-300x300.jpeg"},
+  {id:253,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني بصابون مرسيليا 1250غ",size:"",price:"14.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-192131-300x300.jpeg"},
+  {id:254,cat:"المنظفات المنزلية",name:"دوسي سائل الأواني مركز بالحامض الأخضر 750غ",size:"",price:"8.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-143057-48e2b2b3-300x300.jpg"},
+  {id:255,cat:"المنظفات المنزلية",name:"دوسي سائل التصبين بصابون مرسيليا 1ل",size:"",price:"17.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-195133-300x300.jpeg"},
+  {id:256,cat:"الحليب و مشتقاته",name:"دوتش فرماج 96وحدة",size:"",price:"48",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-164113-8cfb3de0-300x300.jpg"},
+  {id:257,cat:"البسكويت",name:"ديبالا بالشكلاطة 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-201501-5c959971-300x300.jpg"},
+  {id:258,cat:"البسكويت",name:"ديبالا بكريمة الشكلاطة 24 وحدة",size:"",price:"39",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-140522-3b09fdce-300x300.jpg"},
+  {id:259,cat:"البسكويت",name:"ديبالا بالتمر24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-200522-f14e8b7e-300x300.jpg"},
+  {id:260,cat:"البسكويت",name:"ديبالا باليمون 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-200628-01609433-300x300.jpg"},
+  {id:261,cat:"البسكويت",name:"ديبالا كوكو 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-124903-dbc997c1-300x300.jpg"},
+  {id:262,cat:"الحلويات",name:"ديكسي مصاصة دلاح 100 وحدة",size:"",price:"31.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-193320-72e8a7a1-300x300.jpg"},
+  {id:263,cat:"الحلويات",name:"ديكسي مصاصة مانڭا 100 وحدة",size:"",price:"31.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-193119-0bb03e34-300x300.jpg"},
+  {id:264,cat:"المعلبات",name:"ديل موناكو شرائح الأسقمري بصلصة الطمطم الحارة 115غ",size:"",price:"5.3",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-02-07-a-143540-6f7c0388-300x300.jpg"},
+  {id:265,cat:"المربى و العسل",name:"دينا مربى بالمشماش 12*240غ",size:"",price:"65.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-182803-feedecf1-300x300.jpg"},
+  {id:266,cat:"المشروبات",name:"ف 11 اينيرجي 24 * 250 مل",size:"",price:"154.1",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-144532-a70a4cfb-300x300.jpg"},
+  {id:267,cat:"الفواكه الجافة",name:"فاكيات فرماج 60 وحدة",size:"",price:"47.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-131902-de756fde-300x300.jpg"},
+  {id:268,cat:"الفواكه الجافة",name:"فاكيات باربيكيو 60 وحدة",size:"",price:"47.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-132646-287837bf-1-300x300.jpg"},
+  {id:269,cat:"الفواكه الجافة",name:"فاكيات حارة 60 وحدة",size:"",price:"47.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-133144-ff960951-300x300.jpg"},
+  {id:270,cat:"الرقائق البطاطس والذرة",name:"فايتر بطعم الدجاج 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-160606-45df87a3-300x300.jpg"},
+  {id:271,cat:"الرقائق البطاطس والذرة",name:"فايتر حارة 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-153320-68f13933-300x300.jpg"},
+  {id:272,cat:"الرقائق البطاطس والذرة",name:"فايتر كاتشوب 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-152753-18e4de50-300x300.jpg"},
+  {id:273,cat:"المربى و العسل",name:"عسل فلور 12 * 650 غ",size:"",price:"89.9",emoji:"📦",image:"https://suk.ma/storage/sans-titre-31-300x300.jpg"},
+  {id:274,cat:"المستلزمات الإستحمام",name:"فلة اند لفلي 12*25غ",size:"",price:"110",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-133552-7743bb8e-300x300.jpg"},
+  {id:275,cat:"المناديل ومناشف ورقية",name:"فلافي مناديل ناعمة 36 وحدة",size:"",price:"342",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-145207-561d6810-300x300.jpg"},
+  {id:276,cat:"الكعكة",name:"فلافي بالحليب 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-162143-731a553a-300x300.jpg"},
+  {id:277,cat:"المناديل ومناشف ورقية",name:"فلافي  ورق المرحاض 6 لفات* 6 وحدة",size:"",price:"155.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160107-92d9d5e5-300x300.jpg"},
+  {id:278,cat:"الكعكة",name:"فلافي شوكولاتة 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-161901-28563c7d-300x300.jpg"},
+  {id:279,cat:"العلكة",name:"فلاش 5*20 وحدة",size:"",price:"13.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-195538-06209a2e-300x300.jpg"},
+  {id:280,cat:"العلكة",name:"فلاش كبيرة بالفواكه 100 وحدة",size:"",price:"37.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-21-a-150255-ad259610-300x300.jpg"},
+  {id:281,cat:"الشوكولاتة",name:"فوندور بالحليب و اللوز  12 * 135 غ",size:"",price:"92.4",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-14-300x300.jpg"},
+  {id:282,cat:"الشوكولاتة",name:"فوندور بالحليب و اللوز 5*135غ",size:"",price:"38.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-150804-300x300.jpeg"},
+  {id:283,cat:"الشوكولاتة",name:"فوندور بديل الشوكولاتة بالحليب و اللوز 60 وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-01-at-133859-300x300.jpeg"},
+  {id:284,cat:"الحليب و مشتقاته",name:"فونديز شرائح 24 وحدة",size:"",price:"13.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-163241-dd3e6383-300x300.jpg"},
+  {id:285,cat:"الحليب و مشتقاته",name:"فونديز شرائح شيدار 24 وحدة",size:"",price:"14.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-12-300x300.jpg"},
+  {id:286,cat:"الشوكولاتة",name:"ميراج شوكولاتة بالكوكيز 24 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-16-a-152434-ac6b87d7-300x300.jpg"},
+  {id:287,cat:"الشوكولاتة",name:"لافا أرز مقرمش بالكاكاو و الكراميل 12وحدة",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-15-a-160403-0cb8a68d-300x300.jpg"},
+  {id:288,cat:"البسكويت",name:"فوي شوكو طوب بالكاكاو 48  وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-16-a-152052-cfdb4532-300x300.jpg"},
+  {id:289,cat:"البسكويت, شوكولاتة",name:"فوي بسكويت بكريمة الحليب و الكاكاو 24 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-130714-300x300.jpeg"},
+  {id:290,cat:"الشوكولاتة",name:"فوي كريسبي بكريمة الحليب و الكاكاو 24 وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-170119-fa33cee7-300x300.jpg"},
+  {id:291,cat:"الحلويات",name:"فروي رولو 30 وحدة",size:"",price:"23.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130103-6156c53f-300x300.jpg"},
+  {id:292,cat:"المستلزمات الإستحمام",name:"فرشات الأسنان كولجيت 12 وحدة",size:"",price:"55.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-183417-300x300.jpeg"},
+  {id:293,cat:"المستلزمات الإستحمام",name:"فرشات الأسنان مييال 12 وحدة",size:"",price:"18.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-154408-cba451f1-300x300.jpg"},
+  {id:294,cat:"المستلزمات الإستحمام",name:"فرشات الأسنان اكس دربور 12 وحدة",size:"",price:"47.3",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-154309-728b6fa5-300x300.jpg"},
+  {id:295,cat:"الرقائق البطاطس والذرة",name:"فريدو  بطعم الدجاج 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-171017-300x300.jpeg"},
+  {id:296,cat:"الرقائق البطاطس والذرة",name:"فريتا بفلفل الحار 36وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-26-at-142219-300x300.jpeg"},
+  {id:297,cat:"الشوكولاتة",name:"فيلفيت بالكراميل 12 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-191114-149a6f09-300x300.jpg"},
+  {id:298,cat:"الدقيق و سميدة",name:"فينو 25 كغ",size:"",price:"187.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-171256-02e94b3d-300x300.jpg"},
+  {id:299,cat:"الدقيق و سميدة",name:"فينو الإتقان 5 كغ",size:"",price:"39.95",emoji:"📦",image:"https://suk.ma/storage/sans-titre-3-1-300x300.jpg"},
+  {id:300,cat:"العلكة",name:"فيني علكة االجمل 200 وحدة",size:"",price:"87.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-01-31-a-145741-b96a75e1-300x300.jpg"},
+  {id:301,cat:"العلكة",name:"فيني علكة كرات التنس 200 وحدة",size:"",price:"87.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-01-31-a-145741-9a6db864-300x300.jpg"},
+  {id:302,cat:"العلكة",name:"فيني علكة بورغر 200 وحدة",size:"",price:"87.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-01-31-a-145741-2ba632e9-300x300.jpg"},
+  {id:303,cat:"العلكة",name:"فيني علكة بورغر 200 وحدة",size:"",price:"87.8",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-4-300x300.jpg"},
+  {id:304,cat:"العلكة",name:"فيني علكة طورو 200 وحدة",size:"",price:"87.8",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-5-300x300.jpg"},
+  {id:305,cat:"البسكويت",name:"فيوريطو أصابع وافر بالشكلاطة 60 وحدة",size:"",price:"48.4",emoji:"📦",image:"https://suk.ma/storage/sans-titre-19-300x300.jpg"},
+  {id:306,cat:"البقالة",name:"جلدة الرضاعة 50 وحدة",size:"",price:"199",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-15-a-160159-ac9e323f-300x300.jpg"},
+  {id:307,cat:"المعلبات",name:"جولي شرائح سمك الأسقمري بالزيت النباتي 125غ",size:"",price:"8.4",emoji:"📦",image:"https://suk.ma/storage/fillet-de-maquerot-joly-300x300.jpg"},
+  {id:308,cat:"الشوكولاتة",name:"جيل بديل الشوكولاتة بالحليب و اللوز 24 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-01-14-at-143954-300x300.jpeg"},
+  {id:309,cat:"الكعكة",name:"جينوفا إنتونسو 36 وحدة",size:"",price:"59.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-140956-0d730164-300x300.jpg"},
+  {id:310,cat:"الحلويات",name:"هولز بالكرز 20*22.4غ",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-165540-3fd9171c-300x300.jpg"},
+  {id:311,cat:"المنظفات المنزلية",name:"هابي داي عطر الخزامى 400مل",size:"",price:"18.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-20-a-202323-36c05a6a-300x300.jpg"},
+  {id:312,cat:"المنظفات المنزلية",name:"هابي داي عطر زهر الليمون 400مل",size:"",price:"18.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-20-a-202620-1d128b08-300x300.jpg"},
+  {id:313,cat:"المنظفات المنزلية",name:"هانس مسحوق منظف بالحامض 20*500غ",size:"",price:"123.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195008-5ece65e8-300x300.jpg"},
+  {id:314,cat:"المنظفات المنزلية",name:"هانس مسحوق منظف بالخزامة 20*500غ",size:"",price:"123.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195447-9bde1c4b-300x300.jpg"},
+  {id:315,cat:"المنظفات المنزلية",name:"هانس مسحوق منظف بالورد 12*1كغ",size:"",price:"123.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195133-95dcbfd8-300x300.jpg"},
+  {id:316,cat:"المنظفات المنزلية",name:"هانس مسحوق منظف بالورد 20*500غ",size:"",price:"123.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-195847-564e54df-300x300.jpg"},
+  {id:317,cat:"البسكويت",name:"هنريس 60 وحدة",size:"",price:"48.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-142206-2610c660-300x300.jpg"},
+  {id:318,cat:"الزيوت",name:"ليو زيت المائدة 12*2ل",size:"",price:"365",emoji:"📦",image:"https://suk.ma/storage/hsb-produit-lio-huile-vegetale-2l-300x300.jpg"},
+  {id:319,cat:"الزيوت",name:"هلا زيت المائدة 12*2ل",size:"",price:"354",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-140827-fa006a87-300x300.jpg"},
+  {id:320,cat:"الزيوت",name:"ليو زيت المائدة 15*1ل",size:"",price:"230",emoji:"📦",image:"https://suk.ma/storage/ddddddddddddddd-300x300.jpg"},
+  {id:321,cat:"الزيوت",name:"هلا زيت المائدة 2ل",size:"",price:"29.25",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-140827-fa006a87-300x300.jpg"},
+  {id:322,cat:"الزيوت",name:"ليو زيت المائدة 30*50سل",size:"",price:"232",emoji:"📦",image:"https://suk.ma/storage/7nb1hf9rmcjv5nohgrucr0rpyhy5aaxtl8ak8hou-1-300x300.jpg"},
+  {id:323,cat:"الزيوت",name:"هلا زيت المائدة 6*5ل",size:"",price:"435",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-02-14-a-002851-5b95608e-300x300.jpg"},
+  {id:324,cat:"الزيوت",name:"هلا زيت المائدة 5ل",size:"",price:"75",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-02-14-a-002851-5b95608e-300x300.jpg"},
+  {id:325,cat:"القطنيات",name:"حمص متوسط الهدية 10 كغ",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-12-at-1432091-300x300.jpeg"},
+  {id:326,cat:"القطنيات",name:"حمص غليض الهدية 10 كغ",size:"",price:"160",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-12-at-143209-300x300.jpeg"},
+  {id:327,cat:"الكعكة",name:"هوهوز بالقهوة 32 وحدة",size:"",price:"50.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-191702-4687e54c-300x300.jpg"},
+  {id:328,cat:"الكعكة",name:"هوهوز بالكريمة الشوكولاتة 32 وحدة",size:"",price:"50.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-151040-2a420e55-300x300.jpg"},
+  {id:329,cat:"الكعكة",name:"هوهوز بالكريمة الفرولة 32 وحدة",size:"",price:"50.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-151306-4643313f-300x300.jpg"},
+  {id:330,cat:"الكعكة",name:"هوهوز بالكريمة كاكاو 32 وحدة",size:"",price:"50.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-193808-4f81cc6c-300x300.jpg"},
+  {id:331,cat:"الكعكة",name:"هوهوز بالكريمة 32 وحدة",size:"",price:"50.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-192638-84445894-300x300.jpg"},
+  {id:332,cat:"الحلويات",name:"هولز 100*2.8غ",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-195118-c713cf25-300x300.jpg"},
+  {id:333,cat:"الحلويات",name:"هولز 20*22.4غ",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-194911-b2d2ef91-300x300.jpg"},
+  {id:334,cat:"البسكويت",name:"هنريس كبير 30 وحدة",size:"",price:"56.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-143122-b67ba2cc-300x300.jpg"},
+  {id:335,cat:"المستلزمات الإستحمام",name:"هيدن شولدرز عنابة لفروة الرأس الجافة  12*90مل",size:"",price:"124.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-152023-7645195b-300x300.jpg"},
+  {id:336,cat:"المستلزمات الإستحمام",name:"هيدن شولدرز انسيابي و حريري 12*90مل",size:"",price:"124.5",emoji:"📦",image:"https://suk.ma/storage/515707-800-450-300x300.webp"},
+  {id:337,cat:"المستلزمات الإستحمام",name:"هيدن شولدرز انسيابي و حريري 6*400مل",size:"",price:"173.8",emoji:"📦",image:"https://suk.ma/storage/pdt2-9-9-0-1-700x700-aaaaa22990-2-300x300.jpg"},
+  {id:338,cat:"المستلزمات الإستحمام",name:"هيدن شولدرز كلاسيك 6*200مل",size:"",price:"113.8",emoji:"📦",image:"https://suk.ma/storage/pdt2-0-1-4-1-700x700-aaaaa22014-3-300x300.jpg"},
+  {id:339,cat:"المستلزمات الإستحمام",name:"هيدن شولدرز كيس 480*5مل",size:"",price:"141.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-165503-3d3a2619-300x300.jpg"},
+  {id:340,cat:"المشروبات",name:"هيل 24*250مل",size:"",price:"220",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-130947-8d29dd4c-300x300.jpg"},
+  {id:341,cat:"المعجنات",name:"إندومي الدجاج بلدي 48 وحدة",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-192306-ecb9d830-300x300.jpg"},
+  {id:342,cat:"البسكويت",name:"كابري بالفانيليا 30 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-155629-ea9d5a11-300x300.jpg"},
+  {id:343,cat:"البسكويت",name:"كابري شوكو 30 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-154718-85b565d0-300x300.jpg"},
+  {id:344,cat:"البسكويت",name:"كابري تشيز كيك 30 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-154910-fe2f2724-300x300.jpg"},
+  {id:345,cat:"البسكويت",name:"كابيطو بالشوكولاتة 100 وحدة",size:"",price:"36",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-135107-52026041-300x300.jpg"},
+  {id:346,cat:"البسكويت",name:"كابيطو كوفريط الفراولة 100 وحدة",size:"",price:"36",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-152103-005d9ead-300x300.jpg"},
+  {id:347,cat:"البسكويت",name:"كابيطو كوفريط فانيليا 100 وحدة",size:"",price:"36",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-151834-3574f786-300x300.jpg"},
+  {id:348,cat:"الشوكولاتة",name:"كابيطول شوكولاتة بالفول السوداني 24وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/rfz-300x300.jpg"},
+  {id:349,cat:"المستلزمات الإستحمام",name:"كادوم مخلط 12*95مل",size:"",price:"72",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-172854-77e47343-300x300.jpg"},
+  {id:350,cat:"المستلزمات الإستحمام",name:"كادوم مخلط 12 * 75 مل",size:"",price:"70",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-172854-77e47343-300x300.jpg"},
+  {id:351,cat:"المستلزمات الإستحمام",name:"كادوم بالبيض 12*95مل",size:"",price:"72",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-173154-e5286bb1-300x300.jpg"},
+  {id:352,cat:"المستلزمات الإستحمام",name:"كادوم باليض و زيت اللوز 650 مل",size:"",price:"24.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-182225-5f496b31-300x300.jpg"},
+  {id:353,cat:"المستلزمات الإستحمام",name:"كادوم بزيت أرڭان 650مل",size:"",price:"24.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-182055-0e723029-300x300.jpg"},
+  {id:354,cat:"الحلويات",name:"كافي كريم 165 وحدة",size:"",price:"16.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-144707-b3640389-300x300.jpg"},
+  {id:355,cat:"الحفاظات الأطفال",name:"كالين رقم 20/6وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-28-at-181721-300x300.jpeg"},
+  {id:356,cat:"الحفاظات الأطفال",name:"كالين رقم 24/5وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-28-at-183340-300x300.jpeg"},
+  {id:357,cat:"الحفاظات الأطفال",name:"كالين رقم 30/3وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-28-at-182616-300x300.jpeg"},
+  {id:358,cat:"الحفاظات الأطفال",name:"كالين رقم 30/4وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-28-at-184556-300x300.jpeg"},
+  {id:359,cat:"الحفاظات الأطفال",name:"كالين رقم 36/2وحدة",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-28-at-190116-300x300.jpeg"},
+  {id:360,cat:"البقالة",name:"كانون بريسيغاز",size:"",price:"33.5",emoji:"📦",image:"https://suk.ma/storage/796b65c1-cf21-41cc-910b-f053d1187edf-300x300.jpg"},
+  {id:361,cat:"الأواني",name:"كأس اوسلو 12 وحدة",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-130620-d476a7cd-300x300.jpg"},
+  {id:362,cat:"الأواني",name:"كأس أرابيكا 6 وحدة",size:"",price:"11",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-131338-331fa726-300x300.jpg"},
+  {id:363,cat:"الأواني",name:"كأس الكف 12 وحدة",size:"",price:"27",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-130433-c3c2b987-300x300.jpg"},
+  {id:364,cat:"الأواني",name:"كأس اكسبريس 12 وحدة",size:"",price:"24",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-130826-31feddae-300x300.jpg"},
+  {id:365,cat:"الأواني",name:"كأس كونيك 12 وحدة",size:"",price:"25",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-125834-b6bbdaa0-300x300.jpg"},
+  {id:366,cat:"الأواني",name:"كأس لوكس 12 وحدة",size:"",price:"32",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-131133-b940e30b-300x300.jpg"},
+  {id:367,cat:"الرقائق البطاطس والذرة",name:"كاسكيس بنكهة الحار 28*40غ",size:"",price:"84.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-27-a-155920-97f639d6-300x300.jpg"},
+  {id:368,cat:"الرقائق البطاطس والذرة",name:"كاسكيس بنكهة باربيكيو 28*40غ",size:"",price:"84.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-27-a-160635-3a703df6-300x300.jpg"},
+  {id:369,cat:"الصلصات",name:"سطار كاتشاب 12*310مل",size:"",price:"149.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-190506-7a7e57b6-300x300.jpg"},
+  {id:370,cat:"الشوكولاتة",name:"كلاص شوكولاتة و اللوز 24وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/eee-300x300.jpg"},
+  {id:371,cat:"المستلزمات مدرسية",name:"بيك قلم حبر أحمر 50 وحدة",size:"",price:"61.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155641-cfdfbb2c-300x300.jpg"},
+  {id:372,cat:"العلكة",name:"كلوريتس بالنعناع الأصلي 100 وحدة",size:"",price:"40.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-140251-1b41222f-300x300.jpg"},
+  {id:373,cat:"العلكة",name:"كلوريتس بالحامض 100 وحدة",size:"",price:"40.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-24-a-170903-424dcb94-300x300.jpg"},
+  {id:374,cat:"العلكة",name:"كلوريتس بالقرفة 100 وحدة",size:"",price:"40.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-194735-6e055923-300x300.jpg"},
+  {id:375,cat:"العلكة",name:"كلوريتس كبيرة بالحامض 12وحدة",size:"",price:"38",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-151056-300x300.jpeg"},
+  {id:376,cat:"العلكة",name:"كلوريتس كبيرة بالقرفة 12وحدة",size:"",price:"38",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-150952-300x300.jpeg"},
+  {id:377,cat:"المستلزمات الإستحمام",name:"كلير كيس 240*5مل",size:"",price:"80",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-134713-b587b1fc-300x300.jpg"},
+  {id:378,cat:"العلكة",name:"كليتس علكة فيني بنكهة الفرولة 200 وحدة",size:"",price:"79.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-21-a-153832-0722441a-300x300.jpg"},
+  {id:379,cat:"العلكة",name:"كليتس علكة فيني بنكهة النعناع الأخضر 200 وحدة",size:"",price:"79.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-21-a-151042-2fcf21da-300x300.jpg"},
+  {id:380,cat:"الللطبخ",name:"كوبيل بودرة الشكولاتة 10*90غ",size:"",price:"42.9",emoji:"📦",image:"https://suk.ma/storage/yaabor-300x300.jpg"},
+  {id:381,cat:"المعجنات",name:"كود الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-134316-cbd325b0-300x300.jpg"},
+  {id:382,cat:"الحلويات",name:"كوكو 570غ",size:"",price:"12",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-195706-ee80e537-300x300.jpg"},
+  {id:383,cat:"البسكويت",name:"كوكي أصلي 24 وحدة",size:"",price:"58.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-163842-12e32f17-300x300.jpg"},
+  {id:384,cat:"البسكويت",name:"كوكي شوكولاتة 24 وحدة",size:"",price:"58.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-163639-1f797d20-300x300.jpg"},
+  {id:385,cat:"المعجنات",name:"كوكياج متوسطة الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-131510-716444c7-300x300.jpg"},
+  {id:386,cat:"المعجنات",name:"كوكياج كبيرة الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/img-20241015-wa0016-300x300.jpg"},
+  {id:387,cat:"البسكويت",name:"كولدن 72*21غ",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-200113-631662a2-300x300.jpg"},
+  {id:388,cat:"المستلزمات الإستحمام",name:"كولجيت 12*25مل",size:"",price:"37.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-184541-300x300.jpeg"},
+  {id:389,cat:"المستلزمات الإستحمام",name:"كولجيت 12*25مل",size:"",price:"37.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-184722-300x300.jpeg"},
+  {id:390,cat:"المستلزمات الإستحمام",name:"كولجيت مكافح التسوس 12*50مل",size:"",price:"74.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-184541-300x300.jpeg"},
+  {id:391,cat:"المستلزمات الإستحمام",name:"كولجيت 12*50مل",size:"",price:"74.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-183742-300x300.jpeg"},
+  {id:392,cat:"الكعكة",name:"كومان 48وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-162528-300x300.jpeg"},
+  {id:393,cat:"الكعكة",name:"كوميدا سندويش30وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-163532-300x300.jpeg"},
+  {id:394,cat:"البقالة",name:"كورة رقم 4",size:"",price:"14.5",emoji:"📦",image:"https://suk.ma/storage/photo-1-2024-09-23-01-47-44-300x300.jpg"},
+  {id:395,cat:"البقالة",name:"كورة رقم 5",size:"",price:"15.5",emoji:"📦",image:"https://suk.ma/storage/hd247479336674c57b0bbcdcc0ad3dad4pjpg-300x300-300x300.jpg"},
+  {id:396,cat:"الرقائق البطاطس والذرة",name:"كورني بالفرماج 12*100غ",size:"",price:"47",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-161714-31e89c18-300x300.jpg"},
+  {id:397,cat:"العلكة",name:"كوسموس 165وحدة",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183605-fd836c12-300x300.jpg"},
+  {id:398,cat:"البسكويت",name:"كراكس اكسترا شوكو 30 وحدة",size:"",price:"25.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-150823-2105d98e-300x300.jpg"},
+  {id:399,cat:"البسكويت",name:"كراكس ماكس شوكو",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-16-a-193224-d1718a4e-300x300.jpg"},
+  {id:400,cat:"البسكويت",name:"كراكس شوكو 30 وحدة",size:"",price:"25.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-151012-d90bc239-300x300.jpg"},
+  {id:401,cat:"البسكويت",name:"كرانشي كريمة الشوكولاتة 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-152234-8aceeaa9-300x300.jpg"},
+  {id:402,cat:"البسكويت",name:"كرانشي أصلي 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-152508-b57156d4-300x300.jpg"},
+  {id:403,cat:"البسكويت",name:"كريمالي 60وحدة",size:"",price:"47.7",emoji:"📦",image:"https://suk.ma/storage/img-20250502-wa0001-300x300.jpg"},
+  {id:404,cat:"الشوكولاتة",name:"كرومز بار بالشكلاطة 24 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-185847-6fc3cb47-300x300.jpg"},
+  {id:405,cat:"البسكويت",name:"كريكسي بكريمة الشوكولاتة 60 وحدة",size:"",price:"49",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-135801-1fa79abb-300x300.jpg"},
+  {id:406,cat:"البسكويت",name:"كريكسي بكريمة الشوكولاتة 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-135801-1fa79abb-300x300.jpg"},
+  {id:407,cat:"المستلزمات الحلويات",name:"كريم شونتيي 100غ",size:"",price:"12.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135625-5a03a960-300x300.jpg"},
+  {id:408,cat:"الشوكولاتة",name:"كريزلي كوفريت بالكاكاو 24 وحدة",size:"",price:"19.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-120959-350be850-300x300.jpg"},
+  {id:409,cat:"البقالة",name:"كسكاس للكانون 20وحدة",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/4ac93992-fc1f-47fa-967d-a069c12d0bf7-300x300.jpg"},
+  {id:410,cat:"البسكويت",name:"كينڭ كوكيز أصلي 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-153455-fc92b8df-300x300.jpg"},
+  {id:411,cat:"البسكويت",name:"كينڭ كوكيز بالشكلاطة 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-153659-2cc5e7e8-300x300.jpg"},
+  {id:412,cat:"البسكويت",name:"كينڭ كوكيزسويت هارت 24 وحدة",size:"",price:"58.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-27-a-154622-536bf75b-300x300.jpg"},
+  {id:413,cat:"الشوكولاتة",name:"كيندر بوينو رقائق مغطاة بالشوكولاتة بالحليب 30 وحدة",size:"",price:"198",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-24-a-171711-adff3687-300x300.jpg"},
+  {id:414,cat:"المستلزمات الإستحمام",name:"كينتا كريم 12*30غ",size:"",price:"155.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155110-4f4c22dc-300x300.jpg"},
+  {id:415,cat:"الشوكولاتة",name:"كيتكات 24*41.5غ",size:"",price:"117",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-160220-f4179815-300x300.jpg"},
+  {id:416,cat:"الشوكولاتة",name:"كيتكات 30*13.5غ",size:"",price:"51.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-160844-d3edd7cb-300x300.jpg"},
+  {id:417,cat:"الشوكولاتة",name:"لاڤا ڤيطا أرز مقرمش 24 وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-125727-300x300.jpeg"},
+  {id:418,cat:"الشوكولاتة",name:"لافا أرز مقرمش بالكراميل و الفول السوداني 12 وحدة",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-15-a-160743-924d70df-300x300.jpg"},
+  {id:419,cat:"الشوكولاتة",name:"لافا أصلي 24 وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/zr-300x300.jpg"},
+  {id:420,cat:"الشوكولاتة",name:"لافا بلينڭ 12 وحدة",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-140304-30550d46-300x300.jpg"},
+  {id:421,cat:"المبيدات الحشرات",name:"لانس مبيد الحشرات  بالحامض 12*200مل",size:"",price:"131.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-134916-34300e33-300x300.jpg"},
+  {id:422,cat:"المبيدات الحشرات",name:"لانس مبيد الحشرات  بالحامض 12*750مل",size:"",price:"250.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135050-4957e040-300x300.jpg"},
+  {id:423,cat:"الرقائق البطاطس والذرة",name:"لاريوس سناكس بالدجاج 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/sans-titre-2-8-300x300.jpg"},
+  {id:424,cat:"المستلزمات الحلويات",name:"ڭلاص كريمة المثلجات بنكهة الفانيلا 120غ",size:"",price:"12.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135507-94b0a0a2-300x300.jpg"},
+  {id:425,cat:"المستلزمات الحلويات",name:"ڭلاص كريمة المثلجات بنكهة الفراولة 120غ",size:"",price:"12.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135436-6ceb662d-300x300.jpg"},
+  {id:426,cat:"البسكويت",name:"لاتينو بسكويت بالفراولة 60 وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-15-a-162036-1d17006b-300x300.jpg"},
+  {id:427,cat:"الرقائق البطاطس والذرة",name:"لايت بالحار 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-01-14-at-141858-300x300.jpeg"},
+  {id:428,cat:"الشوكولاتة",name:"لوفا بار بالفواكه 24 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-131027-300x300.jpeg"},
+  {id:429,cat:"الشوكولاتة",name:"لوفا بار بالكاكاو 24 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-184136-98ffc1d4-300x300.jpg"},
+  {id:430,cat:"المعلبات",name:"لوكوس شرائح سمك الأسقمري بالزيت النباتي 125غ",size:"",price:"8.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-140844-7ceb0299-300x300.jpg"},
+  {id:431,cat:"الحلويات",name:"لوكي بالفواكه 170 وحدة",size:"",price:"13.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194135-c836851d-300x300.jpg"},
+  {id:432,cat:"المعجنات",name:"لسان الطير الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-141016-9fab55be-300x300.jpg"},
+  {id:433,cat:"الشوكولاتة",name:"ڭالا  شوكولاتة بيضاء 900غ",size:"",price:"22.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-181834-39a4dcd7-300x300.jpg"},
+  {id:434,cat:"الللطبخ",name:"ليليا مارڭرين 20*200غ",size:"",price:"120",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-143142-117a85ab-300x300.jpg"},
+  {id:435,cat:"الللطبخ",name:"ليليا مارڭرين 8*400غ",size:"",price:"98",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-173437-cf781f16-300x300.jpg"},
+  {id:436,cat:"الحلويات",name:"ليمي بالفرولة 200 وحدة",size:"",price:"76",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-195714-7fe66e59-300x300.jpg"},
+  {id:437,cat:"الحلويات",name:"ليمي كولا 200 وحدة",size:"",price:"76",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-132849-62bec50f-300x300.jpg"},
+  {id:438,cat:"الصلصات",name:"لينا كاتشوب 2ل",size:"",price:"15.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-134749-acb4e412-300x300.jpg"},
+  {id:439,cat:"المستلزمات الإستحمام",name:"ماء بروح الورد 3*125مل",size:"",price:"5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-133958-c2da79f0-300x300.jpg"},
+  {id:440,cat:"المنظفات المنزلية",name:"معطر الجو مارين 400مل",size:"",price:"11.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181136-bf31854f-300x300.jpg"},
+  {id:441,cat:"المستلزمات الإستحمام",name:"مادونا 12*70مل",size:"",price:"49",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155231-b562c1ba-300x300.jpg"},
+  {id:442,cat:"المستلزمات الإستحمام",name:"مادونا بالحامض 12*70مل",size:"",price:"49",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-165428-3044f250-300x300.jpg"},
+  {id:443,cat:"البقالة",name:"ماكس اليكس لصاق قوي 50 وحدة",size:"",price:"50",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181128-f9148637-300x300.jpg"},
+  {id:444,cat:"الحلويات",name:"ماكس بوم مصاصة بالفوكه 100 وحدة",size:"",price:"31.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-23-a-195915-72898e07-300x300.jpg"},
+  {id:445,cat:"الحلويات",name:"ماكس بوم مصاصة بالفرولة 100 وحدة",size:"",price:"32.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-193532-816d0239-300x300.jpg"},
+  {id:446,cat:"الحلويات",name:"ماكس بوم مصاصة بالمانڭا 100 وحدة",size:"",price:"32.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-194136-5352bc74-300x300.jpg"},
+  {id:447,cat:"البسكويت",name:"ماكس وافر حليب و كاكاو 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/sans-titre-35-300x300.jpg"},
+  {id:448,cat:"الشوكولاتة",name:"ماكسيميوم بالحليب 24 وحدة",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-184821-35e97a52-300x300.jpg"},
+  {id:449,cat:"الشوكولاتة",name:"ماكسيميوم بالحليب و كريمة الكوك 24 وحدة",size:"",price:"19.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-145953-300x300.jpeg"},
+  {id:450,cat:"الحلويات",name:"مانت 810غ",size:"",price:"15.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194647-af6961b4-300x300.jpg"},
+  {id:451,cat:"البسكويت",name:"مانيانا فانيلا 60 وحدة",size:"",price:"49.5",emoji:"📦",image:"https://suk.ma/storage/37-300x300.png"},
+  {id:452,cat:"الشوكولاتة",name:"مارس 24*51غ",size:"",price:"131.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-155733-2ed97ec7-300x300.jpg"},
+  {id:453,cat:"الشوكولاتة",name:"مارتي شوكولاتة بالكراميل 24وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/zfz-300x300.jpg"},
+  {id:454,cat:"المعلبات",name:"ماري حبوب الذرة الطرية 24 * 130 غ",size:"",price:"103.9",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0003-300x300.jpg"},
+  {id:455,cat:"الشوكولاتة",name:"ماريجا الأصلية 10*150غ",size:"",price:"98.9",emoji:"📦",image:"https://suk.ma/storage/tablette-de-chocolat-au-lait-et-amandes-150g-maruja-300x300.webp"},
+  {id:456,cat:"الشوكولاتة",name:"ماريجا أصلية كوكيز 5 * 90 غ",size:"",price:"31.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-2-6-300x300.jpg"},
+  {id:457,cat:"الشوكولاتة",name:"ماريجا بديل شوكولاتة بالحليب 20 وحدة",size:"",price:"32",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-165716-73d9fee9-300x300.jpg"},
+  {id:458,cat:"الخاص بالقطط",name:"ماشو للقطط بالدجاج 415 غ",size:"",price:"6.75",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0006-300x300.jpg"},
+  {id:459,cat:"الخاص بالقطط",name:"ماشو للقطط بالسمك 415 غ",size:"",price:"6.75",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-2-300x300.jpg"},
+  {id:460,cat:"المستلزمات الحلويات",name:"مايفين اديال 180غ",size:"",price:"7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-134631-29005d04-300x300.jpg"},
+  {id:461,cat:"العلكة",name:"كلوريتس كبيرة  بالنعناع الأصلي 12وحدة",size:"",price:"38",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-150901-300x300.jpeg"},
+  {id:462,cat:"المعجنات",name:"محمصة الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-142559-b24645af-300x300.jpg"},
+  {id:463,cat:"الفواكه الجافة",name:"ميرا زريعة و اللوز 32 وحدة",size:"",price:"78.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-130631-cd9447ea-300x300.jpg"},
+  {id:464,cat:"الفواكه الجافة",name:"ميرا زريعة  32 وحدة",size:"",price:"79.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-130917-99a367a7-300x300.jpg"},
+  {id:465,cat:"التوابل",name:"ملون غدائي اصطناعي 50كيس",size:"",price:"10.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-173429-60298ee1-300x300.jpg"},
+  {id:466,cat:"التوابل",name:"ملون غدائي اصطناعي 100كيس",size:"",price:"10",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-173651-d3920d45-300x300.jpg"},
+  {id:467,cat:"المناديل ومناشف ورقية",name:"مناديل فلوري 25وحدة",size:"",price:"112.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183434-ac8eee8d-300x300.jpg"},
+  {id:468,cat:"المناديل ومناشف ورقية",name:"مناديل واي 600* 24 وحدة",size:"",price:"179.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-20-at-195744-300x300.jpeg"},
+  {id:469,cat:"البقالة",name:"منظم غاز من النحاس",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-21-a-165844-ea6b5dd0-300x300.jpg"},
+  {id:470,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 22/6وحدة",size:"",price:"42.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-01-a-002256-1400b3a4-300x300.jpg"},
+  {id:471,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 2 / 50 وحدة",size:"",price:"43.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-181854-072932ea-300x300.jpg"},
+  {id:472,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 3 / 40 وحدة",size:"",price:"43.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160106-c8fd8c0b-300x300.jpg"},
+  {id:473,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 3 / 40 وحدة",size:"",price:"42.4",emoji:"📦",image:"https://suk.ma/storage/thdthy-300x300.jpg"},
+  {id:474,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 4/ 36 وحدة",size:"",price:"42.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-01-at-125025-1-300x300.jpeg"},
+  {id:475,cat:"الحفاظات الأطفال",name:"مولفيكس رقم 5 / 28 وحدة",size:"",price:"43.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160105-eac59421-300x300.jpg"},
+  {id:476,cat:"الكعكة",name:"ميلتي أصلي 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-161013-a416cc74-300x300.jpg"},
+  {id:477,cat:"الكعكة",name:"ميلتي شوكولاتة 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-154545-bbdc58a4-300x300.jpg"},
+  {id:478,cat:"البسكويت",name:"مومو أبيض 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-09-a-134042-d331fe78-300x300.jpg"},
+  {id:479,cat:"البسكويت",name:"مومو أسود 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-153048-dd4b99ba-300x300.jpg"},
+  {id:480,cat:"الشوكولاتة",name:"مونوڭرام شوكولاطة سوداء 60 وحدة",size:"",price:"52.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-191625-a5c08d65-300x300.jpg"},
+  {id:481,cat:"الشوكولاتة",name:"موود شوكولاتة بالحليب 85 غ",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-03-13-at-171735-300x300.jpeg"},
+  {id:482,cat:"الشوكولاتة",name:"موود شوكولاتة بالحليب و البندق 85 غ",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-03-13-at-172039-300x300.jpeg"},
+  {id:483,cat:"الشوكولاتة",name:"موود شوكولاتة بالحليب و اللوز 85 غ",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-03-13-at-171905-300x300.jpeg"},
+  {id:484,cat:"الشوكولاتة",name:"موود شوكولاتة بالحليب وقطع البسكويت 90 غ",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-03-13-at-171530-300x300.jpeg"},
+  {id:485,cat:"المستلزمات الحلويات",name:"موس كريمة المثلجات بنكهة الڤانيلا 24*125غ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-144417-300x300.jpeg"},
+  {id:486,cat:"المستلزمات الحلويات",name:"موس كريمة المثلجات بنكهة الفراولة 125غ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-144509-300x300.jpeg"},
+  {id:487,cat:"المستلزمات الحلويات",name:"موس كريمة المثلجات بنكهة الشكلاتة 125غ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135558-58d6d459-300x300.jpg"},
+  {id:488,cat:"المبيدات الحشرات",name:"موسكيطو طرد الناموس 10*30 وحدة",size:"",price:"180",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-191501-43bae84a-300x300.jpg"},
+  {id:489,cat:"الحلويات",name:"مويلو دونتي 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-08-a-163243-362dd279-300x300.jpg"},
+  {id:490,cat:"الحلويات",name:"مويلو قلب 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-132618-6d583be9-300x300.jpg"},
+  {id:491,cat:"الحلويات",name:"مويلو ريزو 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-08-a-162712-108d5caa-300x300.jpg"},
+  {id:492,cat:"المعلبات",name:"مرسى السردين بصلصة الطماطم 125غ",size:"",price:"5.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-141006-48ecc80a-300x300.jpg"},
+  {id:493,cat:"البقالة",name:"بولة ليد 9 واط 10 وحدة",size:"",price:"42.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-164342-1a483c19-300x300.jpg"},
+  {id:494,cat:"البقالة",name:"مشط الشعر 24 وحدة",size:"",price:"9.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-160222-100c1445-300x300.jpg"},
+  {id:495,cat:"العلكة",name:"مسكة فرويتي 220وحدة",size:"",price:"34",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-150234-300x300.jpeg"},
+  {id:496,cat:"الحفاظات الأطفال",name:"ميا وردي  24وحدة",size:"",price:"167.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183434-197ad8f8-300x300.jpg"},
+  {id:497,cat:"الكعكة",name:"ميفينز كعكة محشو بافانيلا 30 وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-18-a-155849-d66ae2cd-300x300.jpg"},
+  {id:498,cat:"الكعكة",name:"ميفينز كعكة بالكاكاو و رقائق الشوكولاتة  30 وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-05-a-153919-cd1b82da-300x300.jpg"},
+  {id:499,cat:"الكعكة",name:"ميفينز كعكة محشو بالشوكولاتة 30وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-155826-300x300.jpeg"},
+  {id:500,cat:"الشوكولاتة",name:"ميجورا 24*18غ",size:"",price:"19.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-190113-fad460e6-300x300.jpg"},
+  {id:501,cat:"الشوكولاتة",name:"ميلكا اوريو 12*22غ",size:"",price:"29.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-161652-3c6f06b4-300x300.jpg"},
+  {id:502,cat:"الشوكولاتة",name:"ميلكا اوريو 100غ",size:"",price:"10.4",emoji:"📦",image:"https://suk.ma/storage/download-2-300x300.jpg"},
+  {id:503,cat:"الشوكولاتة",name:"ميلكا بابلي 90غ",size:"",price:"10.4",emoji:"📦",image:"https://suk.ma/storage/milka-bubbly-cima-market-300x300.jpg"},
+  {id:504,cat:"الشوكولاتة",name:"ميلكا بالبندق 90 غ",size:"",price:"11.2",emoji:"📦",image:"https://suk.ma/storage/sans-titre-22-300x300.jpg"},
+  {id:505,cat:"الشوكولاتة",name:"ميلكا فراولة 12*22غ",size:"",price:"29.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-161544-9bafd830-300x300.jpg"},
+  {id:506,cat:"الشوكولاتة",name:"ميلكا كراميل 100غ",size:"",price:"10.4",emoji:"📦",image:"https://suk.ma/storage/download-3-300x300.jpg"},
+  {id:507,cat:"الشوكولاتة",name:"ميلكا كراميل 12*22غ",size:"",price:"29.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-29-a-173809-ccf333bd-300x300.jpg"},
+  {id:508,cat:"الشوكولاتة",name:"ميلكا رقائق أهوي 12*22غ",size:"",price:"29.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-161337-087e6ede-300x300.jpg"},
+  {id:509,cat:"الشوكولاتة",name:"ميلكا رقائق أهوي 90 غ",size:"",price:"10.4",emoji:"📦",image:"https://suk.ma/storage/sans-titre-2-4-300x300.jpg"},
+  {id:510,cat:"الشوكولاتة",name:"ميلكا تريبل كراميل 90غ",size:"",price:"10.4",emoji:"📦",image:"https://suk.ma/storage/sans-titre-23-300x300.jpg"},
+  {id:511,cat:"الكعكة",name:"ميلتي بكريمة الحامض 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-03-a-121332-9fd1f458-300x300.jpg"},
+  {id:512,cat:"العلكة",name:"مينطوس فراولة 10*30غ",size:"",price:"98.5",emoji:"📦",image:"https://suk.ma/storage/img-9158-300x300.png"},
+  {id:513,cat:"العلكة",name:"مينطوس وردي 10*30غ",size:"",price:"98.5",emoji:"📦",image:"https://suk.ma/storage/mentos-pure-fresh-bubble-fresh-chewing-gum-15-pcs-30g-300x300.jpg"},
+  {id:514,cat:"العلكة",name:"مينطوس زرقاء 10*30غ",size:"",price:"98.5",emoji:"📦",image:"https://suk.ma/storage/mentospurefreshgum-600x-300x300.webp"},
+  {id:515,cat:"الشوكولاتة",name:"ميني شوكولاتة بالحليب 700غ",size:"",price:"78.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-191140-1ed38e44-300x300.jpg"},
+  {id:516,cat:"الشوكولاتة",name:"ميني شوكولاتة و الحليب و اللوز 700غ",size:"",price:"78.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-190831-90b6ca5e-300x300.jpg"},
+  {id:517,cat:"الشوكولاتة",name:"ميني شوكولاتة السوداء و اللوز 700غ",size:"",price:"78.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-190607-d9b6f7f2-300x300.jpg"},
+  {id:518,cat:"الفواكه الجافة",name:"ميرا مخلطة  32 وحدة",size:"",price:"79.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-130403-6d17344b-300x300.jpg"},
+  {id:519,cat:"الفواكه الجافة",name:"ميرا ميكس 60 وحدة",size:"",price:"48.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-182309-4fdcb470-300x300.jpg"},
+  {id:520,cat:"الشوكولاتة",name:"ميراج شوكولاتة بالكوكيز 24 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-16-a-152434-ac6b87d7-300x300.jpg"},
+  {id:521,cat:"الكعكة",name:"ميراندينا كبيرة 24*52غ",size:"",price:"59.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-195753-6a64a4c6-300x300.jpg"},
+  {id:522,cat:"الكعكة",name:"ميراندينا متوسطة 48*36غ",size:"",price:"79.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-195218-7b8af8be-300x300.jpg"},
+  {id:523,cat:"الكعكة",name:"ميراندينا صغيرة 72*16غ",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-194637-f0cbda2b-300x300.jpg"},
+  {id:524,cat:"الخاص بالقطط",name:"ميشو للقطط بالدجاج 32 * 100 غ",size:"",price:"125.8",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0009-300x300.jpg"},
+  {id:525,cat:"المشروبات",name:"ميستر فروست 60 وحدة",size:"",price:"43.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-16-a-213256-0ae57868-300x300.jpg"},
+  {id:526,cat:"الشوكولاتة",name:"نواسيطا عجين الشكلاتة 12*900غ",size:"",price:"228",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-185153-a84a94bf-300x300.jpg"},
+  {id:527,cat:"الحفاظات الأطفال",name:"نوفا كبير 9 وحدة",size:"",price:"36",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-25-at-162224-300x300.jpeg"},
+  {id:528,cat:"البسكويت",name:"نوفا شكلاطة بالبيسطاش 100 وحدة",size:"",price:"40.8",emoji:"📦",image:"https://suk.ma/storage/eeeeeeeeeert-300x300.jpg"},
+  {id:529,cat:"البسكويت",name:"نوكو بسكويت ولوحة بكريمة البندق 24 وحدة",size:"",price:"98.9",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-3-300x300.jpg"},
+  {id:530,cat:"البسكويت",name:"نوكو بسكويت ولوحة بكريمة الشوكولاتة  24 وحدة",size:"",price:"98.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-20-at-152608-300x300.jpeg"},
+  {id:531,cat:"المعلبات",name:"نورماندي كويرات السردين 125غ",size:"",price:"6.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-12-a-181436-400bc2f9-300x300.jpg"},
+  {id:532,cat:"الحليب و مشتقاته",name:"نيدو 1200غ",size:"",price:"123",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-191838-a7285757-300x300.jpg"},
+  {id:533,cat:"الحليب و مشتقاته",name:"نيدو 32.5 غ",size:"",price:"3.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-10-a-161109-58f9465b-300x300.jpg"},
+  {id:534,cat:"المناديل ومناشف ورقية",name:"نيكي مناديل ناعمة 15 وحدة",size:"",price:"14.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-122754-62fbddd9-300x300.jpg"},
+  {id:535,cat:"القهوة",name:"نيسكافي كلاسيك 120*1.8غ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-192735-b19bc4f0-300x300.jpg"},
+  {id:536,cat:"القهوة",name:"نيسكافي كلاسيك 54غ",size:"",price:"22",emoji:"📦",image:"https://suk.ma/storage/71oexqtz4-l-300x300.jpg"},
+  {id:537,cat:"الماء",name:"أولماس 6*1ل",size:"",price:"39",emoji:"📦",image:"https://suk.ma/storage/61-300x300.png"},
+  {id:538,cat:"البقالة",name:"ولاعة ألاسكة شعارالأندية 50 وحدة",size:"",price:"47.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155322-974d0e4e-300x300.jpg"},
+  {id:539,cat:"البقالة",name:"ولاعة ألاسكة عادية 50 وحدة",size:"",price:"32.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155359-9e70f87d-300x300.jpg"},
+  {id:540,cat:"الحلويات",name:"ڭوم الموز 130 وحدة",size:"",price:"13.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-192333-3a1e2500-300x300.jpg"},
+  {id:541,cat:"الحلويات",name:"ڭومي ڭوم بالفريزة 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-130720-94c70ee8-300x300.jpg"},
+  {id:542,cat:"الحلويات",name:"ڭومي ڭوم دوفان 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/0103g0451462664471-2-300x300.jpg"},
+  {id:543,cat:"الحلويات",name:"ڭومي ڭوم فواكه 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-154225-b0423565-300x300.jpg"},
+  {id:544,cat:"الحلويات",name:"ڭومي ڭوم قلب 200 وحدة",size:"",price:"34.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-130944-4c7e6d1e-300x300.jpg"},
+  {id:545,cat:"البقالة",name:"ورق اللألمينيوم",size:"",price:"73",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181130-112812c3-300x300.jpg"},
+  {id:546,cat:"المنظفات المنزلية",name:"بريد صابون سائل بالحامض 20*500مل",size:"",price:"8.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181131-8dfacefb-300x300.jpg"},
+  {id:547,cat:"البقالة",name:"ورق اللألمينيوم 12 وحدة",size:"",price:"38.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-140648-5d1005ae-300x300.jpg"},
+  {id:548,cat:"البقالة",name:"ورق الطبخ أبيض",size:"",price:"7",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-15-300x300.jpg"},
+  {id:549,cat:"البقالة",name:"ورق الطبخ أصفر",size:"",price:"7",emoji:"📦",image:"https://suk.ma/storage/sans-titre-2-7-300x300.jpg"},
+  {id:550,cat:"البقالة",name:"ورق التغليف 5كغ",size:"",price:"53",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-131835-efbe33f5-300x300.jpg"},
+  {id:551,cat:"البسكويت",name:"ويدو فاموس مارشميلو 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-144040-02e579dc-300x300.jpg"},
+  {id:552,cat:"البسكويت",name:"ويدو فاموس شوكو 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-144455-38860b2b-300x300.jpg"},
+  {id:553,cat:"البسكويت",name:"وينور سينكو 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-150359-ceea39ab-300x300.jpg"},
+  {id:554,cat:"البقالة",name:"روايال الحناء السوداء 6*10غ",size:"",price:"17",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-191105-5693e479-300x300.jpg"},
+  {id:555,cat:"المستلزمات الإستحمام",name:"رازير ماكينات الحلاقة 6 وحدة",size:"",price:"4.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-25-at-191807-300x300.jpeg"},
+  {id:556,cat:"المستلزمات الحلويات",name:"رفيعة خميرة فورية 12*125غ",size:"",price:"88",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-135438-be9e671f-300x300.jpg"},
+  {id:557,cat:"الللطبخ",name:"رفيعة خميرة طبيعية ساشي 10غ*100 وحدة",size:"",price:"75",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-17-a-195248-778aa713-300x300.jpg"},
+  {id:558,cat:"البقالة",name:"روايال الحناء اللون البني 6*10غ",size:"",price:"17",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-191301-a53c122a-300x300.jpg"},
+  {id:559,cat:"الحلويات",name:"روايال فواكه 800غ",size:"",price:"15.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194932-b3376ae9-300x300.jpg"},
+  {id:560,cat:"المشروبات",name:"روكسطار كيوي 12*500مل",size:"",price:"192.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-154101-300x300.jpeg"},
+  {id:561,cat:"المشروبات",name:"روكسطار كوستا 12*500مل",size:"",price:"192.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-153617-300x300.jpeg"},
+  {id:562,cat:"المشروبات",name:"روكسطار ماندارين 12*500مل",size:"",price:"192.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-19-at-153924-300x300.jpeg"},
+  {id:563,cat:"العلكة",name:"روكيط 165 وحدة",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183605-d9317343-300x300.jpg"},
+  {id:564,cat:"الرقائق البطاطس والذرة",name:"رووتس بافس جبنة الفرنسية 12 وحدة",size:"",price:"46",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-30-a-150037-d40f467e-300x300.jpg"},
+  {id:565,cat:"الحلويات",name:"روشين بالفواكه 1كغ",size:"",price:"44.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194007-474a1848-300x300.jpg"},
+  {id:566,cat:"الرقائق البطاطس والذرة",name:"روستيكا بالحار 12*100غ",size:"",price:"47",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-160935-daf1f2ec-300x300.jpg"},
+  {id:567,cat:"الرقائق البطاطس والذرة",name:"روطوس كاتشوب 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-151603-badcfc24-300x300.jpg"},
+  {id:568,cat:"القطنيات",name:"روز كلاصي 10كغ",size:"",price:"112.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-15-a-133114-f428fe49-300x300.jpg"},
+  {id:569,cat:"الحلويات",name:"ريڭالو بالفرولة 100 وحدة",size:"",price:"37.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-133155-759d2a4c-300x300.jpg"},
+  {id:570,cat:"المشروبات",name:"ريدبول 24*250مل",size:"",price:"336",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-131225-da3ea7f9-300x300.jpg"},
+  {id:571,cat:"الرقائق البطاطس والذرة",name:"ريكوس فريطوس 36وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-171300-300x300.jpeg"},
+  {id:572,cat:"الرقائق البطاطس والذرة",name:"ريكوس فريطوس بالفلفل الحار 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-01-14-at-142245-300x300.jpeg"},
+  {id:573,cat:"الحلويات",name:"ريڭليزو بالموز 45 وحدة",size:"",price:"36.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-133648-0d1bf355-300x300.jpg"},
+  {id:574,cat:"الحلويات",name:"ريڭليزو بالتوت 45 وحدة",size:"",price:"36.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-133600-a224649a-300x300.jpg"},
+  {id:575,cat:"الحلويات",name:"ريڭليزو جامبو بالفرولة 45 وحدة",size:"",price:"36.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-140401-561131d5-300x300.jpg"},
+  {id:576,cat:"البسكويت",name:"صابلي بالشكلاتة 30*45غ",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-201835-c54e9f7e-300x300.jpg"},
+  {id:577,cat:"البسكويت",name:"صابلي كوكو 30 وحدة",size:"",price:"65.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-142543-09fcdde3-300x300.jpg"},
+  {id:578,cat:"البسكويت",name:"صابلي كوكو 60 وحدة",size:"",price:"48.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-141548-f4bed563-300x300.jpg"},
+  {id:579,cat:"المستلزمات الإستحمام",name:"صابون الطوس طبيعي 4 وحدة",size:"",price:"21",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-135659-f3effcf8-300x300.jpg"},
+  {id:580,cat:"المنظفات المنزلية",name:"صابون المنجل 24*125غ",size:"",price:"58",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181134-4d9dc156-300x300.jpg"},
+  {id:581,cat:"المستلزمات الإستحمام",name:"صابون الطوس مضاد الجراثيم 4 وحدة",size:"",price:"20.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-20-at-195622-300x300.jpeg"},
+  {id:582,cat:"المستلزمات الإستحمام",name:"دوڤ صابون 4*90غ",size:"",price:"31.4",emoji:"📦",image:"https://suk.ma/storage/images-8-1-300x300.JPG"},
+  {id:583,cat:"المعلبات",name:"صابريلة مركز الطماطم 50*60غ",size:"",price:"110",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-174050-56de7f60-300x300.jpg"},
+  {id:584,cat:"المعلبات",name:"صابريلة مركز الطماطم 25*120غ",size:"",price:"112",emoji:"📦",image:"https://suk.ma/storage/la-300x300.jpg"},
+  {id:585,cat:"المناديل ومناشف ورقية",name:"ساني مناديل المطبخ 6*2 وحدة",size:"",price:"54",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2023-12-26-at-101222-300x300.jpeg"},
+  {id:586,cat:"الكعكة",name:"سبوفي 24 وحدة",size:"",price:"36.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-10-a-153350-67d60ed7-300x300.jpg"},
+  {id:587,cat:"المعجنات",name:"سباكيتي اللإتقان 40 * 250 غ",size:"",price:"179.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-22-at-153922-300x300.jpeg"},
+  {id:588,cat:"المعجنات",name:"سباكيتي اللإتقان 20 * 500 غ",size:"",price:"163.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-22-at-153606-300x300.jpeg"},
+  {id:589,cat:"البقالة",name:"سبارادرا 100وحدة",size:"",price:"18",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181133-0fff28ad-300x300.jpg"},
+  {id:590,cat:"المستلزمات الحلويات",name:"فتائل الشوكولاتة الملونة 900غ",size:"",price:"28",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-181132-2ca682ce-300x300.jpg"},
+  {id:591,cat:"المعجنات",name:"شعرية غليظة الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-134804-50fddd58-300x300.jpg"},
+  {id:592,cat:"المعجنات",name:"شعرية متوسطة الإتقان 10كغ",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-142253-49f8a7b9-300x300.jpg"},
+  {id:593,cat:"المعجنات",name:"شعرية صينية بالأرز 250غ",size:"",price:"7.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160110-0ab34255-300x300.jpg"},
+  {id:594,cat:"المستلزمات الإستحمام",name:"شابو جيل دوش بالورد 600مل",size:"",price:"7.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-131653-300x300.jpeg"},
+  {id:595,cat:"المستلزمات الإستحمام",name:"شابو جيل دوش بالفواكه الأسيوية 600مل",size:"",price:"7.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-132335-300x300.jpeg"},
+  {id:596,cat:"المستلزمات الإستحمام",name:"شابو جيل دوش بالكوك 600مل",size:"",price:"7.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-at-135432-300x300.jpeg"},
+  {id:597,cat:"المستلزمات الإستحمام",name:"شابو جيل دوش سبا 600 مل",size:"",price:"7.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-144502-f4f95027-300x300.jpg"},
+  {id:598,cat:"المستلزمات الإستحمام",name:"شابو شامبو بالبيض و العسل 600 غ",size:"",price:"7.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-144330-983b7fdf-300x300.jpg"},
+  {id:599,cat:"المستلزمات الإستحمام",name:"شابو شامبو بالبيض و النعناع 600 مل",size:"",price:"7.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-144622-8ecb9a65-300x300.jpg"},
+  {id:600,cat:"المستلزمات الإستحمام",name:"شابو شامبو بالبيض و الأفوكادو 600 غ",size:"",price:"7.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-144202-ae4840d4-300x300.jpg"},
+  {id:601,cat:"المستلزمات الإستحمام",name:"شابو شامبوان بالبيض 250غ",size:"",price:"4.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-20-a-150602-f9b1a066-300x300.jpg"},
+  {id:602,cat:"المستلزمات الإستحمام",name:"شابو شامبوان بالبيض 600غ",size:"",price:"8.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-20-a-150751-50ffd471-300x300.jpg"},
+  {id:603,cat:"المعلبات",name:"شالة شرائح اللاسقمري بالزيت النباتية  2كغ",size:"",price:"88",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-143526-f3e584d2-300x300.jpg"},
+  {id:604,cat:"المعلبات",name:"شالة شرائح التونة بالحامض 125غ",size:"",price:"13.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-14-at-193831-300x300.jpeg"},
+  {id:605,cat:"المعلبات",name:"شالة سردين بصلصة الطماطم 125غ",size:"",price:"4.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-164638-0ff5a3f3-300x300.jpg"},
+  {id:606,cat:"المعلبات",name:"شالة تونة بالزيت النباتية 3*80غ",size:"",price:"19.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-17-at-171309-300x300.jpeg"},
+  {id:607,cat:"المعلبات",name:"شالة تونة بصلصة الطماطم 3*80غ",size:"",price:"17.2",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-14-at-194053-300x300.jpeg"},
+  {id:608,cat:"المعلبات",name:"شالة تونة كاملة بالزيت النباتي 80غ",size:"",price:"6.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-08-15-a-171642-b7f77ef2-300x300.jpg"},
+  {id:609,cat:"المعلبات",name:"شالة تونة كاملة بصلصة الطماطم 80غ",size:"",price:"5.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-135507-d6dca123-300x300.jpg"},
+  {id:610,cat:"الشاي",name:"شاي الإتقان 200 غ (1كغ)",size:"",price:"72.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-11-a-155554-8ac46183-300x300.jpg"},
+  {id:611,cat:"الشاي",name:"شاي البلار 100غ(1كغ)",size:"",price:"58",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-174937-20ca7260-300x300.jpg"},
+  {id:612,cat:"الشاي",name:"شاي البارود 100غ (1كغ)",size:"",price:"69.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-11-a-155821-4b5c1d2b-300x300.jpg"},
+  {id:613,cat:"الشاي",name:"شاي البارود 200 غ (1كغ)",size:"",price:"69.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-11-a-155722-1962426e-300x300.jpg"},
+  {id:614,cat:"الشاي",name:"شاي البلار200غ(1كغ)",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-142016-931106e8-300x300.jpg"},
+  {id:615,cat:"الشاي",name:"شاي الدحميس 100غ(1كغ)",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-135253-481f7386-300x300.jpg"},
+  {id:616,cat:"الشاي",name:"شاي الدحميس 500غ(1كغ)",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-24-a-173101-41da3f31-300x300.jpg"},
+  {id:617,cat:"الشاي",name:"شاي الرميلة 200غ(1كغ)",size:"",price:"82",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-135457-59a6b1d6-300x300.jpg"},
+  {id:618,cat:"الشاي",name:"شاي الكبش 200غ(1كغ)",size:"",price:"70",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-143424-ea4fc540-300x300.jpg"},
+  {id:619,cat:"الشاي",name:"شاي الكبش 3505 200غ(1كغ)",size:"",price:"60",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-20-a-183656-6c61a412-300x300.jpg"},
+  {id:620,cat:"الشاي",name:"شاي كمنجة 500غ(1كغ)",size:"",price:"58",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130027-0aab45c1-300x300.jpg"},
+  {id:621,cat:"الشاي",name:"شاي الكمنجة 100غ(1كغ)",size:"",price:"58",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-174330-e4277e44-300x300.jpg"},
+  {id:622,cat:"الشاي",name:"شاي الكمنجة 200غ(1كغ)",size:"",price:"57.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-142224-dbda9148-300x300.jpg"},
+  {id:623,cat:"الشاي",name:"شاي الكساب (9371) 2 كغ",size:"",price:"105",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-15-a-144819-9a9af991-300x300.jpg"},
+  {id:624,cat:"الشاي",name:"شاي المبرع 10غ*50 وحدة",size:"",price:"28.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-132531-d79789ab-300x300.jpg"},
+  {id:625,cat:"الشاي",name:"شاي المقراج 143غ(1كغ)",size:"",price:"35",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-174652-eb6aa7d9-300x300.jpg"},
+  {id:626,cat:"الشاي",name:"شاي النسمة 200غ (1كغ)",size:"",price:"86",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130026-f68cd699-300x300.jpg"},
+  {id:627,cat:"الشاي",name:"شاي السبع 100غ(1كغ)",size:"",price:"95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-25-a-143245-7017cee7-300x300.jpg"},
+  {id:628,cat:"الشاي",name:"شاي الشعب 500غ (1كغ)",size:"",price:"55",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-121529-31391a6c-300x300.jpg"},
+  {id:629,cat:"الشاي",name:"شاي الشعب 200غ (1كغ)",size:"",price:"55",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-121440-166b11eb-300x300.jpg"},
+  {id:630,cat:"الشاي",name:"شاي الشاقور100غ(1كغ)",size:"",price:"91.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-141758-717088a5-300x300.jpg"},
+  {id:631,cat:"الشاي",name:"شاي الشقور 200غ(1كغ)",size:"",price:"92",emoji:"📦",image:"https://suk.ma/storage/cdr200y-200g-1-300x300.jpg"},
+  {id:632,cat:"الشاي",name:"شاي الشقور 500غ(1كغ)",size:"",price:"92",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-183952-78f87386-300x300.jpg"},
+  {id:633,cat:"الشاي",name:"شاي الصينية 200غ(1كغ)",size:"",price:"56.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-141703-52031383-300x300.jpg"},
+  {id:634,cat:"الشاي",name:"شاي ولد الشيح 200 غ (1كغ)",size:"",price:"59.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-16-a-151347-0d9f1461-300x300.jpg"},
+  {id:635,cat:"الشاي",name:"شاي سلطان حبة جوهر200غ ( 1 كغ )",size:"",price:"85.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0002-300x300.jpg"},
+  {id:636,cat:"الشاي",name:"شاي السبع 200غ(1كغ)",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-185210-44795a71-300x300.jpg"},
+  {id:637,cat:"الشاي",name:"شاي السبع 500غ(1كغ)",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-184837-7535b538-300x300.jpg"},
+  {id:638,cat:"الشاي",name:"شاي سلهام 200غ(1كغ)",size:"",price:"44",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-193925-2ae26259-300x300.jpg"},
+  {id:639,cat:"الشاي",name:"شاي سلطان العنبر 200غ ( 1 كغ )",size:"",price:"75.9",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0003-300x300.jpg"},
+  {id:640,cat:"الشاي",name:"شاي سلطان حبة الأصالة 200غ ( 1 كغ )",size:"",price:"98.5",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0001-300x300.jpg"},
+  {id:641,cat:"الشاي",name:"شاي تحفة 200 غ (1كغ)",size:"",price:"84",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-16-a-151926-6d31d6a2-300x300.jpg"},
+  {id:642,cat:"الشاي",name:"شاي الدحميس 200غ(1كغ)",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-26-a-135204-06683870-300x300.jpg"},
+  {id:643,cat:"البسكويت",name:"شوكاب بالحليب 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-145106-1046fc0f-300x300.jpg"},
+  {id:644,cat:"البسكويت",name:"شوكاب بالشكلاطة 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-144823-1ecf3b4d-300x300.jpg"},
+  {id:645,cat:"الشوكولاتة",name:"شوكو بابلز شوكولاتة بالبندق 24وحدة",size:"",price:"19.8",emoji:"📦",image:"https://suk.ma/storage/ff-300x300.jpg"},
+  {id:646,cat:"الشوكولاتة",name:"شوكوفليكس 24 وحدة",size:"",price:"19.6",emoji:"📦",image:"https://suk.ma/storage/sans-titre-29-300x300.jpg"},
+  {id:647,cat:"الرقائق البطاطس والذرة",name:"شيبس دور بالقشدة و الحامض 42*13غ",size:"",price:"34.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-22-at-150040-300x300.jpeg"},
+  {id:648,cat:"الرقائق البطاطس والذرة",name:"شيبس دور بالملح 42*13غ",size:"",price:"34.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-06-14-at-164536-300x300.jpeg"},
+  {id:649,cat:"الماء",name:"سيدي علي 12*33سل",size:"",price:"18.9",emoji:"📦",image:"https://suk.ma/storage/2148-300x300.png"},
+  {id:650,cat:"الماء",name:"سيدي علي 12*50سل",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/2149-300x300.png"},
+  {id:651,cat:"الماء",name:"سيدي علي 4*2ل",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/dddd-300x300.jpg"},
+  {id:652,cat:"الماء",name:"سيدي علي 6*1.5ل",size:"",price:"25.5",emoji:"📦",image:"https://suk.ma/storage/kkkkk-1-300x300.jpg"},
+  {id:653,cat:"المستلزمات الحلويات",name:"سكر فانيلا 100 وحدة",size:"",price:"37.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-141544-aa346978-300x300.jpg"},
+  {id:654,cat:"السكر",name:"سكر قالب 8*2كغ",size:"",price:"97",emoji:"📦",image:"https://suk.ma/storage/skr-kalb-300x300.webp"},
+  {id:655,cat:"السكر",name:"سكر قطع صغيرة  5*1كغ",size:"",price:"30",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-183338-2053dfc1-300x300.jpg"},
+  {id:656,cat:"السكر",name:"سكر سنيدة 9*2كغ",size:"",price:"93",emoji:"📦",image:"https://suk.ma/storage/sucre-en-poudre-2-kg-sucre-300x300.jpg"},
+  {id:657,cat:"السكر",name:"سكر طوب 5*1كغ",size:"",price:"31",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-183428-dc943a19-300x300.jpg"},
+  {id:658,cat:"الشوكولاتة",name:"سكيتش برالينا 24 وحدة",size:"",price:"19.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-18-a-182552-12965cdf-300x300.jpg"},
+  {id:659,cat:"الشوكولاتة",name:"سكيتش تيستي 120 وحدة",size:"",price:"48.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-2-5-300x300.jpg"},
+  {id:660,cat:"الللطبخ",name:"صلدور خل المائدة 24*20سل",size:"",price:"26",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-143539-d3d76ac4-300x300.jpg"},
+  {id:661,cat:"المعلبات",name:"سليل شرائح الإسقمري بالزيت النباتية 125 غ",size:"",price:"8.6",emoji:"📦",image:"https://suk.ma/storage/sans-titre-39-300x300.jpg"},
+  {id:662,cat:"القهوة",name:"سمر قهوة ستيك 30 وحدة",size:"",price:"24.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-140605-2600c50f-300x300.jpg"},
+  {id:663,cat:"القهوة",name:"سمر قهوة ستيك اكسبريس 30 وحدة",size:"",price:"24.9",emoji:"📦",image:"https://suk.ma/storage/sans-titre-34-300x300.jpg"},
+  {id:664,cat:"الدقيق و سميدة",name:"سميد غليظ 10كغ",size:"",price:"82",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-8fe4446e-300x300.jpg"},
+  {id:665,cat:"الدقيق و سميدة",name:"سميد غليظ 25كغ",size:"",price:"200",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-9e45e014-300x300.jpg"},
+  {id:666,cat:"الدقيق و سميدة",name:"سميد غليظ 25كغ",size:"",price:"185",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-09-27-a-140812-ff1f42f7-300x300.jpg"},
+  {id:667,cat:"الدقيق و سميدة",name:"سميد غليظ الإتقان 5 كغ",size:"",price:"41.95",emoji:"📦",image:"https://suk.ma/storage/sans-titre-32-300x300.jpg"},
+  {id:668,cat:"الدقيق و سميدة",name:"سميد ناعم 25كغ",size:"",price:"190",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-e371edec-300x300.jpg"},
+  {id:669,cat:"الدقيق و سميدة",name:"سميد رقيق 10كغ",size:"",price:"79.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-869f6b93-300x300.jpg"},
+  {id:670,cat:"الدقيق و سميدة",name:"سميد رقيق 5كغ",size:"",price:"42",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-05-a-225402-9855ccd1-300x300.jpg"},
+  {id:671,cat:"الكعكة",name:"سندويشي بالشكلاطة 24 وحدة",size:"",price:"39.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-172538-049ef297-300x300.jpg"},
+  {id:672,cat:"المستلزمات الإستحمام",name:"سنيال مكافح التسوس 12*50مل",size:"",price:"74.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155303-64e54397-300x300.jpg"},
+  {id:673,cat:"المستلزمات الإستحمام",name:"سنيال مكافح التسوس 12*25مل",size:"",price:"39.6",emoji:"📦",image:"https://suk.ma/storage/pdt2-0-6-3-1-700x700-aaaaa22063-2-300x300.jpg"},
+  {id:674,cat:"المستلزمات الإستحمام",name:"سنيال مكافح التسوس 12*120مل",size:"",price:"119",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-155240-ceed3bf0-300x300.jpg"},
+  {id:675,cat:"الشوكولاتة",name:"سنيكرس 24*50غ",size:"",price:"131.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-160029-1e43dff5-300x300.jpg"},
+  {id:676,cat:"الشوكولاتة",name:"سنيكرز 40 * 18 غ",size:"",price:"96.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-01-14-at-140918-300x300.jpeg"},
+  {id:677,cat:"الكعكة",name:"سوفت أصلي 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-145553-819fc452-300x300.jpg"},
+  {id:678,cat:"الكعكة",name:"سوفت بالحامض 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-150528-29281842-300x300.jpg"},
+  {id:679,cat:"الكعكة",name:"سوفت شوكولاتة 36 وحدة",size:"",price:"60.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-145909-c36b3a74-300x300.jpg"},
+  {id:680,cat:"الصلصات",name:"صورا كاتشاب 310 غ",size:"",price:"12",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-19-300x300.jpg"},
+  {id:681,cat:"الصلصات",name:"صورا مايونيز 280 غ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-36-300x300.jpg"},
+  {id:682,cat:"الصلصات",name:"صورا موطارد 300 غ",size:"",price:"12.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-38-300x300.jpg"},
+  {id:683,cat:"العلكة",name:"سوينك علكة بنكهة الفراولة 5 * 20 وحدة",size:"",price:"10.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-18-a-183243-9d323ac9-300x300.jpg"},
+  {id:684,cat:"العلكة",name:"سوينك علكة بنكهة النعناع الأخضر 5 * 20 وحدة",size:"",price:"10.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-18-a-183032-790331fc-300x300.jpg"},
+  {id:685,cat:"الحلويات",name:"سويت سمارت دراجي بالكاكاو  100 وحدة",size:"",price:"38.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-12-a-164025-6a7be6a7-300x300.jpg"},
+  {id:686,cat:"التوابل, الصلصات",name:"سطار خل المائدة أبيض 50 سل",size:"",price:"7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-03-07-at-173844-300x300.jpeg"},
+  {id:687,cat:"الصلصات",name:"سطار خل المائدة بنكهة الليمون 50 سل",size:"",price:"7.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-37-300x300.jpg"},
+  {id:688,cat:"الصلصات",name:"سطار خل المائدة منسم بالتفاح 50 سل",size:"",price:"7.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-20-300x300.jpg"},
+  {id:689,cat:"الصلصات",name:"سطار مايونيز 12*185مل",size:"",price:"109.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-195904-69c3767f-300x300.jpg"},
+  {id:690,cat:"الصلصات",name:"سطار مايونيز 12*90مل",size:"",price:"66.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-24-a-194408-263760f2-300x300.jpg"},
+  {id:691,cat:"الصلصات",name:"سطار مايونيز 12*330مل",size:"",price:"173.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-180721-2704cc23-300x300.jpg"},
+  {id:692,cat:"الصلصات",name:"سطار مايونيز 280 مل",size:"",price:"13.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-21-300x300.jpg"},
+  {id:693,cat:"الصلصات",name:"سطار موطارد 12*100غ",size:"",price:"63.4",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-174225-6519d7de-300x300.jpg"},
+  {id:694,cat:"الصلصات",name:"سطار موطارد 12*300غ",size:"",price:"159.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-25-a-190634-b73d374c-300x300.jpg"},
+  {id:695,cat:"الصلصات",name:"سطار موطارد 12*200غ",size:"",price:"100",emoji:"📦",image:"https://suk.ma/storage/933-257x-bd8679f7-e615-4de4-896d-111a0680abd6-1-300x300.webp"},
+  {id:696,cat:"الصلصات",name:"سطار صلصة جزائرية 290 مل",size:"",price:"18.5",emoji:"📦",image:"https://suk.ma/storage/sans-titre-1-18-300x300.jpg"},
+  {id:697,cat:"المشروبات",name:"ستينڭ بنكهة الفواكه 12*250مل",size:"",price:"59",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-161544-300x300.jpeg"},
+  {id:698,cat:"المشروبات",name:"ستينڭ بنكهة التوت 12*250مل",size:"",price:"59",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-161141-300x300.jpeg"},
+  {id:699,cat:"الكعكة",name:"سيبريم أصلي 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-153716-b58b687f-300x300.jpg"},
+  {id:700,cat:"الكعكة",name:"سيبريم بالشوكولاتة 36 وحدة",size:"",price:"60.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-153858-4746114f-300x300.jpg"},
+  {id:701,cat:"البسكويت",name:"سيغار 60*22غ",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-202652-7ed07b33-300x300.jpg"},
+  {id:702,cat:"البسكويت",name:"سيلڤيا كوڤر كوكو 60 وحدة",size:"",price:"49.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-151705-b6fd5ac7-300x300.jpg"},
+  {id:703,cat:"المناديل ومناشف ورقية",name:"سيلباك ورق صحي 9 لفات",size:"",price:"23",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-01-at-125952-300x300.jpeg"},
+  {id:704,cat:"البسكويت",name:"سيلڤيا دييو بالحليب 60 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-163326-bfc6966a-300x300.jpg"},
+  {id:705,cat:"البسكويت",name:"سيلڤيا دييو بالرمان 60 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-162950-1d1d12ec-300x300.jpg"},
+  {id:706,cat:"البسكويت",name:"سيلڤيا دييو تروبيكال 60 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-162842-4e98b13e-300x300.jpg"},
+  {id:707,cat:"البسكويت",name:"سيلڤيا دييو كوكو 60 وحدة",size:"",price:"49.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-22-a-162446-e38d38d4-300x300.jpg"},
+  {id:708,cat:"البسكويت",name:"سيرجيو بالحليب 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130338-34936024-300x300.jpg"},
+  {id:709,cat:"البسكويت",name:"سيرجيو بالكاكاو و الحليبب 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130337-4dfe3bca-300x300.jpg"},
+  {id:710,cat:"البسكويت",name:"سيرجيو بلاك 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-22-at-145533-300x300.jpeg"},
+  {id:711,cat:"الحليب و مشتقاته",name:"سيريلاك قمح بالحليب 250غ",size:"",price:"24.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-17-a-160735-6f66e1d9-300x300.jpg"},
+  {id:712,cat:"الحليب و مشتقاته",name:"سيريلاك قمح ساشي 50 غ",size:"",price:"5.8",emoji:"📦",image:"https://suk.ma/storage/img-20251201-wa0005-300x300.jpg"},
+  {id:713,cat:"الشوكولاتة",name:"سويتيز دراجي 700غ",size:"",price:"55.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-185110-d25087ac-300x300.jpg"},
+  {id:714,cat:"البسكويت",name:"طاغير 48*22غ",size:"",price:"58.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-202326-27bf9718-300x300.jpg"},
+  {id:715,cat:"المعلبات",name:"طاجين سردين 125غ",size:"",price:"6.95",emoji:"📦",image:"https://suk.ma/storage/ecd53f56-a0ab-4b88-af93-741ceb55d2dd-300x300.jpeg"},
+  {id:716,cat:"الرقائق البطاطس والذرة",name:"طاكوس بالجبنة 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-13-a-162204-ff302e64-300x300.jpg"},
+  {id:717,cat:"الرقائق البطاطس والذرة",name:"طاكوس بطعم الدجاج 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-15-a-152517-88c64f55-300x300.jpg"},
+  {id:718,cat:"الرقائق البطاطس والذرة",name:"طاكوس بطعم الفلفل الحار 28 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-27-a-161621-a2c23b66-300x300.jpg"},
+  {id:719,cat:"البسكويت",name:"طاكوس بيسكوي 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-153746-d353d9a8-300x300.jpg"},
+  {id:720,cat:"البسكويت",name:"طاكوس بيسكوي شوكو 60 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-154437-93e79ba7-300x300.jpg"},
+  {id:721,cat:"الرقائق البطاطس والذرة",name:"طاكوس كاتشوب 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-13-a-162136-995cac0b-300x300.jpg"},
+  {id:722,cat:"البسكويت",name:"طاكوس وافر فانيليا 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-153147-9eb3813f-300x300.jpg"},
+  {id:723,cat:"البسكويت",name:"طاكوس وافر فرولة 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-133644-5c95a80f-300x300.jpg"},
+  {id:724,cat:"البسكويت",name:"طاكوس وافر شوكولاتة 24 وحدة",size:"",price:"38.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-134034-3a8596c9-300x300.jpg"},
+  {id:725,cat:"المعلبات",name:"طام شرائح التونة بالزيت النباتية  85غ",size:"",price:"9.6",emoji:"📦",image:"https://suk.ma/storage/thon-a-lhuile-vegetale-85g-tam-300x300.webp"},
+  {id:726,cat:"المعلبات",name:"طانطان اسقمري بصلصة الطماطم 425 غ",size:"",price:"12.2",emoji:"📦",image:"https://suk.ma/storage/img-20251120-wa0004-300x300.jpg"},
+  {id:727,cat:"الدقيق و سميدة",name:"الإتقان  كسكس رقيق 500غ",size:"",price:"6.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-160113-a9c2f535-300x300.jpg"},
+  {id:728,cat:"المنظفات المنزلية",name:"تيد مسحوق للغسيل 48*90غ",size:"",price:"120",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-200658-8ef39a0c-300x300.jpg"},
+  {id:729,cat:"البسكويت",name:"طوب أبيض 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-03-25-a-141739-2f955099-300x300.jpg"},
+  {id:730,cat:"البسكويت",name:"طوب أصلي 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-185339-a24fbaa8-300x300.jpg"},
+  {id:731,cat:"البسكويت",name:"طوب كوكيز أصلي 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-155433-52afd429-300x300.jpg"},
+  {id:732,cat:"البسكويت",name:"طوب كوكيز شوكو 60 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-155259-c0364de8-300x300.jpg"},
+  {id:733,cat:"الكعكة",name:"طوبيڭودونات معطاة بالشوكولاتة 24 وحدة",size:"",price:"59.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-18-a-155542-cccbca2e-300x300.jpg"},
+  {id:734,cat:"البسكويت",name:"طوبيغو بليو بالفانيلا و الكريمة 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-202111-8af69373-300x300.jpg"},
+  {id:735,cat:"البسكويت",name:"طوبيڭو كروستي الحامض 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-141200-ae6eff7d-300x300.jpg"},
+  {id:736,cat:"البسكويت",name:"طوبيڭو كروستي فانيليا 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-140806-a2171758-2-300x300.jpg"},
+  {id:737,cat:"البسكويت",name:"طوبيڭو كروستي شوكو 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-135603-88b11fda-300x300.jpg"},
+  {id:738,cat:"البسكويت",name:"طوبيڭو كروستي كريمة التوت 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-140045-fd4b26ad-300x300.jpg"},
+  {id:739,cat:"البسكويت",name:"طوبيڭو روندي 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-134201-8fe31c60-300x300.jpg"},
+  {id:740,cat:"البسكويت",name:"طوبيڭو روندي شوكو 30 وحدة",size:"",price:"48.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-134606-3795cbb4-300x300.jpg"},
+  {id:741,cat:"الخاص بالقطط",name:"طومي للقطط باللحم 415غ",size:"",price:"6.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-22-at-163244-300x300.jpeg"},
+  {id:742,cat:"الخاص بالقطط",name:"طومي للقطط بالدواجن 415 غ",size:"",price:"6.95",emoji:"📦",image:"https://suk.ma/storage/sans-titre-18-300x300.jpg"},
+  {id:743,cat:"الشوكولاتة",name:"هادي بيضة شوكلاطة 48وحدة",size:"",price:"38.95",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-01-at-133510-300x300.jpeg"},
+  {id:744,cat:"البقالة",name:"طوندور غاز نحاس",size:"",price:"24.5",emoji:"📦",image:"https://suk.ma/storage/fdc0cae7-33fc-422e-acbc-5f91a5c276e6-300x300.jpg"},
+  {id:745,cat:"البسكويت",name:"طونغو 45*41غ",size:"",price:"58.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-200700-7e6528d0-300x300.jpg"},
+  {id:746,cat:"البسكويت",name:"طونيك 100*23غ",size:"",price:"82.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-09-a-200326-957c70f3-300x300.jpg"},
+  {id:747,cat:"البسكويت",name:"طوب شوكولاطة 30 وحدة",size:"",price:"50.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-185151-52127eba-300x300.jpg"},
+  {id:748,cat:"الرقائق البطاطس والذرة",name:"طوطاس 24*30غ",size:"",price:"72.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-140356-8a41084f-300x300.jpg"},
+  {id:749,cat:"الشوكولاتة",name:"طوطس باني كاكاو محشو بكريمة الحليب 100 وحدة",size:"",price:"78.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-12-18-a-184201-647fb523-300x300.jpg"},
+  {id:750,cat:"الشوكولاتة",name:"تويكس 25*50غ",size:"",price:"132",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-155918-6743d575-300x300.jpg"},
+  {id:751,cat:"الشوكولاتة",name:"تويني دييو شوكولاتة 12*350غ",size:"",price:"99.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-16-a-133239-1959449d-300x300.jpg"},
+  {id:752,cat:"المشروبات",name:"تويست 30 وحدة",size:"",price:"23.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-133549-fd13db93-300x300.jpg"},
+  {id:753,cat:"الكعكة",name:"تويسترجينواز ملفوفة بالشوكولاتة  32وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-19-at-155428-300x300.jpeg"},
+  {id:754,cat:"الكعكة",name:"تويسترجينواز ملفوفة بكريمة الفانيليا 32 وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-11-07-a-161942-cbeeedc5-300x300.jpg"},
+  {id:755,cat:"العلكة",name:"تريدونت كبيرة بنكهة النعناع الأخضر 12وحدة",size:"",price:"40",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-151245-300x300.jpeg"},
+  {id:756,cat:"العلكة",name:"تريدونت 200*1.6غ",size:"",price:"80.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-165040-32e906c6-300x300.jpg"},
+  {id:757,cat:"العلكة",name:"تريدونت بنكهة التوت 65*1.6غ",size:"",price:"27.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-181111-1844afbf-300x300.jpg"},
+  {id:758,cat:"العلكة",name:"تريدونت كبيرة ببكهة الفرولة 12وحدة",size:"",price:"48",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-151355-300x300.jpeg"},
+  {id:759,cat:"العلكة",name:"تريدونت كبيرة بنكهة النعناع 12وحدة",size:"",price:"48",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-16-at-151522-1-300x300.jpeg"},
+  {id:760,cat:"المشروبات",name:"طريكس مسحوق شراب فوري بنكهة البرتقال 24*9غ",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-14-a-130337-293f94cd-300x300.jpg"},
+  {id:761,cat:"المشروبات",name:"طريكس مسحوق شراب فوري بنكهة الحامض 24 * 9 غ",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2026-02-25-at-164813-300x300.jpeg"},
+  {id:762,cat:"المشروبات",name:"طريكس مسحوق شراب فوري بنكهة الخوخ 24*9غ",size:"",price:"19.5",emoji:"📦",image:"https://suk.ma/storage/ttgh-300x300.jpg"},
+  {id:763,cat:"الرقائق البطاطس والذرة",name:"طرييوس اكستريم بالشواء 36 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-27-a-154950-da5ee112-300x300.jpg"},
+  {id:764,cat:"البسكويت",name:"تشامبي بالشوكولاتة 60 وحدة",size:"",price:"49.3",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-11-03-a-134640-4268287a-300x300.jpg"},
+  {id:765,cat:"المنظفات المنزلية",name:"تيد مسحوق للغسيل 17*425غ",size:"",price:"145",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-14-a-200800-ea84818f-300x300.jpg"},
+  {id:766,cat:"المناديل ومناشف ورقية",name:"طومبو مناديل ناعمة 15 وحدة",size:"",price:"28.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-15-a-122236-831ca1fd-300x300.jpg"},
+  {id:767,cat:"الحلويات",name:"يامي بالفواكه 160 وحدة",size:"",price:"13.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-10-a-194518-4ec177b4-300x300.jpg"},
+  {id:768,cat:"الحلويات",name:"يامي مصاصة بالفواكه 100 وحدة",size:"",price:"32.6",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-11-a-192921-a4c8990c-300x300.jpg"},
+  {id:769,cat:"الحلويات",name:"يوبي مصاصة بالفواكه 100 وحدة",size:"",price:"35.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-152534-604ddb56-300x300.jpg"},
+  {id:770,cat:"الحلويات",name:"يوبي مصاصة كريم 100 وحدة",size:"",price:"35.8",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2024-10-12-a-140522-a4ddd99f-300x300.jpg"},
+  {id:771,cat:"الشوكولاتة",name:"يوبي شوكو 126وحدة",size:"",price:"48.9",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-04-24-a-183606-33e70203-300x300.jpg"},
+  {id:772,cat:"المعلبات",name:"ڤييڭا قطع الأسقمري بصلصة الطماطم 80غ",size:"",price:"4.7",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-07-17-at-171441-300x300.jpeg"},
+  {id:773,cat:"المشروبات",name:"زيكرا توتي فروتي 250مل",size:"",price:"135",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-14-a-164655-3aab71bb-300x300.jpg"},
+  {id:774,cat:"المنظفات المنزلية",name:"زين سائل مركز للغسيل أوطوماتيكي عطر البحر 2*5ل",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/sans-titre-14-300x300.jpg"},
+  {id:775,cat:"المنظفات المنزلية",name:"زين سائل مركز للغسيل أوطوماتيكي عطر البحر 12*1ل",size:"",price:"197.9",emoji:"📦",image:"https://suk.ma/storage/liquide-matique-oceanique-zen2-2-300x300.jpg"},
+  {id:776,cat:"المنظفات المنزلية",name:"زين سائل مركز للغسيل أوطوماتيكي بالخزامة 2*5ل",size:"",price:"130",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-10-29-a-172118-6e9a5ff4-300x300.jpg"},
+  {id:777,cat:"الزيوت",name:"زيت الزيتون واد سوس 1ل",size:"",price:"75.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-12-a-184519-4c7c8d75-300x300.jpg"},
+  {id:778,cat:"الزيوت",name:"زيت الزيتون واد سوس 50سل",size:"",price:"37.5",emoji:"📦",image:"https://suk.ma/storage/whatsapp-image-2025-05-12-a-184821-caf5504c-300x300.jpg"}
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let cart = JSON.parse(localStorage.getItem('sukma_cart') || '[]');
+let activeCat = 'الكل';
+let allProducts = [];
+let adminLoggedIn = false;
+
+// ============================================================
+// GITHUB SYNC
+// ============================================================
+const GH_OWNER = 'maarafwalo';
+const GH_REPO  = 'ljoud';
+const GH_FILE  = 'data.json';
+const GH_RAW   = `https://${GH_OWNER}.github.io/${GH_REPO}/${GH_FILE}`;
+const GH_API   = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+
+// Load shared data from GitHub Pages on every visit
+async function syncFromGitHub() {
+  try {
+    const res = await fetch(GH_RAW + '?t=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.hidden) data.hidden = [];
+    localStorage.setItem('sukma_ov', JSON.stringify(data));
+    initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  } catch(e) {}
+}
+
+// Publish admin changes to GitHub (visible to all)
+async function publishToGitHub() {
+  let token = localStorage.getItem('sukma_gh');
+  if (!token) {
+    token = prompt('أدخل GitHub Personal Access Token:\n(Settings → Developer settings → Personal access tokens → Fine-grained → Contents: Read & Write)');
+    if (!token) return;
+    localStorage.setItem('sukma_gh', token.trim());
+  }
+
+  const ov = loadOverrides();
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(ov, null, 2))));
+
+  // Get current file SHA
+  let sha;
+  try {
+    const r = await fetch(GH_API, { headers: { Authorization: `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' }});
+    if (r.ok) { const d = await r.json(); sha = d.sha; }
+  } catch(e) {}
+
+  const res = await fetch(GH_API, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    },
+    body: JSON.stringify({ message: 'update products', content, ...(sha ? { sha } : {}) })
+  });
+
+  if (res.ok) {
+    showToast('✔ تم النشر — سيظهر للجميع خلال دقيقة');
+  } else {
+    localStorage.removeItem('sukma_gh');
+    showToast('⚠️ فشل النشر — تحقق من التوكن');
+  }
+}
+
+// ============================================================
+// PRODUCT OVERRIDES (admin changes in localStorage)
+// ============================================================
+function loadOverrides() {
+  // Always start fresh - ignore any stale GitHub data
+  try {
+    const raw = localStorage.getItem('sukma_ov');
+    if (!raw) return {"added":[],"edited":{},"deleted":[],"hidden":[]};
+    const ov = JSON.parse(raw);
+    if (!ov.hidden) ov.hidden = [];
+    // Safety: if deleted list has more than 10 items, it's stale GitHub data - ignore it
+    if ((ov.deleted||[]).length > 10) {
+      localStorage.removeItem('sukma_ov');
+      return {"added":[],"edited":{},"deleted":[],"hidden":[]};
+    }
+    return ov;
+  } catch(e) {
+    return {"added":[],"edited":{},"deleted":[],"hidden":[]};
+  }
+}
+function saveOverrides(ov) {
+  localStorage.setItem('sukma_ov', JSON.stringify(ov));
+}
+function initProducts() {
+  const ov = loadOverrides();
+  let result = PRODUCTS.map(p => ({...p}));
+  result = result.map(p => ov.edited[p.id] ? {...p, ...ov.edited[p.id]} : p);
+  result = result.filter(p => !ov.deleted.includes(p.id));
+  result = result.concat(ov.added);
+  result = result.map(p => ({...p, hidden: (ov.hidden||[]).includes(p.id), price: parseFloat(p.price) || 0}));
+  allProducts = result;
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+function buildCatBar() {
+  const cats = ['الكل', ...new Set(allProducts.map(p => p.cat))];
+  const bar = document.getElementById('catBar');
+  bar.innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c === activeCat ? 'active' : ''}" onclick="selectCat('${c}')">${c}</button>`
+  ).join('');
+  // Populate datalist for admin
+  const dl = document.getElementById('catsList');
+  if (dl) dl.innerHTML = cats.filter(c => c !== 'الكل').map(c => `<option value="${c}">`).join('');
+}
+
+function selectCat(cat) {
+  activeCat = cat;
+  buildCatBar();
+  renderProducts();
+}
+
+// ============================================================
+// PRODUCTS
+// ============================================================
+function renderProducts() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = allProducts.filter(p => {
+    if (p.hidden && !adminLoggedIn) return false;
+    const matchCat = activeCat === 'الكل' || p.cat === activeCat;
+    const matchQ = !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q);
+    return matchCat && matchQ;
+  });
+
+  const grid = document.getElementById('productGrid');
+  const empty = document.getElementById('emptyMsg');
+
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(p => {
+    const cartItem = cart.find(i => i.id === p.id);
+    const qty = cartItem ? cartItem.qty : 0;
+    const imgHtml = p.image ? `<img src="${p.image}">` : p.emoji;
+    const actionHtml = qty > 0
+      ? `<div class="card-qty-ctrl">
+           <button class="card-qty-btn" onclick="cardAddQty(${p.id})">+</button>
+           <span class="card-qty-num">${qty}</span>
+           <button class="card-qty-btn minus" onclick="cardRemoveQty(${p.id})">−</button>
+         </div>`
+      : `<button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف إلى السلة</button>`;
+    const editOverlay = adminLoggedIn
+      ? `<button class="card-edit-overlay" onclick="event.stopPropagation();openEditModal(${p.id})">✏️</button>`
+      : '';
+    return `
+      <div class="card${p.hidden ? ' hidden-card' : ''}" id="card-${p.id}">
+        ${editOverlay}
+        <div class="card-img">${imgHtml}</div>
+        <div class="card-body">
+          <span class="card-cat">${p.cat}</span>
+          <div class="card-name">${p.name}</div>
+          <div class="card-size">${p.size}</div>
+          <div class="card-price">${p.price.toFixed(2)} <span>دم</span></div>
+          <div class="card-action">${actionHtml}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+// CART
+// ============================================================
+function addToCart(id) {
+  const product = allProducts.find(p => p.id === id);
+  if (!product) return;
+  const existing = cart.find(i => i.id === id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ id: product.id, name: product.name, size: product.size, price: product.price, emoji: product.emoji, cat: product.cat, qty: 1 });
+  }
+  saveCart();
+  updateCartBadge();
+  updateMiniBar();
+  updateCard(id);
+}
+
+function cardAddQty(id) {
+  const item = cart.find(i => i.id === id);
+  if (item) item.qty++;
+  saveCart();
+  updateCartBadge();
+  updateMiniBar();
+  updateCard(id);
+}
+
+function cardRemoveQty(id) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty--;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  saveCart();
+  updateCartBadge();
+  updateMiniBar();
+  updateCard(id);
+}
+
+function updateCard(id) {
+  const cardEl = document.getElementById('card-' + id);
+  if (!cardEl) return;
+  const cartItem = cart.find(i => i.id === id);
+  const qty = cartItem ? cartItem.qty : 0;
+  const action = cardEl.querySelector('.card-action');
+  if (!action) return;
+  if (qty > 0) {
+    action.innerHTML = `<div class="card-qty-ctrl">
+      <button class="card-qty-btn" onclick="cardAddQty(${id})">+</button>
+      <span class="card-qty-num">${qty}</span>
+      <button class="card-qty-btn minus" onclick="cardRemoveQty(${id})">−</button>
+    </div>`;
+  } else {
+    action.innerHTML = `<button class="add-btn" onclick="addToCart(${id})">🛒 أضف إلى السلة</button>`;
+  }
+}
+
+function updateMiniBar() {
+  const bar = document.getElementById('cartMiniBar');
+  if (!cart.length) { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('miniBarCount').textContent = count + ' منتج في السلة';
+  document.getElementById('miniBarTotal').textContent = 'المجموع: ' + total.toFixed(2) + ' دم';
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  saveCart();
+  updateCartBadge();
+  updateMiniBar();
+  updateCard(id);
+  renderCart();
+}
+
+function exportData() {
+  const data = {
+    productOverrides: JSON.parse(localStorage.getItem('sukma_ov') || '{"added":[],"edited":{},"deleted":[],"hidden":[]}'),
+    exportDate: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ljoud-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✔ تم تصدير البيانات');
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.productOverrides) throw new Error();
+      localStorage.setItem('sukma_ov', JSON.stringify(data.productOverrides));
+      initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+      showToast('✔ تم استيراد البيانات بنجاح');
+    } catch {
+      showToast('⚠️ ملف غير صالح');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function clearCart() {
+  if (!confirm('هل تريد مسح السلة بالكامل؟')) return;
+  cart = [];
+  saveCart();
+  updateCartBadge();
+  updateMiniBar();
+  renderProducts();
+  renderCart();
+}
+
+function saveCart() {
+  localStorage.setItem('sukma_cart', JSON.stringify(cart));
+}
+
+function updateCartBadge() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cartCount').textContent = total;
+}
+
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const footer = document.getElementById('cartFooter');
+
+  if (!cart.length) {
+    container.innerHTML = '<div class="cart-empty">🛒<br>السلة فارغة</div>';
+    footer.style.display = 'none';
+    return;
+  }
+
+  footer.style.display = 'block';
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <span class="cart-item-emoji">${item.emoji}</span>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-size">${item.size}</div>
+        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} درهم</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn minus" onclick="changeQty(${item.id}, -1)">−</button>
+        <span class="qty-num">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+      </div>
+    </div>
+  `).join('');
+
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  document.getElementById('totalAmount').textContent = total.toFixed(2) + ' درهم';
+}
+
+// ============================================================
+// WHATSAPP ORDER
+// ============================================================
+function sendOrder() {
+  if (!cart.length) { showToast('السلة فارغة!'); return; }
+
+  const phoneInput = document.getElementById('phoneInput').value.trim() || STORE_PHONE;
+  const phone = phoneInput.replace(/[^0-9]/g, '');
+
+  const customerName    = document.getElementById('customerName').value.trim()    || '—';
+  const customerPhone   = document.getElementById('customerPhone').value.trim()   || '—';
+  const customerAddress = document.getElementById('customerAddress').value.trim() || '—';
+
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  const R    = '\u200F'; // Right-to-Left Mark
+  const SEP  = R + '================================\n';
+  const DIV  = R + '--------------------------------\n';
+
+  let msg = '';
+  msg += SEP;
+  msg += R + '        *--- ljoud ---*\n';
+  msg += SEP;
+  msg += R + `*الاسم:*    ${customerName}\n`;
+  msg += R + `*الهاتف:*   ${customerPhone}\n`;
+  msg += R + `*العنوان:*  ${customerAddress}\n`;
+  msg += SEP;
+  msg += R + '*تفاصيل الطلب*\n';
+  msg += DIV;
+  msg += R + '*الكمية x المنتج  |  سعر  |  ثمن*\n';
+  msg += DIV;
+  cart.forEach(item => {
+    const name = item.name.length > 16 ? item.name.substring(0, 15) + '.' : item.name;
+    const unit = item.price.toFixed(2);
+    const tot  = (item.price * item.qty).toFixed(2);
+    msg += R + `${item.qty} x ${name}  |  ${unit}  |  *${tot}*\n`;
+  });
+  msg += SEP;
+  msg += R + `*المجموع الإجمالي: ${total.toFixed(2)} درهم*\n`;
+  msg += SEP;
+  msg += R + 'شكرا على طلبكم';
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+// ============================================================
+// CART PANEL OPEN/CLOSE
+// ============================================================
+function openCart() {
+  renderCart();
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('cartPanel').classList.add('open');
+}
+
+function closeCart() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.remove('open');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+function openAdmin() {
+  document.getElementById('adminPanel').classList.add('open');
+  if (adminLoggedIn) renderAdminProducts();
+}
+function closeAdmin() {
+  document.getElementById('adminPanel').classList.remove('open');
+}
+function adminLogin() {
+  const pass = document.getElementById('adminPassInput').value;
+  const stored = localStorage.getItem(ADMIN_PASS_KEY) || DEFAULT_ADMIN_PASS;
+  if (pass === stored) {
+    adminLoggedIn = true;
+    document.getElementById('adminLoginView').style.display = 'none';
+    document.getElementById('adminMainView').style.display = 'block';
+    document.getElementById('adminModeBar').classList.add('on');
+    renderAdminProducts();
+    renderProducts();
+  } else {
+    showToast('❌ كلمة السر خاطئة');
+    document.getElementById('adminPassInput').value = '';
+  }
+}
+
+function exitAdminMode() {
+  adminLoggedIn = false;
+  document.getElementById('adminModeBar').classList.remove('on');
+  document.getElementById('adminLoginView').style.display = 'block';
+  document.getElementById('adminMainView').style.display = 'none';
+  document.getElementById('adminPassInput').value = '';
+  document.getElementById('adminPanel').classList.remove('open');
+  renderProducts();
+}
+
+function renderAdminProducts() {
+  const q = (document.getElementById('adminSearch').value || '').trim().toLowerCase();
+  const list = allProducts.filter(p =>
+    !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q)
+  );
+  document.getElementById('adminCount').textContent = allProducts.length;
+  document.getElementById('adminProductList').innerHTML = list.map(p => `
+    <div class="admin-product-item${p.hidden ? ' is-hidden' : ''}">
+      <div class="admin-product-thumb">
+        ${p.image ? `<img src="${p.image}">` : p.emoji}
+      </div>
+      <div class="admin-product-info">
+        <div class="admin-product-name">${p.name}</div>
+        <div class="admin-product-detail">${p.cat} · ${p.size}</div>
+        <div class="admin-product-price">${p.price.toFixed(2)} درهم</div>
+      </div>
+      <div class="admin-actions">
+        <button class="hide-btn${p.hidden ? '' : ' visible'}" onclick="toggleHidden(${p.id})" title="${p.hidden ? 'إظهار' : 'إخفاء'}">${p.hidden ? '👁️' : '🙈'}</button>
+        <button class="edit-btn" onclick="openEditModal(${p.id})" title="تعديل">✏️</button>
+        <button class="del-btn" onclick="deleteProduct(${p.id})" title="حذف">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ADD NEW PRODUCT
+let newProductImg = null;
+function handleNewImgChange(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    newProductImg = e.target.result;
+    document.getElementById('newImgPreview').innerHTML =
+      `<img src="${e.target.result}" class="img-preview" onclick="document.getElementById('newImgInput').click()" style="cursor:pointer">`;
+  };
+  reader.readAsDataURL(file);
+}
+function addNewProduct() {
+  const name  = document.getElementById('newName').value.trim();
+  const cat   = document.getElementById('newCat').value.trim();
+  const size  = document.getElementById('newSize').value.trim();
+  const price = parseFloat(document.getElementById('newPrice').value);
+  const emoji = document.getElementById('newEmoji').value.trim() || '📦';
+  if (!name || !cat || !size || isNaN(price)) { showToast('⚠️ أكمل جميع الحقول'); return; }
+  const ov = loadOverrides();
+  const maxId = Math.max(...allProducts.map(p => p.id), 232);
+  const newProd = { id: maxId + 1, cat, name, size, price, emoji,
+    ...(newProductImg ? { image: newProductImg } : {}) };
+  ov.added.push(newProd);
+  saveOverrides(ov);
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  document.getElementById('newName').value = '';
+  document.getElementById('newCat').value = '';
+  document.getElementById('newSize').value = '';
+  document.getElementById('newPrice').value = '';
+  document.getElementById('newEmoji').value = '';
+  document.getElementById('newImgPreview').innerHTML =
+    `<div class="img-placeholder" onclick="document.getElementById('newImgInput').click()">📷</div>`;
+  document.getElementById('newImgInput').value = '';
+  newProductImg = null;
+  showToast('✔ تمت إضافة المنتج');
+}
+
+// EDIT PRODUCT
+let editingId = null;
+let editingImg = null;
+function openEditModal(id) {
+  const p = allProducts.find(x => x.id === id); if (!p) return;
+  editingId = id; editingImg = p.image || null;
+  document.getElementById('editName').value  = p.name;
+  document.getElementById('editSize').value  = p.size;
+  document.getElementById('editPrice').value = p.price;
+  document.getElementById('editCat').value   = p.cat;
+  document.getElementById('editImgPreview').innerHTML = p.image
+    ? `<img src="${p.image}" class="img-preview" onclick="document.getElementById('editImgInput').click()" style="cursor:pointer">`
+    : `<div class="img-placeholder" onclick="document.getElementById('editImgInput').click()">${p.emoji}</div>`;
+  document.getElementById('editImgInput').value = '';
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingId = null; editingImg = null;
+}
+function handleEditImgChange(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    editingImg = e.target.result;
+    document.getElementById('editImgPreview').innerHTML =
+      `<img src="${e.target.result}" class="img-preview" onclick="document.getElementById('editImgInput').click()" style="cursor:pointer">`;
+  };
+  reader.readAsDataURL(file);
+}
+function saveEdit() {
+  if (!editingId) return;
+  const name  = document.getElementById('editName').value.trim();
+  const size  = document.getElementById('editSize').value.trim();
+  const price = parseFloat(document.getElementById('editPrice').value);
+  const cat   = document.getElementById('editCat').value.trim();
+  if (!name || !size || isNaN(price) || !cat) { showToast('⚠️ أكمل جميع الحقول'); return; }
+  const changes = { name, size, price, cat, ...(editingImg ? { image: editingImg } : {}) };
+  const ov = loadOverrides();
+  const addedIdx = ov.added.findIndex(p => p.id === editingId);
+  if (addedIdx !== -1) {
+    ov.added[addedIdx] = { ...ov.added[addedIdx], ...changes };
+  } else {
+    ov.edited[editingId] = { ...(ov.edited[editingId] || {}), ...changes };
+  }
+  saveOverrides(ov);
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  closeEditModal();
+  showToast('✔ تم حفظ التعديل');
+}
+
+// DELETE PRODUCT
+function deleteProduct(id) {
+  if (!confirm('حذف هذا المنتج نهائياً؟')) return;
+  const ov = loadOverrides();
+  const addedIdx = ov.added.findIndex(p => p.id === id);
+  if (addedIdx !== -1) {
+    ov.added.splice(addedIdx, 1);
+  } else {
+    if (!ov.deleted.includes(id)) ov.deleted.push(id);
+    delete ov.edited[id];
+  }
+  saveOverrides(ov);
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  showToast('✔ تم الحذف');
+}
+
+function toggleHidden(id) {
+  const ov = loadOverrides();
+  const idx = ov.hidden.indexOf(id);
+  if (idx !== -1) {
+    ov.hidden.splice(idx, 1);
+  } else {
+    ov.hidden.push(id);
+  }
+  saveOverrides(ov);
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  const isNowHidden = ov.hidden.includes(id);
+  showToast(isNowHidden ? '🙈 تم إخفاء المنتج' : '👁️ تم إظهار المنتج');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+// Clear stale data from old GitHub sync (one-time reset per version)
+const PRODUCTS_VERSION = 'sukma-v3';
+if (localStorage.getItem('sukma_ver') !== PRODUCTS_VERSION) {
+  localStorage.removeItem('sukma_ov');
+  localStorage.setItem('sukma_ver', PRODUCTS_VERSION);
+}
+initProducts();
+buildCatBar();
+renderProducts();
+updateCartBadge();
+updateMiniBar();
+// // syncFromGitHub(); // disabled - not using external GitHub
+
+// ============================================================
+// PWA — Service Worker + Manifest (PNG icons) + Install Prompt
+// ============================================================
+(function() {
+  const isIOS        = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isAndroid    = /android/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                    || window.navigator.standalone === true;
+
+  const bar     = document.getElementById('pwaInstallBtn');
+  const barText = document.getElementById('pwaBarText');
+  const barBtn  = document.getElementById('pwaInstallBtnAction');
+
+  function showBar(text, btnLabel, fn) {
+    barText.textContent = text;
+    barBtn.textContent  = btnLabel;
+    barBtn.onclick      = fn;
+    bar.style.display   = 'flex';
+  }
+  function hideBar() { bar.style.display = 'none'; }
+
+  if (isStandalone) { hideBar(); return; }
+
+  // ── Generate PNG icon via Canvas ──────────────────────────
+  function makeIconPNG(size) {
+    const c = document.createElement('canvas');
+    c.width = c.height = size;
+    const x = c.getContext('2d');
+    // Gold circle
+    x.fillStyle = '#b8860b';
+    x.beginPath(); x.arc(size/2, size/2, size/2, 0, Math.PI*2); x.fill();
+    // Inner ring
+    x.strokeStyle = '#ffd700'; x.lineWidth = size * 0.04;
+    x.beginPath(); x.arc(size/2, size/2, size*0.42, 0, Math.PI*2); x.stroke();
+    // ljoud
+    x.fillStyle = '#fff';
+    x.font = `900 ${size*0.2}px Arial Black,Arial`;
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    x.fillText('ljoud', size/2, size*0.47);
+    // Subtitle
+    x.font = `${size*0.09}px Arial`;
+    x.fillText('الجوذ والكرم', size/2, size*0.67);
+    return c.toDataURL('image/png');
+  }
+
+  const icon192 = makeIconPNG(192);
+  const icon512 = makeIconPNG(512);
+
+  // ── Inject Manifest with real PNG icons ───────────────────
+  const manifest = {
+    name: 'ljoud - كتالوج المنتجات',
+    short_name: 'ljoud',
+    description: 'كتالوج منتجات متجر ljoud',
+    start_url: location.pathname.replace(/\/[^/]*$/, '/') || '/',
+    scope: location.pathname.replace(/\/[^/]*$/, '/') || '/',
+    display: 'standalone',
+    orientation: 'portrait',
+    background_color: '#fffdf0',
+    theme_color: '#b8860b',
+    lang: 'ar',
+    dir: 'rtl',
+    icons: [
+      { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+      { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
+    ]
+  };
+  // Remove static manifest link and inject dynamic one
+  document.querySelectorAll('link[rel="manifest"]').forEach(l => l.remove());
+  const mBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+  const mLink = document.createElement('link');
+  mLink.rel = 'manifest'; mLink.href = URL.createObjectURL(mBlob);
+  document.head.appendChild(mLink);
+
+  // Apple touch icon
+  const appleLink = document.createElement('link');
+  appleLink.rel = 'apple-touch-icon'; appleLink.href = icon192;
+  document.head.appendChild(appleLink);
+
+  // ── Service Worker ─────────────────────────────────────────
+  if ('serviceWorker' in navigator) {
+    const swPath = location.pathname.replace(/\/[^/]*$/, '/') + 'sw.js';
+    navigator.serviceWorker.register(swPath).catch(() => {});
+  }
+
+  // ── Install Prompt ─────────────────────────────────────────
+  let deferredPrompt = null;
+
+  // iOS
+  if (isIOS) {
+    showBar('📲 أضف للشاشة الرئيسية', 'كيف؟', () => {
+      document.getElementById('pwaHint').style.display = 'block';
+    });
+  }
+
+  // Android — show button right away
+  if (isAndroid) {
+    showBar('📲 ثبّت التطبيق على هاتفك', 'تثبيت', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; hideBar(); });
+      } else {
+        document.getElementById('pwaHint').style.display = 'block';
+      }
+    });
+  }
+
+  // Native Android prompt
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (isAndroid) {
+      showBar('📲 ثبّت التطبيق على هاتفك', 'تثبيت', () => {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { deferredPrompt = null; hideBar(); });
+      });
+    }
+  });
+
+  window.addEventListener('appinstalled', () => { hideBar(); deferredPrompt = null; });
+  window.installPWA = () => { if (deferredPrompt) deferredPrompt.prompt(); };
+})();
+</script>
+</body>
+</html>
