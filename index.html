@@ -1222,14 +1222,11 @@
   <div class="cart-footer" id="cartFooter" style="display:none">
     <!-- Payment method -->
     <div class="pay-method-row">
-      <button class="pay-method-btn active" id="pay-cash"     onclick="selectPay('cash')">
+      <button class="pay-method-btn active" id="pay-cash" onclick="selectPay('cash')">
         <span class="pay-icon">💵</span><span>نقداً</span>
       </button>
-      <button class="pay-method-btn"        id="pay-card"     onclick="selectPay('card')">
-        <span class="pay-icon">💳</span><span>بطاقة</span>
-      </button>
-      <button class="pay-method-btn"        id="pay-transfer" onclick="selectPay('transfer')">
-        <span class="pay-icon">📲</span><span>تحويل</span>
+      <button class="pay-method-btn"        id="pay-debt" onclick="selectPay('debt')">
+        <span class="pay-icon">📒</span><span>الدين</span>
       </button>
     </div>
     <div class="pay-label" id="payLabel">طريقة الدفع: نقداً</div>
@@ -2175,10 +2172,10 @@ function confirmCustInfo() {
 }
 function selectPay(method) {
   selectedPayMethod = method;
-  ['cash','card','transfer'].forEach(m => {
+  ['cash','debt'].forEach(m => {
     document.getElementById('pay-' + m).classList.toggle('active', m === method);
   });
-  const labels = { cash:'نقداً 💵', card:'بطاقة 💳', transfer:'تحويل بنكي 📲' };
+  const labels = { cash:'نقداً 💵', debt:'الدين 📒' };
   document.getElementById('payLabel').textContent = 'طريقة الدفع: ' + labels[method];
 }
 
@@ -2619,7 +2616,7 @@ function sendOrder() {
   const customerName    = info.name    || '—';
   const customerPhone   = info.phone   || '—';
   const customerAddress = info.address || '—';
-  const payLabels = { cash:'نقداً', card:'بطاقة', transfer:'تحويل بنكي' };
+  const payLabels = { cash:'نقداً', debt:'الدين' };
   const payMethod = payLabels[selectedPayMethod] || 'نقداً';
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   // Save order to localStorage
@@ -2678,7 +2675,7 @@ function saveInvoiceFromCart() {
   if (!cart.length) { showToast('السلة فارغة!'); return; }
   const info  = loadCustomerInfo() || {};
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const payLabels = { cash:'نقداً', card:'بطاقة', transfer:'تحويل بنكي' };
+  const payLabels = { cash:'نقداً', debt:'الدين' };
   const order = {
     id: Date.now(),
     date: new Date().toLocaleDateString('ar-MA'),
@@ -2702,7 +2699,7 @@ function printInvoice() {
   if (!cart.length) { showToast('السلة فارغة!'); return; }
   const info  = loadCustomerInfo() || {};
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const payLabels = { cash:'نقداً 💵', card:'بطاقة 💳', transfer:'تحويل بنكي 📲' };
+  const payLabels = { cash:'نقداً 💵', debt:'الدين 📒' };
   const now = new Date();
   const pr = document.getElementById('printRoot');
   pr.innerHTML = `
