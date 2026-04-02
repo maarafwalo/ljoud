@@ -1,4 +1,4 @@
-const CACHE = 'ljoud-v4';
+const CACHE = 'ljoud-v5';
 
 self.addEventListener('install', e => {
   self.skipWaiting();
