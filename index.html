@@ -615,6 +615,160 @@
     max-height: 90vh; overflow-y: auto;
   }
   .edit-modal-inner h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: #1565c0; }
+  /* CUSTOMERS PANEL */
+  .cust-panel {
+    position: fixed; inset: 0;
+    background: #fff; z-index: 210;
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  .cust-panel.open { transform: translateX(0); }
+  .cust-header {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .cust-header h2 { font-size: 1.05rem; font-weight: 700; }
+  .cust-body { flex: 1; overflow-y: auto; padding: 14px; }
+  .cust-tabs {
+    display: flex; gap: 6px; margin-bottom: 14px;
+  }
+  .cust-tab {
+    flex: 1; padding: 9px; border: none; border-radius: 10px;
+    font-size: 0.88rem; font-weight: 700; cursor: pointer; font-family: inherit;
+    background: var(--badge-bg); color: var(--text);
+  }
+  .cust-tab.active { background: #1565c0; color: #fff; }
+  .cust-view { display: none; }
+  .cust-view.active { display: block; }
+  .cust-search {
+    width: 100%; border: 1px solid var(--border); border-radius: 10px;
+    padding: 9px 12px; font-size: 0.95rem; font-family: inherit;
+    outline: none; margin-bottom: 10px; direction: rtl;
+  }
+  .cust-search:focus { border-color: #1565c0; }
+  .cust-add-btn {
+    background: #1565c0; color: #fff; border: none;
+    border-radius: 10px; padding: 10px; width: 100%;
+    font-size: 0.92rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .cust-list { display: flex; flex-direction: column; gap: 8px; }
+  .cust-item {
+    background: #f8f9fa; border-radius: 12px;
+    padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .cust-item:active { background: #e8f0fe; }
+  .cust-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: #1565c0; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 900; flex-shrink: 0;
+  }
+  .cust-info { flex: 1; min-width: 0; }
+  .cust-name { font-size: 0.92rem; font-weight: 700; }
+  .cust-phone { font-size: 0.75rem; color: var(--text-muted); }
+  .cust-inv-count {
+    font-size: 0.72rem; background: #e8f0fe; color: #1565c0;
+    border-radius: 20px; padding: 3px 10px; font-weight: 700;
+  }
+  .cust-del-btn {
+    background: none; border: none; color: var(--danger);
+    font-size: 1.1rem; cursor: pointer; padding: 4px 6px;
+  }
+  /* INVOICE LIST */
+  .inv-list { display: flex; flex-direction: column; gap: 8px; }
+  .inv-item {
+    background: #f8f9fa; border-radius: 12px;
+    padding: 12px 14px; cursor: pointer; transition: background 0.15s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .inv-item:active { background: #fff3e0; }
+  .inv-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: #fff3e0; color: #b8860b;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+  }
+  .inv-info { flex: 1; min-width: 0; }
+  .inv-customer { font-size: 0.88rem; font-weight: 700; }
+  .inv-date { font-size: 0.72rem; color: var(--text-muted); }
+  .inv-total { font-size: 0.92rem; font-weight: 900; color: var(--accent); white-space: nowrap; }
+  .inv-status {
+    font-size: 0.7rem; font-weight: 700; border-radius: 20px;
+    padding: 3px 9px; white-space: nowrap;
+  }
+  .inv-status.paid { background: #e8f5e9; color: #2e7d32; }
+  .inv-status.pending { background: #fff3e0; color: #e65100; }
+  /* SAVE INVOICE MODAL */
+  .save-inv-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55); z-index: 260;
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .save-inv-modal.open { display: flex; }
+  .save-inv-inner {
+    background: #fff; border-radius: 22px 22px 0 0;
+    width: 100%; padding: 20px 16px 32px;
+    max-height: 85vh; overflow-y: auto;
+  }
+  .save-inv-inner h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: #1565c0; }
+  /* INVOICE DETAIL MODAL */
+  .inv-detail-modal {
+    position: fixed; inset: 0;
+    background: #fff; z-index: 270;
+    display: flex; flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .inv-detail-modal.open { transform: translateY(0); }
+  .inv-detail-header {
+    background: linear-gradient(135deg, #b8860b, #8b6508);
+    color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .inv-detail-header h2 { font-size: 1rem; font-weight: 700; }
+  .inv-detail-body { flex: 1; overflow-y: auto; padding: 16px; }
+  .inv-product-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+  .inv-product-row:last-child { border-bottom: none; }
+  .inv-product-name { flex: 1; font-weight: 600; }
+  .inv-product-qty { color: var(--text-muted); margin: 0 10px; }
+  .inv-product-price { font-weight: 700; color: var(--accent); }
+  .inv-detail-total {
+    background: var(--badge-bg); border-radius: 12px;
+    padding: 12px 16px; margin-top: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .inv-detail-total span:first-child { font-size: 0.95rem; font-weight: 700; }
+  .inv-detail-total span:last-child { font-size: 1.2rem; font-weight: 900; color: var(--accent); }
+  .inv-pay-btn {
+    background: #2e7d32; color: #fff; border: none;
+    border-radius: 12px; padding: 12px; width: 100%;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 10px;
+  }
+  .inv-del-btn2 {
+    background: var(--danger); color: #fff; border: none;
+    border-radius: 12px; padding: 12px; width: 100%;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 8px;
+  }
+  .inv-wa-btn {
+    background: #25d366; color: #fff; border: none;
+    border-radius: 12px; padding: 12px; width: 100%;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer;
+    font-family: inherit; margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
   /* CATEGORY OPEN BUTTON */
   .cat-open-btn {
     background: rgba(255,255,255,0.22);
@@ -710,6 +864,7 @@
       </div>
       <button class="admin-btn" onclick="openAdmin()" title="الإدارة">⚙️</button>
     </div>
+    <button class="cart-btn" style="background:#1565c0;margin-left:6px" onclick="openCustPanel()">👥</button>
     <button class="cart-btn" onclick="openCart()">
       <span>السلة</span>
       <span class="cart-badge" id="cartCount">0</span>
@@ -797,6 +952,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       إرسال الطلب عبر WhatsApp
     </button>
+    <button class="save-btn" style="background:#1565c0;margin-top:6px" onclick="openSaveInvModal()">💾 حفظ كفاتورة</button>
     <button class="clear-btn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 </div>
@@ -2452,7 +2608,340 @@ updateMiniBar();
   window.addEventListener('appinstalled', () => { hideBar(); deferredPrompt = null; });
   window.installPWA = () => { if (deferredPrompt) deferredPrompt.prompt(); };
 })();
+
+// ============================================================
+// CUSTOMERS & INVOICES
+// ============================================================
+function loadCustomers() {
+  try { return JSON.parse(localStorage.getItem('ljoud_customers') || '[]'); } catch { return []; }
+}
+function saveCustomers(arr) { localStorage.setItem('ljoud_customers', JSON.stringify(arr)); }
+function loadInvoices() {
+  try { return JSON.parse(localStorage.getItem('ljoud_invoices') || '[]'); } catch { return []; }
+}
+function saveInvoices(arr) { localStorage.setItem('ljoud_invoices', JSON.stringify(arr)); }
+
+function openCustPanel() {
+  document.getElementById('custPanel').classList.add('open');
+  switchCustTab('custs');
+}
+function closeCustPanel() {
+  document.getElementById('custPanel').classList.remove('open');
+}
+
+function switchCustTab(tab) {
+  document.getElementById('tabCusts').classList.toggle('active', tab === 'custs');
+  document.getElementById('tabInvs').classList.toggle('active', tab === 'invs');
+  document.getElementById('viewCusts').classList.toggle('active', tab === 'custs');
+  document.getElementById('viewInvs').classList.toggle('active', tab === 'invs');
+  if (tab === 'custs') renderCustList();
+  else renderAllInvList();
+}
+
+function renderCustList(q = '') {
+  const custs = loadCustomers().filter(c =>
+    !q || c.name.includes(q) || (c.phone || '').includes(q)
+  );
+  const invs = loadInvoices();
+  const el = document.getElementById('custList');
+  if (!custs.length) { el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">لا يوجد زبائن بعد</div>'; return; }
+  el.innerHTML = custs.map(c => {
+    const count = invs.filter(i => i.customerId === c.id).length;
+    const initials = c.name.trim().split(' ').map(w => w[0]).slice(0,2).join('');
+    return `<div class="cust-item" onclick="openCustInvoices(${c.id})">
+      <div class="cust-avatar">${initials}</div>
+      <div class="cust-info">
+        <div class="cust-name">${c.name}</div>
+        <div class="cust-phone">${c.phone || '—'}</div>
+      </div>
+      <span class="cust-inv-count">${count} فاتورة</span>
+      <button class="cust-del-btn" onclick="event.stopPropagation();deleteCust(${c.id})">🗑️</button>
+    </div>`;
+  }).join('');
+}
+
+function renderAllInvList() {
+  const invs = loadInvoices().slice().reverse();
+  const el = document.getElementById('allInvList');
+  if (!invs.length) { el.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted)">لا توجد فواتير بعد</div>'; return; }
+  el.innerHTML = invs.map(inv => `
+    <div class="inv-item" onclick="openInvDetail(${inv.id})">
+      <div class="inv-icon">🧾</div>
+      <div class="inv-info">
+        <div class="inv-customer">${inv.customerName}</div>
+        <div class="inv-date">${inv.date} — ${inv.items.length} منتج</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <span class="inv-total">${parseFloat(inv.total).toFixed(2)} دم</span>
+        <span class="inv-status ${inv.status === 'paid' ? 'paid' : 'pending'}">${inv.status === 'paid' ? '✔ مدفوع' : '⏳ معلق'}</span>
+      </div>
+    </div>`).join('');
+}
+
+function openAddCustModal(custId = null) {
+  document.getElementById('editCustId').value = custId || '';
+  document.getElementById('addCustTitle').textContent = custId ? '✏️ تعديل الزبون' : '➕ زبون جديد';
+  if (custId) {
+    const c = loadCustomers().find(x => x.id === custId);
+    if (c) {
+      document.getElementById('custNameInput').value = c.name;
+      document.getElementById('custPhoneInput').value = c.phone || '';
+      document.getElementById('custAddrInput').value = c.address || '';
+      document.getElementById('custNoteInput').value = c.note || '';
+    }
+  } else {
+    document.getElementById('custNameInput').value = '';
+    document.getElementById('custPhoneInput').value = '';
+    document.getElementById('custAddrInput').value = '';
+    document.getElementById('custNoteInput').value = '';
+  }
+  document.getElementById('addCustModal').classList.add('open');
+}
+function closeAddCustModal() { document.getElementById('addCustModal').classList.remove('open'); }
+
+function saveCust() {
+  const name = document.getElementById('custNameInput').value.trim();
+  if (!name) { showToast('⚠️ أدخل اسم الزبون'); return; }
+  const custs = loadCustomers();
+  const editId = parseInt(document.getElementById('editCustId').value);
+  const data = {
+    name,
+    phone: document.getElementById('custPhoneInput').value.trim(),
+    address: document.getElementById('custAddrInput').value.trim(),
+    note: document.getElementById('custNoteInput').value.trim(),
+  };
+  if (editId) {
+    const idx = custs.findIndex(c => c.id === editId);
+    if (idx !== -1) custs[idx] = { ...custs[idx], ...data };
+  } else {
+    const id = Date.now();
+    custs.push({ id, createdAt: new Date().toLocaleDateString('ar-MA'), ...data });
+  }
+  saveCustomers(custs);
+  closeAddCustModal();
+  renderCustList();
+  showToast('✔ تم حفظ الزبون');
+}
+
+function deleteCust(id) {
+  if (!confirm('حذف هذا الزبون وفواتيره؟')) return;
+  saveCustomers(loadCustomers().filter(c => c.id !== id));
+  saveInvoices(loadInvoices().filter(i => i.customerId !== id));
+  renderCustList();
+  showToast('✔ تم الحذف');
+}
+
+function openCustInvoices(custId) {
+  const c = loadCustomers().find(x => x.id === custId);
+  if (!c) return;
+  const invs = loadInvoices().filter(i => i.customerId === custId).slice().reverse();
+  const body = document.getElementById('invDetailBody');
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--border)">
+      <div style="width:50px;height:50px;border-radius:50%;background:#1565c0;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:900">
+        ${c.name.trim().split(' ').map(w=>w[0]).slice(0,2).join('')}
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:1rem">${c.name}</div>
+        <div style="font-size:0.8rem;color:var(--text-muted)">${c.phone || ''} ${c.address ? '· ' + c.address : ''}</div>
+      </div>
+      <button style="margin-right:auto;background:var(--badge-bg);border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.82rem;font-weight:700" onclick="openAddCustModal(${c.id})">✏️ تعديل</button>
+    </div>
+    <div style="font-weight:700;margin-bottom:10px;font-size:0.9rem">🧾 فواتير ${c.name} (${invs.length})</div>
+    ${invs.length ? invs.map(inv => `
+      <div class="inv-item" onclick="openInvDetail(${inv.id})" style="margin-bottom:8px">
+        <div class="inv-icon">🧾</div>
+        <div class="inv-info">
+          <div class="inv-customer">${inv.date}</div>
+          <div class="inv-date">${inv.items.length} منتج — ${inv.note || ''}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <span class="inv-total">${parseFloat(inv.total).toFixed(2)} دم</span>
+          <span class="inv-status ${inv.status==='paid'?'paid':'pending'}">${inv.status==='paid'?'✔ مدفوع':'⏳ معلق'}</span>
+        </div>
+      </div>`).join('') : '<div style="text-align:center;padding:20px;color:var(--text-muted)">لا توجد فواتير</div>'}
+  `;
+  document.getElementById('invDetailModal').classList.add('open');
+}
+
+function openInvDetail(invId) {
+  const inv = loadInvoices().find(i => i.id === invId);
+  if (!inv) return;
+  const body = document.getElementById('invDetailBody');
+  body.innerHTML = `
+    <div style="margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+      <div style="font-size:0.82rem;color:var(--text-muted);margin-bottom:4px">${inv.date}</div>
+      <div style="font-weight:800;font-size:1rem">👤 ${inv.customerName}</div>
+      ${inv.note ? `<div style="font-size:0.82rem;color:var(--text-muted);margin-top:4px">📝 ${inv.note}</div>` : ''}
+    </div>
+    ${inv.items.map(it => `
+      <div class="inv-product-row">
+        <span class="inv-product-name">${it.name}</span>
+        <span class="inv-product-qty">× ${it.qty}</span>
+        <span class="inv-product-price">${(it.price * it.qty).toFixed(2)} دم</span>
+      </div>`).join('')}
+    <div class="inv-detail-total">
+      <span>المجموع</span>
+      <span>${parseFloat(inv.total).toFixed(2)} دم</span>
+    </div>
+    <button class="inv-pay-btn" onclick="toggleInvPaid(${inv.id})" style="background:${inv.status==='paid'?'#e65100':'#2e7d32'}">
+      ${inv.status === 'paid' ? '↩️ تحويل لمعلق' : '✔ تسجيل كمدفوع'}
+    </button>
+    <button class="inv-wa-btn" onclick="sendInvWhatsApp(${inv.id})">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      إرسال عبر WhatsApp
+    </button>
+    <button class="inv-del-btn2" onclick="deleteInv(${inv.id})">🗑️ حذف الفاتورة</button>
+  `;
+  document.getElementById('invDetailModal').classList.add('open');
+}
+
+function closeInvDetail() { document.getElementById('invDetailModal').classList.remove('open'); }
+
+function toggleInvPaid(invId) {
+  const invs = loadInvoices();
+  const inv = invs.find(i => i.id === invId);
+  if (!inv) return;
+  inv.status = inv.status === 'paid' ? 'pending' : 'paid';
+  saveInvoices(invs);
+  openInvDetail(invId);
+  showToast(inv.status === 'paid' ? '✔ تم التسجيل كمدفوع' : 'تم التحويل لمعلق');
+}
+
+function deleteInv(invId) {
+  if (!confirm('حذف هذه الفاتورة؟')) return;
+  saveInvoices(loadInvoices().filter(i => i.id !== invId));
+  closeInvDetail();
+  renderAllInvList();
+  showToast('✔ تم حذف الفاتورة');
+}
+
+function sendInvWhatsApp(invId) {
+  const inv = loadInvoices().find(i => i.id === invId);
+  if (!inv) return;
+  const lines = inv.items.map(it => `• ${it.name} × ${it.qty} = ${(it.price*it.qty).toFixed(2)} دم`).join('\n');
+  const msg = `🧾 فاتورة — ${inv.date}\n👤 ${inv.customerName}\n\n${lines}\n\n💰 المجموع: ${parseFloat(inv.total).toFixed(2)} دم${inv.note ? '\n📝 ' + inv.note : ''}`;
+  const c = loadCustomers().find(x => x.id === inv.customerId);
+  const phone = c && c.phone ? c.phone.replace(/\D/g, '') : '';
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function openSaveInvModal() {
+  if (!cart.length) { showToast('⚠️ السلة فارغة'); return; }
+  const custs = loadCustomers();
+  const sel = document.getElementById('invCustSelect');
+  sel.innerHTML = '<option value="">— اختر زبون —</option>' +
+    custs.map(c => `<option value="${c.id}">${c.name} ${c.phone ? '· '+c.phone : ''}</option>`).join('');
+  // Pre-fill from cart name if exists
+  const cartName = document.getElementById('customerName').value.trim();
+  const cartPhone = document.getElementById('customerPhone').value.trim();
+  if (cartName) document.getElementById('invNewCustName').value = cartName;
+  if (cartPhone) document.getElementById('invNewCustPhone').value = cartPhone;
+  document.getElementById('invNote').value = '';
+  document.getElementById('saveInvModal').classList.add('open');
+}
+function closeSaveInvModal() { document.getElementById('saveInvModal').classList.remove('open'); }
+
+function confirmSaveInvoice() {
+  const selId = parseInt(document.getElementById('invCustSelect').value);
+  const newName = document.getElementById('invNewCustName').value.trim();
+  const newPhone = document.getElementById('invNewCustPhone').value.trim();
+  const note = document.getElementById('invNote').value.trim();
+  let customerId, customerName;
+  if (selId) {
+    const c = loadCustomers().find(x => x.id === selId);
+    customerId = c.id; customerName = c.name;
+  } else if (newName) {
+    const custs = loadCustomers();
+    customerId = Date.now();
+    customerName = newName;
+    custs.push({ id: customerId, name: newName, phone: newPhone, createdAt: new Date().toLocaleDateString('ar-MA') });
+    saveCustomers(custs);
+  } else {
+    showToast('⚠️ اختر زبوناً أو أدخل اسم جديد'); return;
+  }
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const inv = {
+    id: Date.now(),
+    customerId, customerName,
+    items: cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price })),
+    total, note,
+    date: new Date().toLocaleDateString('ar-MA'),
+    status: 'pending'
+  };
+  const invs = loadInvoices();
+  invs.push(inv);
+  saveInvoices(invs);
+  closeSaveInvModal();
+  showToast('✔ تم حفظ الفاتورة');
+}
 </script>
+
+<!-- CUSTOMERS PANEL -->
+<div class="cust-panel" id="custPanel">
+  <div class="cust-header">
+    <h2>👥 الزبائن والفواتير</h2>
+    <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeCustPanel()">✕</button>
+  </div>
+  <div class="cust-body">
+    <div class="cust-tabs">
+      <button class="cust-tab active" id="tabCusts" onclick="switchCustTab('custs')">👤 الزبائن</button>
+      <button class="cust-tab" id="tabInvs" onclick="switchCustTab('invs')">🧾 كل الفواتير</button>
+    </div>
+    <!-- CUSTOMERS VIEW -->
+    <div class="cust-view active" id="viewCusts">
+      <button class="cust-add-btn" onclick="openAddCustModal()">➕ إضافة زبون جديد</button>
+      <input class="cust-search" type="text" placeholder="بحث عن زبون..." oninput="renderCustList(this.value)">
+      <div class="cust-list" id="custList"></div>
+    </div>
+    <!-- ALL INVOICES VIEW -->
+    <div class="cust-view" id="viewInvs">
+      <div class="inv-list" id="allInvList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT CUSTOMER MODAL -->
+<div class="save-inv-modal" id="addCustModal">
+  <div class="save-inv-inner">
+    <h3 id="addCustTitle">➕ زبون جديد</h3>
+    <input type="hidden" id="editCustId">
+    <div class="admin-form-row"><label>الاسم *</label><input type="text" id="custNameInput" placeholder="اسم الزبون"></div>
+    <div class="admin-form-row"><label>الهاتف</label><input type="tel" id="custPhoneInput" placeholder="06XXXXXXXX"></div>
+    <div class="admin-form-row"><label>العنوان</label><input type="text" id="custAddrInput" placeholder="المدينة، الحي..."></div>
+    <div class="admin-form-row"><label>ملاحظة</label><input type="text" id="custNoteInput" placeholder="ملاحظة اختيارية..."></div>
+    <button class="save-btn" onclick="saveCust()">💾 حفظ</button>
+    <button class="clear-btn" onclick="closeAddCustModal()">إلغاء</button>
+  </div>
+</div>
+
+<!-- SAVE INVOICE MODAL (from cart) -->
+<div class="save-inv-modal" id="saveInvModal">
+  <div class="save-inv-inner">
+    <h3>💾 حفظ الفاتورة</h3>
+    <div class="admin-form-row">
+      <label>الزبون *</label>
+      <select id="invCustSelect" style="width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:0.95rem;font-family:inherit;outline:none;background:#fff">
+        <option value="">— اختر زبون —</option>
+      </select>
+    </div>
+    <div style="text-align:center;margin:6px 0;font-size:0.8rem;color:var(--text-muted)">أو</div>
+    <div class="admin-form-row"><label>اسم زبون جديد</label><input type="text" id="invNewCustName" placeholder="اسم جديد..."></div>
+    <div class="admin-form-row"><label>هاتف الزبون الجديد</label><input type="tel" id="invNewCustPhone" placeholder="06XXXXXXXX"></div>
+    <div class="admin-form-row"><label>ملاحظة الفاتورة</label><input type="text" id="invNote" placeholder="ملاحظة اختيارية..."></div>
+    <button class="save-btn" onclick="confirmSaveInvoice()">💾 حفظ الفاتورة</button>
+    <button class="clear-btn" onclick="closeSaveInvModal()">إلغاء</button>
+  </div>
+</div>
+
+<!-- INVOICE DETAIL MODAL -->
+<div class="inv-detail-modal" id="invDetailModal">
+  <div class="inv-detail-header">
+    <h2>🧾 تفاصيل الفاتورة</h2>
+    <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeInvDetail()">✕</button>
+  </div>
+  <div class="inv-detail-body" id="invDetailBody"></div>
+</div>
 
 <!-- CATEGORIES MODAL -->
 <div class="cats-overlay" id="catsOverlay" onclick="closeCatsModal()"></div>
