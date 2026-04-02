@@ -615,6 +615,87 @@
     max-height: 90vh; overflow-y: auto;
   }
   .edit-modal-inner h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: #1565c0; }
+  /* CATEGORY OPEN BUTTON */
+  .cat-open-btn {
+    background: rgba(255,255,255,0.22);
+    color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    border-radius: 22px;
+    padding: 7px 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .cat-open-btn:active { background: rgba(255,255,255,0.35); }
+  /* CATEGORIES MODAL */
+  .cats-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 250;
+  }
+  .cats-overlay.open { display: block; }
+  .cats-modal {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    z-index: 251;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .cats-modal.open { transform: translateY(0); }
+  .cats-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .cats-modal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  @media(min-width:480px) { .cats-modal-grid { grid-template-columns: repeat(4, 1fr); } }
+  .cat-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 8px;
+    border-radius: 16px;
+    background: var(--badge-bg);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.18s;
+    text-align: center;
+  }
+  .cat-tile:active { transform: scale(0.95); }
+  .cat-tile.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+  .cat-tile-icon { font-size: 2.2rem; line-height: 1; }
+  .cat-tile-name { font-size: 0.75rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .cat-tile.active .cat-tile-name { color: #fff; }
 </style>
 </head>
 <body>
@@ -638,7 +719,14 @@
     <input type="text" id="searchInput" placeholder="ابحث عن منتج..." oninput="renderProducts()">
     <span>🔍</span>
   </div>
-  <div class="cats" id="catBar"></div>
+  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+    <button class="cat-open-btn" id="catOpenBtn" onclick="openCatsModal()">
+      <span id="catOpenIcon">🛍️</span>
+      <span id="catOpenLabel">الكل</span>
+      <span style="opacity:0.7;font-size:0.8rem;">▼</span>
+    </button>
+    <span id="catActiveName" style="color:#fff;font-size:0.82rem;opacity:0.85;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+  </div>
   <!-- CART MINI BAR -->
   <div class="cart-mini-bar" id="cartMiniBar">
     <div class="mini-bar-info">
@@ -1682,19 +1770,74 @@ function initProducts() {
 // ============================================================
 // CATEGORIES
 // ============================================================
+// Icons for each category
+const CAT_ICONS = {
+  'الكل': '🛍️',
+  'المشروبات': '🥤',
+  'الماء': '💧',
+  'الشوكولاتة': '🍫',
+  'الحلويات': '🍰',
+  'المستلزمات الحلويات': '🎂',
+  'العلكة': '🍬',
+  'المربى و العسل': '🍯',
+  'الجبن': '🧀',
+  'الدقيق و سميدة': '🌾',
+  'القطنيات': '🫘',
+  'المعلبات': '🥫',
+  'المنظفات المنزلية': '🧹',
+  'الللطبخ': '🍳',
+  'الزيت': '🫙',
+  'السكر': '🍚',
+  'الأرز': '🍚',
+  'المعكرونة': '🍝',
+  'الشاي و القهوة': '☕',
+  'البسكويت': '🍪',
+  'المكسرات': '🥜',
+  'الأغذية': '🥗',
+  'التوابل': '🧂',
+  'منتجات الحليب': '🥛',
+  'العناية الشخصية': '🧴',
+  'الورقيات': '🧻',
+};
+
+function getCatIcon(cat) {
+  return CAT_ICONS[cat] || '📦';
+}
+
 function buildCatBar() {
   const cats = ['الكل', ...new Set(allProducts.map(p => p.cat))];
-  const bar = document.getElementById('catBar');
-  bar.innerHTML = cats.map(c =>
-    `<button class="cat-btn ${c === activeCat ? 'active' : ''}" onclick="selectCat('${c}')">${c}</button>`
-  ).join('');
+  // Update open button label & icon
+  const icon = getCatIcon(activeCat);
+  document.getElementById('catOpenIcon').textContent = icon;
+  document.getElementById('catOpenLabel').textContent = activeCat;
+  const nameEl = document.getElementById('catActiveName');
+  if (nameEl) nameEl.textContent = activeCat !== 'الكل' ? `(${activeCat})` : '';
   // Populate datalist for admin
   const dl = document.getElementById('catsList');
   if (dl) dl.innerHTML = cats.filter(c => c !== 'الكل').map(c => `<option value="${c}">`).join('');
 }
 
+function openCatsModal() {
+  const cats = ['الكل', ...new Set(allProducts.map(p => p.cat))];
+  const grid = document.getElementById('catsModalGrid');
+  grid.innerHTML = cats.map(c => `
+    <div class="cat-tile ${c === activeCat ? 'active' : ''}" onclick="selectCat('${c.replace(/'/g,"\\'")}')">
+      <span class="cat-tile-icon">${getCatIcon(c)}</span>
+      <span class="cat-tile-name">${c}</span>
+    </div>
+  `).join('');
+  document.getElementById('catsOverlay').classList.add('open');
+  document.getElementById('catsModal').classList.add('open');
+}
+
+function closeCatsModal() {
+  document.getElementById('catsOverlay').classList.remove('open');
+  document.getElementById('catsModal').classList.remove('open');
+}
+
 function selectCat(cat) {
   activeCat = cat;
+  closeCatsModal();
   buildCatBar();
   renderProducts();
 }
@@ -2310,5 +2453,16 @@ updateMiniBar();
   window.installPWA = () => { if (deferredPrompt) deferredPrompt.prompt(); };
 })();
 </script>
+
+<!-- CATEGORIES MODAL -->
+<div class="cats-overlay" id="catsOverlay" onclick="closeCatsModal()"></div>
+<div class="cats-modal" id="catsModal">
+  <div class="cats-modal-header">
+    <span>اختر التصنيف</span>
+    <button class="close-btn" onclick="closeCatsModal()">✕</button>
+  </div>
+  <div class="cats-modal-grid" id="catsModalGrid"></div>
+</div>
+
 </body>
 </html>
