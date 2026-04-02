@@ -2419,8 +2419,6 @@ function sendOrder() {
   orders.push(order);
   saveOrders(orders);
 
-  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-
   const R    = '\u200F'; // Right-to-Left Mark
   const SEP  = R + '================================\n';
   const DIV  = R + '--------------------------------\n';
