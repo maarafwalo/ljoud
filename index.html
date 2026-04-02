@@ -972,6 +972,35 @@
   .admin-product-stock.low  { color: #e65100; }
   .admin-product-stock.out  { color: #b71c1c; }
   .admin-product-stock.unlimited { color: var(--text-muted); }
+  /* ── HIDDEN SECTION DIVIDER ── */
+  .admin-hidden-divider {
+    display: flex; align-items: center; gap: 8px;
+    margin: 16px 0 8px; cursor: pointer; user-select: none;
+  }
+  .admin-hidden-divider span:first-child {
+    background: #ffebee; color: #b71c1c; border-radius: 8px;
+    padding: 4px 12px; font-size: 0.8rem; font-weight: 800;
+    white-space: nowrap;
+  }
+  .admin-hidden-divider::after {
+    content: ''; flex: 1; height: 1.5px; background: #ffcdd2;
+  }
+  .admin-hidden-toggle { font-size: 0.75rem; color: #b71c1c; font-weight: 700; }
+  /* ── OUT OF STOCK BADGE IN ADMIN ── */
+  .oos-badge-admin {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #b71c1c; color: #fff; border-radius: 7px;
+    padding: 3px 9px; font-size: 0.72rem; font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .admin-product-item.oos { border-right: 3px solid #b71c1c; }
+  .stock-zero-btn {
+    background: #ffebee; color: #b71c1c; border: 1.5px solid #ffcdd2;
+    border-radius: 8px; padding: 4px 8px; font-size: 0.72rem;
+    font-weight: 800; cursor: pointer; font-family: inherit;
+    white-space: nowrap;
+  }
+  .stock-zero-btn:active { background: #b71c1c; color: #fff; }
 </style>
 </head>
 <body>
@@ -2494,15 +2523,20 @@ function renderAdminProducts() {
     (!catSel || p.cat === catSel)
   );
   document.getElementById('adminCount').textContent = allProducts.length;
-  document.getElementById('adminProductList').innerHTML = list.map(p => {
-    const stockCls = p.stock === null ? 'unlimited' : p.stock === 0 ? 'out' : p.stock <= 5 ? 'low' : 'ok';
-    const stockLbl = p.stock === null ? 'غير محدود' : p.stock === 0 ? 'نفد' : `${p.stock} وحدة`;
+
+  const visible = list.filter(p => !p.hidden);
+  const hidden  = list.filter(p =>  p.hidden);
+
+  function buildItem(p) {
+    const isOOS    = p.stock !== null && p.stock <= 0;
+    const stockCls = p.stock === null ? 'unlimited' : isOOS ? 'out' : p.stock <= 5 ? 'low' : 'ok';
+    const stockLbl = p.stock === null ? 'غير محدود' : isOOS ? 'نفذ من المخزون' : `${p.stock} وحدة`;
+    const oosBadge = isOOS ? `<span class="oos-badge-admin">🔴 نفذ من المخزون</span>` : '';
     return `
-    <div class="admin-product-item${p.hidden ? ' is-hidden' : ''}">
-      <div class="admin-product-thumb">
-        ${p.image ? `<img src="${p.image}">` : p.emoji}
-      </div>
+    <div class="admin-product-item${isOOS ? ' oos' : ''}">
+      <div class="admin-product-thumb">${p.image ? `<img src="${p.image}">` : p.emoji}</div>
       <div class="admin-product-info">
+        ${oosBadge}
         <div class="admin-product-name">${p.name}</div>
         <div class="admin-product-detail">${p.cat} · ${p.size}</div>
         <div class="admin-product-price">${p.price.toFixed(2)} درهم</div>
@@ -2510,6 +2544,7 @@ function renderAdminProducts() {
         <div class="stock-quick">
           <input type="number" min="0" step="1" placeholder="مخزون" id="sq-${p.id}" value="${p.stock !== null ? p.stock : ''}">
           <button class="stock-quick-btn" onclick="saveStock(${p.id})">حفظ</button>
+          <button class="stock-zero-btn" onclick="setStockZero(${p.id})">نفذ</button>
         </div>
       </div>
       <div class="admin-actions">
@@ -2518,7 +2553,36 @@ function renderAdminProducts() {
         <button class="del-btn" onclick="deleteProduct(${p.id})" title="حذف">🗑️</button>
       </div>
     </div>`;
-  }).join('');
+  }
+
+  const hiddenSection = hidden.length ? `
+    <div class="admin-hidden-divider" onclick="toggleHiddenSection()">
+      <span>🙈 المنتجات المخفية (${hidden.length})</span>
+      <span class="admin-hidden-toggle" id="hiddenToggleLbl">▼ عرض</span>
+    </div>
+    <div id="hiddenProductsSection" style="display:none">
+      ${hidden.map(buildItem).join('')}
+    </div>` : '';
+
+  document.getElementById('adminProductList').innerHTML =
+    visible.map(buildItem).join('') + hiddenSection;
+}
+
+function toggleHiddenSection() {
+  const sec = document.getElementById('hiddenProductsSection');
+  const lbl = document.getElementById('hiddenToggleLbl');
+  if (!sec) return;
+  const open = sec.style.display === 'block';
+  sec.style.display = open ? 'none' : 'block';
+  lbl.textContent = open ? '▼ عرض' : '▲ إخفاء';
+}
+
+function setStockZero(id) {
+  const ov = loadOverrides();
+  ov.stock[id] = 0;
+  saveOverrides(ov);
+  initProducts(); renderProducts(); renderAdminProducts(); renderAdminStats();
+  showToast('🔴 تم تعيين المخزون كـ نفذ');
 }
 
 // ADD NEW PRODUCT
