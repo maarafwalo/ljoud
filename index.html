@@ -850,6 +850,128 @@
   .cat-tile-icon { font-size: 2.2rem; line-height: 1; }
   .cat-tile-name { font-size: 0.75rem; font-weight: 700; color: var(--text); line-height: 1.2; }
   .cat-tile.active .cat-tile-name { color: #fff; }
+
+  /* ── STOCK BADGES ── */
+  .stock-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 0.65rem; font-weight: 800; border-radius: 6px;
+    padding: 2px 7px; margin-bottom: 4px;
+  }
+  .stock-ok    { background: #e8f5e9; color: #2e7d32; }
+  .stock-low   { background: #fff3e0; color: #e65100; }
+  .stock-out   { background: #ffebee; color: #b71c1c; }
+  .oos-overlay {
+    position: absolute; inset: 0; border-radius: 14px;
+    background: rgba(255,255,255,0.82);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 4; pointer-events: none;
+  }
+  .oos-label {
+    background: #b71c1c; color: #fff; border-radius: 10px;
+    padding: 8px 16px; font-size: 0.9rem; font-weight: 900;
+    letter-spacing: 1px;
+  }
+  .add-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .card { transition: transform 0.15s, box-shadow 0.15s; }
+  .card:active { transform: scale(0.98); }
+  @media(hover:hover) { .card:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(192,57,43,0.18); } }
+
+  /* ── ADMIN STATS DASHBOARD ── */
+  .admin-stats-grid {
+    display: grid; grid-template-columns: repeat(2,1fr); gap: 10px;
+    margin-bottom: 4px;
+  }
+  .stat-card {
+    background: #fff; border-radius: 14px;
+    border: 1.5px solid var(--border);
+    padding: 12px 10px; text-align: center;
+  }
+  .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--primary); line-height: 1; }
+  .stat-lbl { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; margin-top: 3px; }
+  .stat-card.warn .stat-num { color: #e65100; }
+  .stat-card.ok   .stat-num { color: #2e7d32; }
+  .low-stock-alert {
+    background: #fff3e0; border: 1.5px solid #ffb74d;
+    border-radius: 12px; padding: 10px 12px;
+    font-size: 0.82rem; color: #e65100; font-weight: 700;
+    margin-bottom: 10px; display: none;
+  }
+  .low-stock-alert.show { display: block; }
+
+  /* ── ORDERS PANEL ── */
+  .orders-panel {
+    position: fixed; inset: 0; background: #fff;
+    z-index: 220; display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.3s ease;
+  }
+  .orders-panel.open { transform: translateX(0); }
+  .orders-header {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .orders-header h2 { font-size: 1rem; font-weight: 700; }
+  .orders-body { flex: 1; overflow-y: auto; padding: 16px; }
+  .order-item {
+    background: #fff; border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 12px 14px; margin-bottom: 10px;
+    cursor: pointer; transition: border-color 0.15s;
+  }
+  .order-item:active { border-color: var(--primary); }
+  .order-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .order-name { font-weight: 800; font-size: 0.95rem; }
+  .order-total { font-weight: 900; color: var(--accent); font-size: 1rem; }
+  .order-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 10px; flex-wrap: wrap; }
+  .order-status { font-size: 0.72rem; font-weight: 700; border-radius: 20px; padding: 3px 9px; white-space: nowrap; }
+  .order-status.pending  { background: #fff3e0; color: #e65100; }
+  .order-status.confirmed{ background: #e3f2fd; color: #1565c0; }
+  .order-status.delivered{ background: #e8f5e9; color: #2e7d32; }
+  .order-status.cancelled{ background: #ffebee; color: #b71c1c; }
+  .order-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 12px; }
+  .order-tab { flex: 1; background: none; border: none; padding: 10px 8px; font-size: 0.85rem; font-weight: 700; font-family: inherit; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .order-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+  .orders-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.9rem; }
+
+  /* ── ORDER DETAIL MODAL ── */
+  .order-detail-modal {
+    position: fixed; inset: 0; background: #fff; z-index: 270;
+    display: flex; flex-direction: column;
+    transform: translateY(100%); transition: transform 0.3s ease;
+  }
+  .order-detail-modal.open { transform: translateY(0); }
+  .order-detail-header {
+    background: linear-gradient(135deg, #1565c0, #0d47a1);
+    color: #fff; padding: 14px 16px;
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .order-detail-body { flex: 1; overflow-y: auto; padding: 16px; }
+  .order-action-btn {
+    border: none; border-radius: 12px; padding: 12px; width: 100%;
+    font-size: 0.95rem; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 8px;
+  }
+  .order-action-btn.confirm  { background: #1565c0; color: #fff; }
+  .order-action-btn.deliver  { background: #2e7d32; color: #fff; }
+  .order-action-btn.cancel   { background: var(--danger); color: #fff; }
+  .order-action-btn.wa       { background: #25d366; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  /* ── STOCK QUICK EDIT IN ADMIN ── */
+  .stock-quick { display: flex; align-items: center; gap: 5px; margin-top: 4px; }
+  .stock-quick input {
+    width: 62px; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 4px 8px; font-size: 0.82rem; font-family: inherit;
+    text-align: center; outline: none;
+  }
+  .stock-quick-btn {
+    background: var(--primary); color: #fff; border: none;
+    border-radius: 8px; padding: 4px 10px; font-size: 0.78rem;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .admin-product-stock { font-size: 0.75rem; font-weight: 700; }
+  .admin-product-stock.ok   { color: #2e7d32; }
+  .admin-product-stock.low  { color: #e65100; }
+  .admin-product-stock.out  { color: #b71c1c; }
+  .admin-product-stock.unlimited { color: var(--text-muted); }
 </style>
 </head>
 <body>
@@ -968,6 +1090,20 @@
       </div>
     </div>
     <div id="adminMainView" style="display:none">
+      <!-- STATS DASHBOARD -->
+      <div class="admin-section">
+        <h3>📊 لوحة الإحصائيات</h3>
+        <div class="admin-stats-grid" id="adminStatsGrid">
+          <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">إجمالي المنتجات</div></div>
+          <div class="stat-card ok"><div class="stat-num" id="statVisible">0</div><div class="stat-lbl">منتج ظاهر</div></div>
+          <div class="stat-card warn"><div class="stat-num" id="statLowStock">0</div><div class="stat-lbl">مخزون منخفض</div></div>
+          <div class="stat-card"><div class="stat-num" id="statOrders">0</div><div class="stat-lbl">إجمالي الطلبات</div></div>
+        </div>
+        <div class="low-stock-alert" id="lowStockAlert"></div>
+        <button class="save-btn" style="width:100%;background:#1565c0;margin-top:4px" onclick="openOrdersPanel()">
+          📦 إدارة الطلبات
+        </button>
+      </div>
       <div class="admin-section">
         <h3>🌐 نشر التغييرات للجميع</h3>
         <button class="save-btn" style="width:100%;background:#c0392b;font-size:1rem;padding:14px" onclick="publishToGitHub()">
@@ -990,6 +1126,7 @@
           <div class="admin-form-row"><label>القسم</label><input type="text" id="newCat" placeholder="مثل: القهوة" list="catsList"><datalist id="catsList"></datalist></div>
           <div class="admin-form-row"><label>الحجم / النوع</label><input type="text" id="newSize" placeholder="مثل: 200غ"></div>
           <div class="admin-form-row"><label>السعر (درهم)</label><input type="number" id="newPrice" placeholder="0.00" step="0.01" min="0"></div>
+          <div class="admin-form-row"><label>المخزون (اتركه فارغاً = غير محدود)</label><input type="number" id="newStock" placeholder="مثال: 50" step="1" min="0"></div>
           <div class="admin-form-row"><label>الرمز (emoji)</label><input type="text" id="newEmoji" placeholder="📦" maxlength="4"></div>
           <div class="admin-form-row">
             <label>صورة المنتج (اختياري)</label>
@@ -1016,6 +1153,7 @@
     <div class="admin-form-row"><label>القسم</label><input type="text" id="editCat"></div>
     <div class="admin-form-row"><label>الحجم / النوع</label><input type="text" id="editSize"></div>
     <div class="admin-form-row"><label>السعر (درهم)</label><input type="number" id="editPrice" step="0.01" min="0"></div>
+    <div class="admin-form-row"><label>المخزون (اتركه فارغاً = غير محدود)</label><input type="number" id="editStock" step="1" min="0" placeholder="غير محدود"></div>
     <div class="admin-form-row">
       <label>الصورة</label>
       <div id="editImgPreview"></div>
@@ -1915,15 +2053,15 @@ async function publishToGitHub(silent = false) {
 // PRODUCT OVERRIDES (admin changes in localStorage)
 // ============================================================
 function loadOverrides() {
-  // Always start fresh - ignore any stale GitHub data
   try {
     const raw = localStorage.getItem('sukma_ov');
-    if (!raw) return {"added":[],"edited":{},"deleted":[],"hidden":[]};
+    if (!raw) return {"added":[],"edited":{},"deleted":[],"hidden":[],"stock":{}};
     const ov = JSON.parse(raw);
     if (!ov.hidden) ov.hidden = [];
+    if (!ov.stock)  ov.stock  = {};
     return ov;
   } catch(e) {
-    return {"added":[],"edited":{},"deleted":[],"hidden":[]};
+    return {"added":[],"edited":{},"deleted":[],"hidden":[],"stock":{}};
   }
 }
 function saveOverrides(ov) {
@@ -1931,13 +2069,18 @@ function saveOverrides(ov) {
 }
 function initProducts() {
   const ov = loadOverrides();
-  // Merge hidden: HIDDEN_IDS (from HTML = synced for all) + localStorage overrides
   const hiddenSet = new Set([...HIDDEN_IDS, ...(ov.hidden||[])]);
+  const stockMap  = ov.stock || {};
   let result = PRODUCTS.map(p => ({...p}));
   result = result.map(p => ov.edited[p.id] ? {...p, ...ov.edited[p.id]} : p);
   result = result.filter(p => !ov.deleted.includes(p.id));
   result = result.concat(ov.added);
-  result = result.map(p => ({...p, hidden: hiddenSet.has(p.id), price: parseFloat(p.price) || 0}));
+  result = result.map(p => ({
+    ...p,
+    hidden: hiddenSet.has(p.id),
+    price:  parseFloat(p.price) || 0,
+    stock:  stockMap.hasOwnProperty(p.id) ? stockMap[p.id] : null  // null = unlimited
+  }));
   allProducts = result;
 }
 
@@ -2040,22 +2183,33 @@ function renderProducts() {
     const cartItem = cart.find(i => i.id === p.id);
     const qty = cartItem ? cartItem.qty : 0;
     const imgHtml = p.image ? `<img src="${p.image}">` : p.emoji;
-    const actionHtml = qty > 0
-      ? `<div class="card-qty-ctrl">
-           <button class="card-qty-btn" onclick="cardAddQty(${p.id})">+</button>
-           <span class="card-qty-num">${qty}</span>
-           <button class="card-qty-btn minus" onclick="cardRemoveQty(${p.id})">−</button>
-         </div>`
-      : `<button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف إلى السلة</button>`;
+    const isOOS = p.stock !== null && p.stock <= 0;
+    const atStockLimit = p.stock !== null && qty >= p.stock;
+    const stockBadge = p.stock === null ? '' :
+      p.stock === 0 ? `<span class="stock-badge stock-out">نفد المخزون</span>` :
+      p.stock <= 5  ? `<span class="stock-badge stock-low">⚠️ متبقي: ${p.stock}</span>` :
+                      `<span class="stock-badge stock-ok">✔ متبقي: ${p.stock}</span>`;
+    const oosOverlay = isOOS
+      ? `<div class="oos-overlay"><span class="oos-label">نفد المخزون</span></div>` : '';
+    const actionHtml = isOOS
+      ? `<button class="add-btn" disabled>نفد المخزون</button>`
+      : qty > 0
+        ? `<div class="card-qty-ctrl">
+             <button class="card-qty-btn" onclick="cardAddQty(${p.id})" ${atStockLimit?'disabled':''}>+</button>
+             <span class="card-qty-num">${qty}</span>
+             <button class="card-qty-btn minus" onclick="cardRemoveQty(${p.id})">−</button>
+           </div>`
+        : `<button class="add-btn" onclick="addToCart(${p.id})">🛒 أضف إلى السلة</button>`;
     const editOverlay = adminLoggedIn
       ? `<button class="card-edit-overlay" onclick="event.stopPropagation();openEditModal(${p.id})">✏️</button>`
       : '';
     return `
       <div class="card${p.hidden ? ' hidden-card' : ''}" id="card-${p.id}">
-        ${editOverlay}
+        ${editOverlay}${oosOverlay}
         <div class="card-img">${imgHtml}</div>
         <div class="card-body">
           <span class="card-cat">${p.cat}</span>
+          ${stockBadge}
           <div class="card-name">${p.name}</div>
           <div class="card-size">${p.size}</div>
           <div class="card-price">${p.price.toFixed(2)} <span>دم</span></div>
@@ -2071,8 +2225,10 @@ function renderProducts() {
 function addToCart(id) {
   const product = allProducts.find(p => p.id === id);
   if (!product) return;
+  if (product.stock !== null && product.stock <= 0) { showToast('⚠️ نفد هذا المنتج من المخزون'); return; }
   const existing = cart.find(i => i.id === id);
   if (existing) {
+    if (product.stock !== null && existing.qty >= product.stock) { showToast('⚠️ لا يوجد مخزون كافٍ'); return; }
     existing.qty++;
   } else {
     cart.push({ id: product.id, name: product.name, size: product.size, price: product.price, emoji: product.emoji, cat: product.cat, qty: 1 });
@@ -2084,8 +2240,11 @@ function addToCart(id) {
 }
 
 function cardAddQty(id) {
+  const product = allProducts.find(p => p.id === id);
   const item = cart.find(i => i.id === id);
-  if (item) item.qty++;
+  if (!item) return;
+  if (product && product.stock !== null && item.qty >= product.stock) { showToast('⚠️ لا يوجد مخزون كافٍ'); return; }
+  item.qty++;
   saveCart();
   updateCartBadge();
   updateMiniBar();
@@ -2106,13 +2265,18 @@ function cardRemoveQty(id) {
 function updateCard(id) {
   const cardEl = document.getElementById('card-' + id);
   if (!cardEl) return;
+  const p = allProducts.find(x => x.id === id);
   const cartItem = cart.find(i => i.id === id);
   const qty = cartItem ? cartItem.qty : 0;
   const action = cardEl.querySelector('.card-action');
   if (!action) return;
-  if (qty > 0) {
+  const isOOS = p && p.stock !== null && p.stock <= 0;
+  const atLimit = p && p.stock !== null && qty >= p.stock;
+  if (isOOS) {
+    action.innerHTML = `<button class="add-btn" disabled>نفد المخزون</button>`;
+  } else if (qty > 0) {
     action.innerHTML = `<div class="card-qty-ctrl">
-      <button class="card-qty-btn" onclick="cardAddQty(${id})">+</button>
+      <button class="card-qty-btn" onclick="cardAddQty(${id})" ${atLimit?'disabled':''}>+</button>
       <span class="card-qty-num">${qty}</span>
       <button class="card-qty-btn minus" onclick="cardRemoveQty(${id})">−</button>
     </div>`;
@@ -2240,6 +2404,20 @@ function sendOrder() {
   const customerName    = document.getElementById('customerName').value.trim()    || '—';
   const customerPhone   = document.getElementById('customerPhone').value.trim()   || '—';
   const customerAddress = document.getElementById('customerAddress').value.trim() || '—';
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  // Save order to localStorage
+  const order = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('ar-MA'),
+    time: new Date().toLocaleTimeString('ar-MA', {hour:'2-digit',minute:'2-digit'}),
+    customerName, customerPhone, customerAddress,
+    items: cart.map(i => ({...i})),
+    total,
+    status: 'pending'
+  };
+  const orders = loadOrders();
+  orders.push(order);
+  saveOrders(orders);
 
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
@@ -2325,6 +2503,7 @@ function adminLogin() {
     document.getElementById('adminMainView').style.display = 'block';
     document.getElementById('adminModeBar').classList.add('on');
     renderAdminProducts();
+    renderAdminStats();
     renderProducts();
   } else {
     showToast('❌ كلمة السر خاطئة');
@@ -2348,7 +2527,10 @@ function renderAdminProducts() {
     !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q)
   );
   document.getElementById('adminCount').textContent = allProducts.length;
-  document.getElementById('adminProductList').innerHTML = list.map(p => `
+  document.getElementById('adminProductList').innerHTML = list.map(p => {
+    const stockCls = p.stock === null ? 'unlimited' : p.stock === 0 ? 'out' : p.stock <= 5 ? 'low' : 'ok';
+    const stockLbl = p.stock === null ? 'غير محدود' : p.stock === 0 ? 'نفد' : `${p.stock} وحدة`;
+    return `
     <div class="admin-product-item${p.hidden ? ' is-hidden' : ''}">
       <div class="admin-product-thumb">
         ${p.image ? `<img src="${p.image}">` : p.emoji}
@@ -2357,14 +2539,19 @@ function renderAdminProducts() {
         <div class="admin-product-name">${p.name}</div>
         <div class="admin-product-detail">${p.cat} · ${p.size}</div>
         <div class="admin-product-price">${p.price.toFixed(2)} درهم</div>
+        <div class="admin-product-stock ${stockCls}">📦 ${stockLbl}</div>
+        <div class="stock-quick">
+          <input type="number" min="0" step="1" placeholder="مخزون" id="sq-${p.id}" value="${p.stock !== null ? p.stock : ''}">
+          <button class="stock-quick-btn" onclick="saveStock(${p.id})">حفظ</button>
+        </div>
       </div>
       <div class="admin-actions">
         <button class="hide-btn${p.hidden ? '' : ' visible'}" onclick="toggleHidden(${p.id})" title="${p.hidden ? 'إظهار' : 'إخفاء'}">${p.hidden ? '👁️' : '🙈'}</button>
         <button class="edit-btn" onclick="openEditModal(${p.id})" title="تعديل">✏️</button>
         <button class="del-btn" onclick="deleteProduct(${p.id})" title="حذف">🗑️</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 }
 
 // ADD NEW PRODUCT
@@ -2385,18 +2572,21 @@ function addNewProduct() {
   const size  = document.getElementById('newSize').value.trim();
   const price = parseFloat(document.getElementById('newPrice').value);
   const emoji = document.getElementById('newEmoji').value.trim() || '📦';
+  const stockVal = document.getElementById('newStock').value.trim();
   if (!name || !cat || !size || isNaN(price)) { showToast('⚠️ أكمل جميع الحقول'); return; }
   const ov = loadOverrides();
   const maxId = Math.max(...allProducts.map(p => p.id), 232);
   const newProd = { id: maxId + 1, cat, name, size, price, emoji,
     ...(newProductImg ? { image: newProductImg } : {}) };
   ov.added.push(newProd);
+  if (stockVal !== '') ov.stock[maxId + 1] = parseInt(stockVal, 10);
   saveOverrides(ov);
-  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts(); renderAdminStats();
   document.getElementById('newName').value = '';
   document.getElementById('newCat').value = '';
   document.getElementById('newSize').value = '';
   document.getElementById('newPrice').value = '';
+  document.getElementById('newStock').value = '';
   document.getElementById('newEmoji').value = '';
   document.getElementById('newImgPreview').innerHTML =
     `<div class="img-placeholder" onclick="document.getElementById('newImgInput').click()">📷</div>`;
@@ -2415,6 +2605,7 @@ function openEditModal(id) {
   document.getElementById('editSize').value  = p.size;
   document.getElementById('editPrice').value = p.price;
   document.getElementById('editCat').value   = p.cat;
+  document.getElementById('editStock').value = p.stock !== null ? p.stock : '';
   document.getElementById('editImgPreview').innerHTML = p.image
     ? `<img src="${p.image}" class="img-preview" onclick="document.getElementById('editImgInput').click()" style="cursor:pointer">`
     : `<div class="img-placeholder" onclick="document.getElementById('editImgInput').click()">${p.emoji}</div>`;
@@ -2441,6 +2632,7 @@ function saveEdit() {
   const size  = document.getElementById('editSize').value.trim();
   const price = parseFloat(document.getElementById('editPrice').value);
   const cat   = document.getElementById('editCat').value.trim();
+  const stockVal = document.getElementById('editStock').value.trim();
   if (!name || !size || isNaN(price) || !cat) { showToast('⚠️ أكمل جميع الحقول'); return; }
   const changes = { name, size, price, cat, ...(editingImg ? { image: editingImg } : {}) };
   const ov = loadOverrides();
@@ -2450,8 +2642,10 @@ function saveEdit() {
   } else {
     ov.edited[editingId] = { ...(ov.edited[editingId] || {}), ...changes };
   }
+  if (stockVal === '') { delete ov.stock[editingId]; }
+  else { ov.stock[editingId] = parseInt(stockVal, 10); }
   saveOverrides(ov);
-  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts(); renderAdminStats();
   closeEditModal();
   showToast('✔ تم حفظ التعديل');
 }
@@ -2468,7 +2662,7 @@ function deleteProduct(id) {
     delete ov.edited[id];
   }
   saveOverrides(ov);
-  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts(); renderAdminStats();
   showToast('✔ تم الحذف');
 }
 
@@ -2481,10 +2675,22 @@ function toggleHidden(id) {
     ov.hidden.push(id);
   }
   saveOverrides(ov);
-  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
+  initProducts(); buildCatBar(); renderProducts(); renderAdminProducts(); renderAdminStats();
   const isNowHidden = ov.hidden.includes(id);
   showToast(isNowHidden ? '🙈 جاري الإخفاء للجميع...' : '👁️ جاري الإظهار للجميع...');
   publishToGitHub(true);
+}
+
+function saveStock(id) {
+  const inp = document.getElementById('sq-' + id);
+  if (!inp) return;
+  const val = inp.value.trim();
+  const ov = loadOverrides();
+  if (val === '') { delete ov.stock[id]; }
+  else { ov.stock[id] = parseInt(val, 10); }
+  saveOverrides(ov);
+  initProducts(); renderProducts(); renderAdminProducts(); renderAdminStats();
+  showToast('✔ تم تحديث المخزون');
 }
 
 // ============================================================
@@ -2623,6 +2829,161 @@ updateMiniBar();
   window.addEventListener('appinstalled', () => { hideBar(); deferredPrompt = null; });
   window.installPWA = () => { if (deferredPrompt) deferredPrompt.prompt(); };
 })();
+
+// ============================================================
+// ORDERS MANAGEMENT
+// ============================================================
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem('ljoud_orders') || '[]'); } catch { return []; }
+}
+function saveOrders(arr) { localStorage.setItem('ljoud_orders', JSON.stringify(arr)); }
+
+let activeOrderTab = 'all';
+
+function openOrdersPanel() {
+  document.getElementById('ordersPanel').classList.add('open');
+  renderOrdersList();
+  renderAdminStats();
+}
+function closeOrdersPanel() {
+  document.getElementById('ordersPanel').classList.remove('open');
+}
+
+function switchOrderTab(tab) {
+  activeOrderTab = tab;
+  ['all','pending','confirmed','delivered'].forEach(t => {
+    document.getElementById('orderTab' + t.charAt(0).toUpperCase() + t.slice(1))
+      .classList.toggle('active', t === tab);
+  });
+  renderOrdersList();
+}
+
+function renderOrdersList() {
+  let orders = loadOrders().slice().reverse();
+  if (activeOrderTab !== 'all') orders = orders.filter(o => o.status === activeOrderTab);
+  const el = document.getElementById('ordersList');
+  if (!orders.length) {
+    el.innerHTML = `<div class="orders-empty">📭<br>لا توجد طلبات</div>`;
+    return;
+  }
+  const statusLabel = { pending:'⏳ معلق', confirmed:'✔ مؤكد', delivered:'🚚 مُسلَّم', cancelled:'❌ ملغى' };
+  el.innerHTML = orders.map(o => `
+    <div class="order-item" onclick="openOrderDetail(${o.id})">
+      <div class="order-top">
+        <span class="order-name">${o.customerName}</span>
+        <span class="order-total">${parseFloat(o.total).toFixed(2)} دم</span>
+      </div>
+      <div class="order-meta">
+        <span>📅 ${o.date} ${o.time || ''}</span>
+        <span>📦 ${o.items.length} منتج</span>
+        ${o.customerPhone !== '—' ? `<span>📞 ${o.customerPhone}</span>` : ''}
+      </div>
+      <div style="margin-top:6px">
+        <span class="order-status ${o.status}">${statusLabel[o.status] || o.status}</span>
+      </div>
+    </div>`).join('');
+}
+
+function openOrderDetail(id) {
+  const orders = loadOrders();
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  const statusLabel = { pending:'⏳ معلق', confirmed:'✔ مؤكد', delivered:'🚚 مُسلَّم', cancelled:'❌ ملغى' };
+  const body = document.getElementById('orderDetailBody');
+  body.innerHTML = `
+    <div style="background:var(--badge-bg);border-radius:12px;padding:12px 14px;margin-bottom:12px">
+      <div style="font-weight:800;font-size:1rem;margin-bottom:6px">${o.customerName}</div>
+      ${o.customerPhone !== '—' ? `<div style="font-size:0.85rem;color:var(--text-muted)">📞 ${o.customerPhone}</div>` : ''}
+      ${o.customerAddress !== '—' ? `<div style="font-size:0.85rem;color:var(--text-muted)">📍 ${o.customerAddress}</div>` : ''}
+      <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px">📅 ${o.date} ${o.time||''}</div>
+      <div style="margin-top:8px"><span class="order-status ${o.status}">${statusLabel[o.status]||o.status}</span></div>
+    </div>
+    ${o.items.map(i => `
+      <div class="inv-product-row">
+        <span class="inv-product-name">${i.name}</span>
+        <span class="inv-product-qty">× ${i.qty}</span>
+        <span class="inv-product-price">${(i.price * i.qty).toFixed(2)} دم</span>
+      </div>`).join('')}
+    <div class="inv-detail-total" style="margin-top:12px">
+      <span>المجموع</span>
+      <span>${parseFloat(o.total).toFixed(2)} درهم</span>
+    </div>
+    ${o.status === 'pending'    ? `<button class="order-action-btn confirm" onclick="updateOrderStatus(${o.id},'confirmed')">✔ تأكيد الطلب</button>` : ''}
+    ${o.status === 'confirmed'  ? `<button class="order-action-btn deliver" onclick="updateOrderStatus(${o.id},'delivered')">🚚 تسليم الطلب</button>` : ''}
+    ${o.status !== 'cancelled' && o.status !== 'delivered' ? `<button class="order-action-btn cancel" onclick="updateOrderStatus(${o.id},'cancelled')">❌ إلغاء الطلب</button>` : ''}
+    ${o.customerPhone !== '—' ? `<button class="order-action-btn wa" onclick="waOrder(${o.id})">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      تواصل عبر WhatsApp
+    </button>` : ''}
+    <button class="order-action-btn cancel" style="background:#555;margin-top:4px" onclick="deleteOrder(${o.id})">🗑️ حذف الطلب</button>
+  `;
+  document.getElementById('orderDetailModal').classList.add('open');
+}
+
+function closeOrderDetail() {
+  document.getElementById('orderDetailModal').classList.remove('open');
+}
+
+function updateOrderStatus(id, status) {
+  const orders = loadOrders();
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  o.status = status;
+  saveOrders(orders);
+  const labels = { confirmed:'✔ تم تأكيد الطلب', delivered:'🚚 تم تسليم الطلب', cancelled:'❌ تم إلغاء الطلب' };
+  showToast(labels[status] || 'تم التحديث');
+  closeOrderDetail();
+  renderOrdersList();
+  renderAdminStats();
+}
+
+function deleteOrder(id) {
+  if (!confirm('حذف هذا الطلب نهائياً؟')) return;
+  saveOrders(loadOrders().filter(o => o.id !== id));
+  closeOrderDetail();
+  renderOrdersList();
+  renderAdminStats();
+  showToast('✔ تم الحذف');
+}
+
+function waOrder(id) {
+  const o = loadOrders().find(x => x.id === id);
+  if (!o) return;
+  const phone = o.customerPhone.replace(/[^0-9]/g, '');
+  const msg = `مرحباً ${o.customerName}،\nبخصوص طلبك بتاريخ ${o.date}،\nالمجموع: ${parseFloat(o.total).toFixed(2)} درهم.\nشكراً من ljoud 🙏`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+// ============================================================
+// ADMIN STATS
+// ============================================================
+function renderAdminStats() {
+  const total   = allProducts.length;
+  const visible = allProducts.filter(p => !p.hidden).length;
+  const lowStock = allProducts.filter(p => p.stock !== null && p.stock > 0 && p.stock <= 5).length;
+  const outStock = allProducts.filter(p => p.stock !== null && p.stock <= 0);
+  const ordersCount = loadOrders().length;
+
+  const el = id => document.getElementById(id);
+  if (el('statTotal'))    el('statTotal').textContent    = total;
+  if (el('statVisible'))  el('statVisible').textContent  = visible;
+  if (el('statLowStock')) el('statLowStock').textContent = lowStock;
+  if (el('statOrders'))   el('statOrders').textContent   = ordersCount;
+
+  const alert = el('lowStockAlert');
+  if (alert) {
+    const issues = [
+      ...allProducts.filter(p => p.stock !== null && p.stock <= 0).map(p => `❌ ${p.name}`),
+      ...allProducts.filter(p => p.stock !== null && p.stock > 0 && p.stock <= 5).map(p => `⚠️ ${p.name} (${p.stock})`)
+    ];
+    if (issues.length) {
+      alert.classList.add('show');
+      alert.innerHTML = '<strong>تنبيه المخزون:</strong><br>' + issues.slice(0,5).join('<br>') + (issues.length > 5 ? `<br>...و${issues.length-5} آخرين` : '');
+    } else {
+      alert.classList.remove('show');
+    }
+  }
+}
 
 // ============================================================
 // CUSTOMERS & INVOICES
@@ -2956,6 +3317,32 @@ function confirmSaveInvoice() {
     <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeInvDetail()">✕</button>
   </div>
   <div class="inv-detail-body" id="invDetailBody"></div>
+</div>
+
+<!-- ORDERS PANEL -->
+<div class="orders-panel" id="ordersPanel">
+  <div class="orders-header">
+    <h2>📦 إدارة الطلبات</h2>
+    <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeOrdersPanel()">✕</button>
+  </div>
+  <div class="orders-body">
+    <div class="order-tabs">
+      <button class="order-tab active" id="orderTabAll"   onclick="switchOrderTab('all')">الكل</button>
+      <button class="order-tab"        id="orderTabPend"  onclick="switchOrderTab('pending')">⏳ معلق</button>
+      <button class="order-tab"        id="orderTabConf"  onclick="switchOrderTab('confirmed')">✔ مؤكد</button>
+      <button class="order-tab"        id="orderTabDel"   onclick="switchOrderTab('delivered')">🚚 مُسلَّم</button>
+    </div>
+    <div id="ordersList"></div>
+  </div>
+</div>
+
+<!-- ORDER DETAIL MODAL -->
+<div class="order-detail-modal" id="orderDetailModal">
+  <div class="order-detail-header">
+    <h2>📦 تفاصيل الطلب</h2>
+    <button class="close-btn" style="background:rgba(255,255,255,0.2);color:#fff" onclick="closeOrderDetail()">✕</button>
+  </div>
+  <div class="order-detail-body" id="orderDetailBody"></div>
 </div>
 
 <!-- CATEGORIES MODAL -->
