@@ -1139,6 +1139,9 @@
       <div class="admin-section">
         <h3>📋 قائمة المنتجات (<span id="adminCount">0</span>)</h3>
         <input class="admin-search" type="text" id="adminSearch" placeholder="بحث في المنتجات..." oninput="renderAdminProducts()">
+        <select id="adminCatFilter" onchange="renderAdminProducts()" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-size:0.9rem;font-family:inherit;margin-top:6px;outline:none;background:#fff;color:var(--text)">
+          <option value="">— كل الأقسام —</option>
+        </select>
         <div class="admin-product-list" id="adminProductList"></div>
       </div>
     </div>
@@ -1150,7 +1153,7 @@
   <div class="edit-modal-inner">
     <h3>✏️ تعديل المنتج</h3>
     <div class="admin-form-row"><label>الاسم</label><input type="text" id="editName"></div>
-    <div class="admin-form-row"><label>القسم</label><input type="text" id="editCat"></div>
+    <div class="admin-form-row"><label>القسم</label><select id="editCat" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-size:0.9rem;font-family:inherit;outline:none;background:#fff;color:var(--text)"></select></div>
     <div class="admin-form-row"><label>الحجم / النوع</label><input type="text" id="editSize"></div>
     <div class="admin-form-row"><label>السعر (درهم)</label><input type="number" id="editPrice" step="0.01" min="0"></div>
     <div class="admin-form-row"><label>المخزون (اتركه فارغاً = غير محدود)</label><input type="number" id="editStock" step="1" min="0" placeholder="غير محدود"></div>
@@ -2121,7 +2124,7 @@ function selectCat(cat) {
 function renderProducts() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const filtered = allProducts.filter(p => {
-    if (p.hidden && !adminLoggedIn) return false;
+    if (p.hidden) return false;
     const matchCat = activeCat === 'الكل' || p.cat === activeCat;
     const matchQ = !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q);
     return matchCat && matchQ;
@@ -2478,9 +2481,17 @@ function exitAdminMode() {
 }
 
 function renderAdminProducts() {
-  const q = (document.getElementById('adminSearch').value || '').trim().toLowerCase();
+  const q      = (document.getElementById('adminSearch').value || '').trim().toLowerCase();
+  const catSel = (document.getElementById('adminCatFilter').value || '');
+  // Populate category dropdown
+  const cats = ['', ...new Set(allProducts.map(p => p.cat))];
+  const filterEl = document.getElementById('adminCatFilter');
+  const curVal = filterEl.value;
+  filterEl.innerHTML = `<option value="">— كل الأقسام —</option>` +
+    cats.filter(c => c).map(c => `<option value="${c}" ${c===curVal?'selected':''}>${c}</option>`).join('');
   const list = allProducts.filter(p =>
-    !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q)
+    (!q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q)) &&
+    (!catSel || p.cat === catSel)
   );
   document.getElementById('adminCount').textContent = allProducts.length;
   document.getElementById('adminProductList').innerHTML = list.map(p => {
@@ -2560,8 +2571,12 @@ function openEditModal(id) {
   document.getElementById('editName').value  = p.name;
   document.getElementById('editSize').value  = p.size;
   document.getElementById('editPrice').value = p.price;
-  document.getElementById('editCat').value   = p.cat;
   document.getElementById('editStock').value = p.stock !== null ? p.stock : '';
+  // Populate category select and pre-select current category
+  const cats = [...new Set(allProducts.map(x => x.cat))];
+  const editCatEl = document.getElementById('editCat');
+  editCatEl.innerHTML = cats.map(c => `<option value="${c}" ${c===p.cat?'selected':''}>${c}</option>`).join('');
+  editCatEl.value = p.cat;
   document.getElementById('editImgPreview').innerHTML = p.image
     ? `<img src="${p.image}" class="img-preview" onclick="document.getElementById('editImgInput').click()" style="cursor:pointer">`
     : `<div class="img-placeholder" onclick="document.getElementById('editImgInput').click()">${p.emoji}</div>`;
