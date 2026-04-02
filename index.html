@@ -1001,6 +1001,132 @@
     white-space: nowrap;
   }
   .stock-zero-btn:active { background: #b71c1c; color: #fff; }
+
+  /* ══════════════════════════════════════════
+     CUSTOMER FIRST MODAL
+  ══════════════════════════════════════════ */
+  .cust-info-modal {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 350; display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .cust-info-modal.hidden { display: none; }
+  .cust-info-box {
+    background: #fff; border-radius: 22px; padding: 28px 22px;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 12px 50px rgba(0,0,0,0.35);
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+  .cust-info-box h2 { font-size: 1.15rem; font-weight: 900; color: var(--primary); margin-bottom: 4px; }
+  .cust-info-box p  { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; }
+  .cust-info-input {
+    width: 100%; border: 1.5px solid var(--border); border-radius: 11px;
+    padding: 12px 14px; font-size: 0.95rem; font-family: inherit;
+    margin-bottom: 10px; outline: none; direction: rtl; color: var(--text);
+  }
+  .cust-info-input:focus { border-color: var(--primary); }
+  .cust-info-save {
+    width: 100%; background: var(--primary); color: #fff; border: none;
+    border-radius: 12px; padding: 13px; font-size: 1rem; font-weight: 800;
+    cursor: pointer; font-family: inherit; margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════
+     INVOICE CART LAYOUT
+  ══════════════════════════════════════════ */
+  .inv-header {
+    text-align: center; padding: 10px 0 8px;
+    border-bottom: 2px dashed #ddd; margin-bottom: 10px;
+  }
+  .inv-header-store { font-size: 1.05rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+  .inv-header-date  { font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; }
+  .inv-customer-bar {
+    background: #f7f7f7; border-radius: 10px; padding: 9px 12px;
+    margin-bottom: 10px; display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 8px;
+  }
+  .inv-customer-info { flex: 1; font-size: 0.82rem; line-height: 1.9; color: var(--text); }
+  .inv-customer-info b { color: var(--primary); }
+  .inv-customer-edit {
+    background: none; border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 5px 10px; font-size: 0.75rem; font-weight: 700;
+    cursor: pointer; font-family: inherit; color: var(--primary); white-space: nowrap;
+  }
+  .inv-table-wrap { overflow-x: auto; margin-bottom: 6px; }
+  .inv-table {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem; direction: rtl;
+  }
+  .inv-table th {
+    background: var(--primary); color: #fff; padding: 8px 8px;
+    font-weight: 800; text-align: right; font-size: 0.78rem;
+  }
+  .inv-table th:nth-child(2), .inv-table td:nth-child(2) { text-align: center; }
+  .inv-table td { padding: 7px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+  .inv-table tr:last-child td { border-bottom: none; }
+  .inv-table .price-cell { color: var(--text-muted); }
+  .inv-table .subtotal-cell { font-weight: 800; color: var(--accent); }
+  .qty-ctrl-mini { display: flex; align-items: center; gap: 3px; justify-content: center; }
+  .qty-mini-btn {
+    background: var(--primary); color: #fff; border: none;
+    width: 24px; height: 24px; border-radius: 6px;
+    font-size: 0.9rem; font-weight: 900; cursor: pointer; flex-shrink: 0;
+  }
+  .qty-mini-btn.minus { background: var(--danger); }
+  .qty-mini-val { min-width: 22px; text-align: center; font-weight: 900; font-size: 0.9rem; }
+  .inv-grand-total {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--primary); color: #fff;
+    border-radius: 12px; padding: 12px 16px; margin: 8px 0 10px;
+  }
+  .inv-grand-total .lbl { font-size: 0.88rem; font-weight: 700; }
+  .inv-grand-total .amt { font-size: 1.4rem; font-weight: 900; }
+
+  /* Payment method */
+  .pay-method-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .pay-method-btn {
+    flex: 1; border: 2px solid var(--border); background: #fff;
+    border-radius: 12px; padding: 10px 4px; font-size: 0.78rem;
+    font-weight: 700; cursor: pointer; font-family: inherit;
+    text-align: center; transition: all 0.15s; color: var(--text);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .pay-method-btn .pay-icon { font-size: 1.3rem; }
+  .pay-method-btn.active {
+    border-color: var(--primary); background: #fff0f0; color: var(--primary);
+  }
+
+  /* Invoice action buttons */
+  .inv-actions { display: flex; flex-direction: column; gap: 8px; }
+  .inv-btn {
+    width: 100%; border: none; border-radius: 12px; padding: 13px;
+    font-size: 0.95rem; font-weight: 800; cursor: pointer;
+    font-family: inherit; display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .inv-btn.wa     { background: #25d366; color: #fff; }
+  .inv-btn.save   { background: #1565c0; color: #fff; }
+  .inv-btn.print  { background: #37474f; color: #fff; }
+  .inv-btn.danger { background: var(--danger); color: #fff; }
+
+  /* ══════════════════════════════════════════
+     PRINT STYLES
+  ══════════════════════════════════════════ */
+  @media print {
+    body > *:not(#printRoot) { display: none !important; }
+    #printRoot {
+      display: block !important; position: fixed; inset: 0;
+      background: #fff; padding: 16px; z-index: 99999;
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      direction: rtl; color: #000;
+    }
+    #printRoot .inv-actions,
+    #printRoot .pay-method-row,
+    #printRoot .qty-ctrl-mini,
+    #printRoot .inv-customer-edit { display: none !important; }
+    #printRoot .inv-table th { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #printRoot .inv-grand-total { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    #printRoot .pay-label { display: block !important; font-weight: 700; margin-top: 8px; }
+  }
+  .pay-label { display: none; }
 </style>
 </head>
 <body>
@@ -1070,37 +1196,54 @@
 <div class="grid" id="productGrid"></div>
 <div class="empty" id="emptyMsg" style="display:none">لا توجد منتجات مطابقة للبحث</div>
 
+<!-- CUSTOMER FIRST MODAL -->
+<div class="cust-info-modal hidden" id="custInfoModal">
+  <div class="cust-info-box">
+    <h2>👤 بيانات الزبون</h2>
+    <p>أدخل بياناتك للمتابعة — لن نطلبها مرة أخرى</p>
+    <input class="cust-info-input" type="text"  id="custInfoName"  placeholder="الاسم الكامل *" maxlength="60">
+    <input class="cust-info-input" type="tel"   id="custInfoPhone" placeholder="رقم الهاتف *" maxlength="20">
+    <input class="cust-info-input" type="text"  id="custInfoAddr"  placeholder="العنوان (المدينة، الحي...)" maxlength="80">
+    <button class="cust-info-save" onclick="confirmCustInfo()">✔ حفظ والمتابعة</button>
+  </div>
+</div>
+
+<!-- PRINT ROOT (hidden, shown only during print) -->
+<div id="printRoot" style="display:none"></div>
+
 <!-- CART OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="cart-header">
-    <h2>🛒 السلة</h2>
+    <h2>🧾 الفاتورة</h2>
     <button class="close-btn" onclick="closeCart()">✕</button>
   </div>
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="phone-row">
-      <span class="phone-label">اسم الزبون:</span>
-      <input type="text" id="customerName" placeholder="أدخل الاسم...">
+    <!-- Payment method -->
+    <div class="pay-method-row">
+      <button class="pay-method-btn active" id="pay-cash"     onclick="selectPay('cash')">
+        <span class="pay-icon">💵</span><span>نقداً</span>
+      </button>
+      <button class="pay-method-btn"        id="pay-card"     onclick="selectPay('card')">
+        <span class="pay-icon">💳</span><span>بطاقة</span>
+      </button>
+      <button class="pay-method-btn"        id="pay-transfer" onclick="selectPay('transfer')">
+        <span class="pay-icon">📲</span><span>تحويل</span>
+      </button>
     </div>
-    <div class="phone-row">
-      <span class="phone-label">رقم الهاتف:</span>
-      <input type="tel" id="customerPhone" placeholder="06XXXXXXXX">
+    <div class="pay-label" id="payLabel">طريقة الدفع: نقداً</div>
+    <!-- Action buttons -->
+    <div class="inv-actions">
+      <button class="inv-btn wa" onclick="sendOrder()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        إرسال عبر WhatsApp
+      </button>
+      <button class="inv-btn save"  onclick="saveInvoiceFromCart()">💾 حفظ الفاتورة</button>
+      <button class="inv-btn print" onclick="printInvoice()">🖨️ طباعة الفاتورة</button>
+      <button class="inv-btn danger" onclick="clearCart()">🗑️ مسح السلة</button>
     </div>
-    <div class="phone-row">
-      <span class="phone-label">العنوان:</span>
-      <input type="text" id="customerAddress" placeholder="المدينة، الحي...">
-    </div>
-    <div class="total-row">
-      <span class="total-label">المجموع:</span>
-      <span class="total-amount" id="totalAmount">0.00 درهم</span>
-    </div>
-    <button class="whatsapp-btn" onclick="sendOrder()">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      إرسال الطلب عبر WhatsApp
-    </button>
-    <button class="save-btn" style="background:#1565c0;margin-top:6px" onclick="openSaveInvModal()">💾 حفظ كفاتورة</button>
-    <button class="clear-btn" onclick="clearCart()">🗑️ مسح السلة</button>
+    <span id="totalAmount" style="display:none">0</span>
   </div>
 </div>
 
@@ -2001,6 +2144,43 @@ let cart = JSON.parse(localStorage.getItem('sukma_cart') || '[]');
 let activeCat = 'الكل';
 let allProducts = [];
 let adminLoggedIn = false;
+let selectedPayMethod = 'cash';
+let pendingAddId = null;
+
+// ── Customer Info ──
+function loadCustomerInfo() {
+  try { return JSON.parse(localStorage.getItem('ljoud_cust_info') || 'null'); } catch { return null; }
+}
+function saveCustomerInfoData(info) {
+  localStorage.setItem('ljoud_cust_info', JSON.stringify(info));
+}
+function showCustInfoModal() {
+  const info = loadCustomerInfo();
+  document.getElementById('custInfoName').value  = info ? (info.name    || '') : '';
+  document.getElementById('custInfoPhone').value = info ? (info.phone   || '') : '';
+  document.getElementById('custInfoAddr').value  = info ? (info.address || '') : '';
+  document.getElementById('custInfoModal').classList.remove('hidden');
+}
+function confirmCustInfo() {
+  const name    = document.getElementById('custInfoName').value.trim();
+  const phone   = document.getElementById('custInfoPhone').value.trim();
+  const address = document.getElementById('custInfoAddr').value.trim();
+  if (!name || !phone) { showToast('⚠️ الاسم ورقم الهاتف إجباريان'); return; }
+  saveCustomerInfoData({ name, phone, address });
+  document.getElementById('custInfoModal').classList.add('hidden');
+  if (pendingAddId !== null) {
+    const id = pendingAddId; pendingAddId = null;
+    _doAddToCart(id);
+  }
+}
+function selectPay(method) {
+  selectedPayMethod = method;
+  ['cash','card','transfer'].forEach(m => {
+    document.getElementById('pay-' + m).classList.toggle('active', m === method);
+  });
+  const labels = { cash:'نقداً 💵', card:'بطاقة 💳', transfer:'تحويل بنكي 📲' };
+  document.getElementById('payLabel').textContent = 'طريقة الدفع: ' + labels[method];
+}
 
 // ============================================================
 // GITHUB SYNC
@@ -2213,6 +2393,14 @@ function renderProducts() {
 // CART
 // ============================================================
 function addToCart(id) {
+  if (!loadCustomerInfo()) {
+    pendingAddId = id;
+    showCustInfoModal();
+    return;
+  }
+  _doAddToCart(id);
+}
+function _doAddToCart(id) {
   const product = allProducts.find(p => p.id === id);
   if (!product) return;
   if (product.stock !== null && product.stock <= 0) { showToast('⚠️ نفد هذا المنتج من المخزون'); return; }
@@ -2356,33 +2544,67 @@ function updateCartBadge() {
 
 function renderCart() {
   const container = document.getElementById('cartItems');
-  const footer = document.getElementById('cartFooter');
+  const footer    = document.getElementById('cartFooter');
 
   if (!cart.length) {
-    container.innerHTML = '<div class="cart-empty">🛒<br>السلة فارغة</div>';
+    container.innerHTML = '<div class="cart-empty">🧾<br>السلة فارغة</div>';
     footer.style.display = 'none';
     return;
   }
 
   footer.style.display = 'block';
-  container.innerHTML = cart.map(item => `
-    <div class="cart-item">
-      <span class="cart-item-emoji">${item.emoji}</span>
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-size">${item.size}</div>
-        <div class="cart-item-price">${(item.price * item.qty).toFixed(2)} درهم</div>
-      </div>
-      <div class="qty-ctrl">
-        <button class="qty-btn minus" onclick="changeQty(${item.id}, -1)">−</button>
-        <span class="qty-num">${item.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
-      </div>
-    </div>
-  `).join('');
-
+  const info  = loadCustomerInfo() || {};
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-  document.getElementById('totalAmount').textContent = total.toFixed(2) + ' درهم';
+  const now   = new Date();
+  const dateStr = now.toLocaleDateString('ar-MA') + ' — ' +
+                  now.toLocaleTimeString('ar-MA', { hour: '2-digit', minute: '2-digit' });
+
+  container.innerHTML = `
+    <div class="inv-header">
+      <div class="inv-header-store">🏪 ljoud — الجوذ والكرم</div>
+      <div class="inv-header-date">📅 ${dateStr}</div>
+    </div>
+    <div class="inv-customer-bar">
+      <div class="inv-customer-info">
+        <div><b>👤</b> ${info.name  || '—'}</div>
+        <div><b>📞</b> ${info.phone || '—'}</div>
+        ${info.address ? `<div><b>📍</b> ${info.address}</div>` : ''}
+      </div>
+      <button class="inv-customer-edit" onclick="showCustInfoModal()">✏️ تعديل</button>
+    </div>
+    <div class="inv-table-wrap">
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>السلعة</th>
+            <th>الكمية</th>
+            <th>السعر</th>
+            <th>المجموع</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cart.map(item => `
+            <tr>
+              <td style="font-weight:700;max-width:110px">${item.name}</td>
+              <td>
+                <div class="qty-ctrl-mini">
+                  <button class="qty-mini-btn" onclick="changeQty(${item.id},1)">+</button>
+                  <span class="qty-mini-val">${item.qty}</span>
+                  <button class="qty-mini-btn minus" onclick="changeQty(${item.id},-1)">−</button>
+                </div>
+              </td>
+              <td class="price-cell">${item.price.toFixed(2)}</td>
+              <td class="subtotal-cell">${(item.price * item.qty).toFixed(2)}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="inv-grand-total">
+      <span class="lbl">المجموع الإجمالي</span>
+      <span class="amt">${total.toFixed(2)} دم</span>
+    </div>`;
+
+  document.getElementById('totalAmount').textContent = total.toFixed(2);
 }
 
 // ============================================================
@@ -2393,9 +2615,12 @@ function sendOrder() {
 
   const phone = STORE_PHONE.replace(/[^0-9]/g, '');
 
-  const customerName    = document.getElementById('customerName').value.trim()    || '—';
-  const customerPhone   = document.getElementById('customerPhone').value.trim()   || '—';
-  const customerAddress = document.getElementById('customerAddress').value.trim() || '—';
+  const info = loadCustomerInfo() || {};
+  const customerName    = info.name    || '—';
+  const customerPhone   = info.phone   || '—';
+  const customerAddress = info.address || '—';
+  const payLabels = { cash:'نقداً', card:'بطاقة', transfer:'تحويل بنكي' };
+  const payMethod = payLabels[selectedPayMethod] || 'نقداً';
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   // Save order to localStorage
   const order = {
@@ -2435,6 +2660,7 @@ function sendOrder() {
   });
   msg += SEP;
   msg += R + `*المجموع الإجمالي: ${total.toFixed(2)} درهم*\n`;
+  msg += R + `*طريقة الدفع: ${payMethod}*\n`;
   msg += SEP;
   msg += R + 'شكرا على طلبكم';
 
@@ -2446,6 +2672,77 @@ function sendOrder() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+}
+
+function saveInvoiceFromCart() {
+  if (!cart.length) { showToast('السلة فارغة!'); return; }
+  const info  = loadCustomerInfo() || {};
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const payLabels = { cash:'نقداً', card:'بطاقة', transfer:'تحويل بنكي' };
+  const order = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('ar-MA'),
+    time: new Date().toLocaleTimeString('ar-MA', { hour:'2-digit', minute:'2-digit' }),
+    customerName: info.name || '—',
+    customerPhone: info.phone || '—',
+    customerAddress: info.address || '—',
+    payMethod: payLabels[selectedPayMethod] || 'نقداً',
+    items: cart.map(i => ({...i})),
+    total,
+    status: 'pending'
+  };
+  const orders = loadOrders();
+  orders.push(order);
+  saveOrders(orders);
+  renderAdminStats();
+  showToast('✔ تم حفظ الفاتورة في سجل الطلبات');
+}
+
+function printInvoice() {
+  if (!cart.length) { showToast('السلة فارغة!'); return; }
+  const info  = loadCustomerInfo() || {};
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const payLabels = { cash:'نقداً 💵', card:'بطاقة 💳', transfer:'تحويل بنكي 📲' };
+  const now = new Date();
+  const pr = document.getElementById('printRoot');
+  pr.innerHTML = `
+    <div style="font-family:'Segoe UI',Tahoma,Arial,sans-serif;direction:rtl;max-width:320px;margin:0 auto">
+      <div style="text-align:center;border-bottom:2px dashed #ccc;padding-bottom:10px;margin-bottom:10px">
+        <div style="font-size:1.1rem;font-weight:900;color:#c0392b">🏪 ljoud — الجوذ والكرم</div>
+        <div style="font-size:0.75rem;color:#888;margin-top:4px">📅 ${now.toLocaleDateString('ar-MA')} — ${now.toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+      <div style="background:#f7f7f7;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:0.82rem;line-height:1.9">
+        <div><b>👤</b> ${info.name || '—'}</div>
+        <div><b>📞</b> ${info.phone || '—'}</div>
+        ${info.address ? `<div><b>📍</b> ${info.address}</div>` : ''}
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:0.8rem">
+        <thead>
+          <tr style="background:#c0392b;color:#fff">
+            <th style="padding:7px 8px;text-align:right">السلعة</th>
+            <th style="padding:7px 6px;text-align:center">الكمية</th>
+            <th style="padding:7px 6px;text-align:right">السعر</th>
+            <th style="padding:7px 6px;text-align:right">المجموع</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cart.map((item,i) => `
+            <tr style="background:${i%2===0?'#fff':'#fafafa'}">
+              <td style="padding:6px 8px;font-weight:700">${item.name}</td>
+              <td style="padding:6px 6px;text-align:center">${item.qty}</td>
+              <td style="padding:6px 6px;color:#888">${item.price.toFixed(2)}</td>
+              <td style="padding:6px 6px;font-weight:800;color:#d4a017">${(item.price*item.qty).toFixed(2)}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      <div style="background:#c0392b;color:#fff;border-radius:10px;padding:10px 14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-weight:700">المجموع الإجمالي</span>
+        <span style="font-size:1.3rem;font-weight:900">${total.toFixed(2)} دم</span>
+      </div>
+      <div style="margin-top:8px;font-size:0.82rem;font-weight:700">طريقة الدفع: ${payLabels[selectedPayMethod]||'نقداً'}</div>
+      <div style="text-align:center;margin-top:14px;font-size:0.75rem;color:#999;border-top:1px dashed #ccc;padding-top:8px">شكراً على ثقتكم — joud.live</div>
+    </div>`;
+  window.print();
 }
 
 // ============================================================
