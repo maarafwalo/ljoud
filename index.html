@@ -1875,7 +1875,7 @@ async function publishToGitHub(silent = false) {
     if (!r.ok) throw new Error('fetch failed');
     const d = await r.json();
     sha = d.sha;
-    rawContent = atob(d.content.replace(/\n/g, ''));
+    rawContent = decodeURIComponent(atob(d.content.replace(/\n/g, '')).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
   } catch(e) {
     localStorage.removeItem('sukma_gh');
     showToast('⚠️ فشل النشر — تحقق من التوكن');
