@@ -940,10 +940,6 @@
       <span class="phone-label">العنوان:</span>
       <input type="text" id="customerAddress" placeholder="المدينة، الحي...">
     </div>
-    <div class="phone-row">
-      <span class="phone-label">رقم WhatsApp:</span>
-      <input type="tel" id="phoneInput" placeholder="212XXXXXXXXX" value="">
-    </div>
     <div class="total-row">
       <span class="total-label">المجموع:</span>
       <span class="total-amount" id="totalAmount">0.00 درهم</span>
@@ -2239,8 +2235,7 @@ function renderCart() {
 function sendOrder() {
   if (!cart.length) { showToast('السلة فارغة!'); return; }
 
-  const phoneInput = document.getElementById('phoneInput').value.trim() || STORE_PHONE;
-  const phone = phoneInput.replace(/[^0-9]/g, '');
+  const phone = STORE_PHONE.replace(/[^0-9]/g, '');
 
   const customerName    = document.getElementById('customerName').value.trim()    || '—';
   const customerPhone   = document.getElementById('customerPhone').value.trim()   || '—';
