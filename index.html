@@ -1698,9 +1698,10 @@ async function syncFromGitHub() {
 }
 
 // Publish admin changes to GitHub (visible to all)
-async function publishToGitHub() {
+async function publishToGitHub(silent = false) {
   let token = localStorage.getItem('sukma_gh');
   if (!token) {
+    if (silent) { showToast('⚠️ أدخل التوكن أولاً من زر النشر'); return; }
     token = prompt('أدخل GitHub Personal Access Token:\n(Settings → Developer settings → Personal access tokens → Fine-grained → Contents: Read & Write)');
     if (!token) return;
     localStorage.setItem('sukma_gh', token.trim());
@@ -2312,7 +2313,8 @@ function toggleHidden(id) {
   saveOverrides(ov);
   initProducts(); buildCatBar(); renderProducts(); renderAdminProducts();
   const isNowHidden = ov.hidden.includes(id);
-  showToast(isNowHidden ? '🙈 تم إخفاء المنتج' : '👁️ تم إظهار المنتج');
+  showToast(isNowHidden ? '🙈 جاري الإخفاء للجميع...' : '👁️ جاري الإظهار للجميع...');
+  publishToGitHub(true);
 }
 
 // ============================================================
