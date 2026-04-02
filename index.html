@@ -1838,7 +1838,7 @@ let adminLoggedIn = false;
 const GH_OWNER = 'maarafwalo';
 const GH_REPO  = 'ljoud';
 const GH_FILE  = 'data.json';
-const GH_RAW   = `https://${GH_OWNER}.github.io/${GH_REPO}/${GH_FILE}`;
+const GH_RAW   = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/main/${GH_FILE}`;
 const GH_API   = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
 
 // Load shared data from GitHub Pages on every visit
@@ -1901,11 +1901,6 @@ function loadOverrides() {
     if (!raw) return {"added":[],"edited":{},"deleted":[],"hidden":[]};
     const ov = JSON.parse(raw);
     if (!ov.hidden) ov.hidden = [];
-    // Safety: if deleted list has more than 10 items, it's stale GitHub data - ignore it
-    if ((ov.deleted||[]).length > 10) {
-      localStorage.removeItem('sukma_ov');
-      return {"added":[],"edited":{},"deleted":[],"hidden":[]};
-    }
     return ov;
   } catch(e) {
     return {"added":[],"edited":{},"deleted":[],"hidden":[]};
@@ -2485,7 +2480,7 @@ buildCatBar();
 renderProducts();
 updateCartBadge();
 updateMiniBar();
-// // syncFromGitHub(); // disabled - not using external GitHub
+syncFromGitHub();
 
 // ============================================================
 // PWA — Service Worker + Manifest (PNG icons) + Install Prompt
