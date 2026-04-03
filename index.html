@@ -2743,13 +2743,13 @@ function printInvoice() {
   const pay = payLabels[selectedPayMethod] || 'نقداً';
 
   const rows = cart.map(item => {
-    const name = item.name.length > 20 ? item.name.slice(0,19)+'…' : item.name;
+    const name = item.name.length > 18 ? item.name.slice(0,17)+'…' : item.name;
     const rowTotal = (item.price * item.qty).toFixed(2);
     return `<tr>
-      <td style="text-align:right;padding:4px 2px">${name}</td>
-      <td style="text-align:center;padding:4px 2px">${item.price.toFixed(2)}</td>
-      <td style="text-align:center;padding:4px 2px">${item.qty}</td>
-      <td style="text-align:center;padding:4px 2px;font-weight:bold;border:1px solid #000">${rowTotal}</td>
+      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:15px">${item.qty}</td>
+      <td style="text-align:right;padding:5px 3px">${name}</td>
+      <td style="text-align:center;padding:5px 3px">${item.price.toFixed(2)}</td>
+      <td style="text-align:center;padding:5px 3px;font-weight:900;border:2px solid #000">${rowTotal}</td>
     </tr>`;
   }).join('');
 
@@ -2759,49 +2759,49 @@ function printInvoice() {
 <style>
   @page { size: 80mm auto; margin: 3mm 4mm; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { direction:rtl; font-family:Arial,sans-serif; font-size:14px; color:#000; -webkit-print-color-adjust:exact; }
-  h1  { text-align:center; font-size:24px; font-weight:900; border-bottom:3px solid #000; padding-bottom:5px; margin-bottom:6px; letter-spacing:2px; }
-  .info { font-size:13px; line-height:2; margin-bottom:5px; }
-  .info span { display:inline-block; width:42%; font-weight:bold; }
-  hr  { border:none; border-top:2px dashed #000; margin:6px 0; }
-  table { width:100%; border-collapse:collapse; font-size:13px; }
+  body { direction:rtl; font-family:Tahoma,'Arial Unicode MS',Arial,sans-serif; font-size:15px; font-weight:bold; color:#000; }
+  h1  { text-align:center; font-size:26px; font-weight:900; border-bottom:3px solid #000; padding-bottom:6px; margin-bottom:7px; letter-spacing:3px; }
+  .info { font-size:14px; line-height:2.1; margin-bottom:6px; }
+  .info .lbl { display:inline-block; width:40%; }
+  hr  { border:none; border-top:2px dashed #000; margin:7px 0; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
   thead tr { border-top:3px solid #000; border-bottom:3px solid #000; }
-  th  { padding:5px 2px; text-align:center; font-size:13px; }
-  th:first-child { text-align:right; }
-  td  { padding:4px 2px; border-bottom:1px dotted #555; }
-  .sum { font-size:13px; line-height:2.2; margin-top:5px; }
-  .sum span { display:inline-block; width:52%; font-weight:bold; }
-  .grand { font-size:20px; font-weight:900; border-top:3px solid #000; margin-top:6px; padding-top:6px; text-align:center; }
-  .foot { text-align:center; font-size:15px; font-weight:900; border-top:2px solid #000; margin-top:10px; padding-top:8px; }
+  th  { padding:6px 3px; text-align:center; font-size:14px; font-weight:900; }
+  th:nth-child(2) { text-align:right; }
+  td  { padding:5px 3px; border-bottom:1px dotted #444; }
+  .sum { font-size:14px; line-height:2.3; margin-top:6px; }
+  .sum .lbl { display:inline-block; width:50%; }
+  .grand { font-size:22px; font-weight:900; border-top:3px solid #000; margin-top:7px; padding-top:7px; text-align:center; }
+  .foot { text-align:center; font-size:16px; font-weight:900; border-top:2px solid #000; margin-top:12px; padding-top:10px; }
 </style>
 </head>
 <body>
 <h1>جود</h1>
 <div class="info">
-  <div><span>رقم الطلب :</span> ${orderNum}</div>
-  <div><span>التاريخ :</span> ${dateStr} ${timeStr}</div>
-  <div><span>الزبون :</span> ${info.name||'—'}</div>
-  <div><span>الهاتف :</span> ${info.phone||'—'}</div>
-  ${info.address ? `<div><span>العنوان :</span> ${info.address}</div>` : ''}
+  <div><span class="lbl">رقم الطلب :</span> ${orderNum}</div>
+  <div><span class="lbl">التاريخ :</span> ${dateStr} ${timeStr}</div>
+  <div><span class="lbl">الزبون :</span> ${info.name||'—'}</div>
+  <div><span class="lbl">الهاتف :</span> ${info.phone||'—'}</div>
+  ${info.address ? `<div><span class="lbl">العنوان :</span> ${info.address}</div>` : ''}
 </div>
 <hr>
 <table>
   <thead><tr>
-    <th style="width:38%;text-align:right">السلعة</th>
-    <th style="width:24%">السعر</th>
     <th style="width:10%">ك</th>
-    <th style="width:28%">المجموع</th>
+    <th style="width:38%;text-align:right">السلعة</th>
+    <th style="width:22%">السعر</th>
+    <th style="width:30%">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
 <hr>
 <div class="sum">
-  <div><span>المجموع :</span> ${total.toFixed(2)}</div>
-  <div><span>عدد المواد :</span> ${totalQty}</div>
-  <div><span>الدفع :</span> ${pay}</div>
+  <div><span class="lbl">المجموع :</span> ${total.toFixed(2)}</div>
+  <div><span class="lbl">عدد المواد :</span> ${totalQty}</div>
+  <div><span class="lbl">الدفع :</span> ${pay}</div>
 </div>
 <div class="grand">الإجمالي : ${total.toFixed(2)}</div>
-<div class="foot">شكرا على زيارتكم 🙏</div>
+<div class="foot">شكرا على زيارتكم</div>
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=280,height=600,toolbar=0,menubar=0,scrollbars=0');
