@@ -2756,7 +2756,6 @@ function printInvoice() {
 <html lang="ar">
 <head><meta charset="UTF-8">
 <style>
-  @page { size: 80mm auto; margin: 2mm 4mm; }
   * { margin:0; padding:0; box-sizing:border-box; break-inside:avoid; }
   body { direction:rtl; font-family:Tahoma,'Arial Unicode MS',Arial,sans-serif; font-size:13px; font-weight:bold; color:#000; }
   .header { text-align:center; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:5px; }
@@ -2789,10 +2788,10 @@ function printInvoice() {
 <hr>
 <table>
   <thead><tr class="thead-row">
-    <th style="width:10%">ك</th>
-    <th style="width:38%;text-align:right">السلعة</th>
-    <th style="width:22%">السعر</th>
-    <th style="width:30%">المجموع</th>
+    <th style="width:8%">ك</th>
+    <th style="width:50%;text-align:right">السلعة</th>
+    <th style="width:18%">السعر</th>
+    <th style="width:24%">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
@@ -2810,7 +2809,13 @@ function printInvoice() {
   win.document.write(html);
   win.document.close();
   win.onafterprint = () => win.close();
-  setTimeout(() => win.print(), 500);
+  setTimeout(() => {
+    const h = win.document.body.scrollHeight + 10;
+    const s = win.document.createElement('style');
+    s.textContent = `@page { size: 80mm ${h}px; margin: 2mm 4mm; }`;
+    win.document.head.appendChild(s);
+    win.print();
+  }, 600);
 }
 
 // ============================================================
