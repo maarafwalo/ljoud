@@ -2805,13 +2805,11 @@ function printInvoice() {
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=280,height=600,toolbar=0,menubar=0,scrollbars=0');
-  win.onload = function() {
-    win.onafterprint = () => win.close();
-    setTimeout(() => win.print(), 300);
-  };
   win.document.open();
   win.document.write(html);
   win.document.close();
+  win.onafterprint = () => win.close();
+  setTimeout(() => win.print(), 500);
 }
 
 // ============================================================
