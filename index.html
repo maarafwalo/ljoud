@@ -2764,11 +2764,13 @@ function printInvoice() {
   .info { font-size:14px; line-height:2.1; margin-bottom:6px; }
   .info .lbl { display:inline-block; width:40%; }
   hr  { border:none; border-top:2px dashed #000; margin:7px 0; }
-  table { width:100%; border-collapse:collapse; font-size:14px; }
-  thead tr { border-top:3px solid #000; border-bottom:3px solid #000; }
+  table { width:100%; border-collapse:collapse; font-size:14px; page-break-inside:auto; }
+  thead { display:table-row-group; }
+  .thead-row { border-top:3px solid #000; border-bottom:3px solid #000; }
   th  { padding:6px 3px; text-align:center; font-size:14px; font-weight:900; }
   th:nth-child(2) { text-align:right; }
   td  { padding:5px 3px; border-bottom:1px dotted #444; }
+  tr  { page-break-inside:avoid; }
   .sum { font-size:14px; line-height:2.3; margin-top:6px; }
   .sum .lbl { display:inline-block; width:50%; }
   .grand { font-size:22px; font-weight:900; border-top:3px solid #000; margin-top:7px; padding-top:7px; text-align:center; }
@@ -2786,7 +2788,7 @@ function printInvoice() {
 </div>
 <hr>
 <table>
-  <thead><tr>
+  <thead><tr class="thead-row">
     <th style="width:10%">ك</th>
     <th style="width:38%;text-align:right">السلعة</th>
     <th style="width:22%">السعر</th>
