@@ -2740,79 +2740,74 @@ function printInvoice() {
   const dateStr = now.toLocaleDateString('ar-MA');
   const timeStr = now.toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'});
   const orderNum = String(Date.now()).slice(-5) + '/' + now.getFullYear();
+  const pay = payLabels[selectedPayMethod] || 'نقداً';
 
-  const rows = cart.map(item => `
-    <tr>
-      <td>${item.name.length>14?item.name.slice(0,13)+'…':item.name}</td>
-      <td>${item.price.toFixed(2)}</td>
-      <td>${item.qty}</td>
-      <td>${(item.price*item.qty).toFixed(2)}</td>
-    </tr>`).join('');
+  const rows = cart.map(item => {
+    const name = item.name.length > 16 ? item.name.slice(0,15)+'…' : item.name;
+    const rowTotal = (item.price * item.qty).toFixed(2);
+    return `<tr>
+      <td style="text-align:right;padding:3px 2px">${name}</td>
+      <td style="text-align:center;padding:3px 2px">${item.price.toFixed(2)}</td>
+      <td style="text-align:center;padding:3px 2px">${item.qty}</td>
+      <td style="text-align:center;padding:3px 2px;font-weight:bold;border:1px solid #000">${rowTotal}</td>
+    </tr>`;
+  }).join('');
 
   const html = `<!DOCTYPE html>
-<html dir="rtl" lang="ar">
-<head>
-<meta charset="UTF-8">
+<html lang="ar">
+<head><meta charset="UTF-8">
 <style>
-  @page { size: 80mm auto; margin: 2mm 4mm; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body {
-    width: 100%;
-    padding: 2mm 0;
-    font-family: 'Courier New', monospace;
-    font-size: 10px;
-    color: #000;
-    direction: rtl;
-  }
-  .store { text-align:center; font-size:18px; font-weight:900; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:4px; }
-  .sep   { border:none; border-top:1px dashed #000; margin:4px 0; }
-  .row   { display:flex; justify-content:space-between; font-size:10px; line-height:1.7; }
-  .row span:first-child { color:#555; }
-  .row span:last-child  { font-weight:600; text-align:left; }
-  .items { width:100%; border-collapse:collapse; font-size:10px; margin:4px 0; table-layout:fixed; }
-  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:3px 1px; text-align:center; font-size:10px; }
-  .items th:first-child { text-align:right; }
-  .items td { padding:3px 1px; text-align:center; border-bottom:1px dotted #aaa; }
-  .items td:first-child { text-align:right; }
-  .items td:last-child  { font-weight:900; }
-  .total-line { display:flex; justify-content:space-between; font-size:10px; line-height:1.8; }
-  .total-line.big { font-size:15px; font-weight:900; border-top:1px dashed #000; margin-top:4px; padding-top:4px; }
-  .footer { text-align:center; font-size:12px; font-weight:900; border-top:2px solid #000; margin-top:6px; padding-top:5px; }
+  @page { size: 80mm auto; margin: 3mm 5mm; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { direction:rtl; font-family:'Courier New',monospace; font-size:12px; color:#000; }
+  h1  { text-align:center; font-size:20px; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:5px; }
+  .info { font-size:11px; line-height:1.9; margin-bottom:4px; }
+  .info b { display:inline-block; width:45%; color:#444; }
+  hr  { border:none; border-top:1px dashed #000; margin:5px 0; }
+  table { width:100%; border-collapse:collapse; font-size:11px; }
+  thead tr { border-top:2px solid #000; border-bottom:2px solid #000; }
+  th  { padding:3px 2px; text-align:center; }
+  th:first-child { text-align:right; }
+  td  { padding:3px 2px; border-bottom:1px dotted #999; }
+  .sum { font-size:11px; line-height:2; margin-top:4px; }
+  .sum b { display:inline-block; width:55%; }
+  .grand { font-size:16px; font-weight:900; border-top:2px solid #000; margin-top:5px; padding-top:5px; text-align:center; }
+  .foot { text-align:center; font-size:13px; font-weight:900; border-top:2px solid #000; margin-top:8px; padding-top:6px; }
 </style>
 </head>
 <body>
-  <div class="store">جود</div>
-  <div class="row"><span>رقم الطلب :</span><span>${orderNum}</span></div>
-  <div class="row"><span>التاريخ :</span><span>${dateStr} ${timeStr}</span></div>
-  <div class="row"><span>البائع :</span><span>جود</span></div>
-  <hr class="sep">
-  <div class="row"><span>الزبون :</span><span>${info.name||'—'}</span></div>
-  <div class="row"><span>الهاتف :</span><span>${info.phone||'—'}</span></div>
-  ${info.address?`<div class="row"><span>العنوان :</span><span>${info.address}</span></div>`:''}
-  <table class="items">
-    <colgroup><col style="width:44%"><col style="width:22%"><col style="width:8%"><col style="width:26%"></colgroup>
-    <thead><tr><th>السلعة</th><th>السعر</th><th>ك</th><th>المجموع</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-  <hr class="sep">
-  <div class="total-line"><span>المجموع :</span><span>${total.toFixed(2)}</span></div>
-  <div class="total-line"><span>عدد المواد :</span><span>${totalQty}</span></div>
-  <div class="total-line"><span>الدفع :</span><span>${payLabels[selectedPayMethod]||'نقداً'}</span></div>
-  <div class="total-line big"><span>الإجمالي :</span><span>${total.toFixed(2)}</span></div>
-  <div class="footer">شكرا على زيارتكم</div>
-</body>
-</html>`;
+<h1>جود</h1>
+<div class="info">
+  <div><b>رقم الطلب :</b> ${orderNum}</div>
+  <div><b>التاريخ :</b> ${dateStr} ${timeStr}</div>
+  <div><b>الزبون :</b> ${info.name||'—'}</div>
+  <div><b>الهاتف :</b> ${info.phone||'—'}</div>
+  ${info.address ? `<div><b>العنوان :</b> ${info.address}</div>` : ''}
+</div>
+<hr>
+<table>
+  <thead><tr>
+    <th style="width:40%;text-align:right">السلعة</th>
+    <th style="width:22%">السعر</th>
+    <th style="width:10%">ك</th>
+    <th style="width:28%">المجموع</th>
+  </tr></thead>
+  <tbody>${rows}</tbody>
+</table>
+<hr>
+<div class="sum">
+  <div><b>المجموع :</b> ${total.toFixed(2)}</div>
+  <div><b>عدد المواد :</b> ${totalQty}</div>
+  <div><b>الدفع :</b> ${pay}</div>
+</div>
+<div class="grand">الإجمالي : ${total.toFixed(2)}</div>
+<div class="foot">شكرا على زيارتكم</div>
+</body></html>`;
 
-  const win = window.open('', '_blank', 'width=260,height=500,toolbar=0,menubar=0,scrollbars=0');
+  const win = window.open('', '_blank', 'width=280,height=600,toolbar=0,menubar=0,scrollbars=0');
   win.onload = function() {
-    // Measure exact content height after layout, set page size to match
-    const h = win.document.body.offsetHeight || win.document.body.scrollHeight;
-    const mm = Math.ceil(h * 0.2646) + 8;
-    const s = win.document.createElement('style');
-    s.textContent = `@page { size: 80mm ${mm}mm !important; margin: 0; }`;
-    win.document.head.appendChild(s);
     win.onafterprint = () => win.close();
-    setTimeout(() => win.print(), 250);
+    setTimeout(() => win.print(), 300);
   };
   win.document.open();
   win.document.write(html);
