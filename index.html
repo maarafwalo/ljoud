@@ -2754,89 +2754,70 @@ function printInvoice() {
 <head>
 <meta charset="UTF-8">
 <style>
-  @page { size: 80mm auto; margin: 2mm 0mm; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  @page { size: 80mm auto; margin: 0; }
+  * { box-sizing:border-box; margin:0; padding:0; }
   body {
-    width: 72mm;
-    padding: 0 2mm;
+    width: 68mm;
+    margin: 0 auto;
+    padding: 3mm 0;
     font-family: 'Courier New', monospace;
-    font-size: 11px;
+    font-size: 10px;
     color: #000;
     direction: rtl;
-    -webkit-print-color-adjust: exact;
   }
-  .store { text-align:center; font-size:20px; font-weight:900; letter-spacing:1px; border-bottom:2px solid #000; padding-bottom:5px; margin-bottom:5px; }
-  .meta { width:100%; font-size:10px; margin-bottom:5px; border-bottom:1px dashed #000; padding-bottom:5px; }
-  .meta td:first-child { color:#555; white-space:nowrap; width:30%; }
-  .meta td:last-child  { word-break:break-all; }
-  .cust { width:100%; font-size:10px; margin-bottom:5px; border-bottom:1px dashed #000; padding-bottom:5px; }
-  .cust td:first-child { color:#555; white-space:nowrap; width:25%; }
-  .items { width:100%; border-collapse:collapse; font-size:10px; margin-bottom:5px; table-layout:fixed; }
-  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:3px 1px; text-align:center; }
+  .store { text-align:center; font-size:18px; font-weight:900; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:4px; }
+  .sep   { border:none; border-top:1px dashed #000; margin:4px 0; }
+  .row   { display:flex; justify-content:space-between; font-size:10px; line-height:1.7; }
+  .row span:first-child { color:#555; }
+  .row span:last-child  { font-weight:600; text-align:left; }
+  .items { width:100%; border-collapse:collapse; font-size:10px; margin:4px 0; table-layout:fixed; }
+  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:3px 1px; text-align:center; font-size:10px; }
   .items th:first-child { text-align:right; }
-  .items td { padding:3px 1px; text-align:center; border-bottom:1px dotted #888; overflow:hidden; }
+  .items td { padding:3px 1px; text-align:center; border-bottom:1px dotted #aaa; }
   .items td:first-child { text-align:right; }
-  .items td:last-child { border:1px solid #000; font-weight:900; }
-  .summary { border-top:2px solid #000; padding-top:5px; font-size:11px; }
-  .summary table { width:100%; }
-  .summary td { padding:1px 0; }
-  .summary td:last-child { text-align:left; font-weight:700; }
-  .grandtotal { font-size:16px; font-weight:900; border-top:1px dashed #000; margin-top:5px; padding-top:5px; text-align:left; }
-  .footer { text-align:center; font-size:13px; font-weight:900; border-top:2px solid #000; margin-top:8px; padding-top:6px; padding-bottom:4px; }
+  .items td:last-child  { font-weight:900; }
+  .total-line { display:flex; justify-content:space-between; font-size:10px; line-height:1.8; }
+  .total-line.big { font-size:15px; font-weight:900; border-top:1px dashed #000; margin-top:4px; padding-top:4px; }
+  .footer { text-align:center; font-size:12px; font-weight:900; border-top:2px solid #000; margin-top:6px; padding-top:5px; }
 </style>
 </head>
 <body>
   <div class="store">جود</div>
-  <table class="meta">
-    <tr><td>رقم الطلب :</td><td>${orderNum}</td></tr>
-    <tr><td>التاريخ :</td><td>${dateStr} - ${timeStr}</td></tr>
-    <tr><td>البائع :</td><td>جود</td></tr>
-  </table>
-  <table class="cust">
-    <tr><td>الزبون :</td><td>${info.name||'—'}</td></tr>
-    <tr><td>الهاتف :</td><td>${info.phone||'—'}</td></tr>
-    ${info.address?`<tr><td>العنوان :</td><td>${info.address}</td></tr>`:''}
-  </table>
+  <div class="row"><span>رقم الطلب :</span><span>${orderNum}</span></div>
+  <div class="row"><span>التاريخ :</span><span>${dateStr} ${timeStr}</span></div>
+  <div class="row"><span>البائع :</span><span>جود</span></div>
+  <hr class="sep">
+  <div class="row"><span>الزبون :</span><span>${info.name||'—'}</span></div>
+  <div class="row"><span>الهاتف :</span><span>${info.phone||'—'}</span></div>
+  ${info.address?`<div class="row"><span>العنوان :</span><span>${info.address}</span></div>`:''}
   <table class="items">
-    <colgroup>
-      <col style="width:42%">
-      <col style="width:22%">
-      <col style="width:10%">
-      <col style="width:26%">
-    </colgroup>
-    <thead><tr>
-      <th>السلعة</th>
-      <th>السعر</th>
-      <th>ك</th>
-      <th>المجموع</th>
-    </tr></thead>
+    <colgroup><col style="width:44%"><col style="width:22%"><col style="width:8%"><col style="width:26%"></colgroup>
+    <thead><tr><th>السلعة</th><th>السعر</th><th>ك</th><th>المجموع</th></tr></thead>
     <tbody>${rows}</tbody>
   </table>
-  <div class="summary">
-    <table>
-      <tr><td>المجموع :</td><td>${total.toFixed(2)}</td></tr>
-      <tr><td>مجموع المواد :</td><td>${totalQty}</td></tr>
-      <tr><td>الدفع :</td><td>${payLabels[selectedPayMethod]||'نقداً'}</td></tr>
-    </table>
-    <div class="grandtotal">${total.toFixed(2)}</div>
-  </div>
+  <hr class="sep">
+  <div class="total-line"><span>المجموع :</span><span>${total.toFixed(2)}</span></div>
+  <div class="total-line"><span>عدد المواد :</span><span>${totalQty}</span></div>
+  <div class="total-line"><span>الدفع :</span><span>${payLabels[selectedPayMethod]||'نقداً'}</span></div>
+  <div class="total-line big"><span>الإجمالي :</span><span>${total.toFixed(2)}</span></div>
   <div class="footer">شكرا على زيارتكم</div>
 </body>
 </html>`;
 
-  const win = window.open('', '_blank', 'width=320,height=600,toolbar=0,menubar=0,scrollbars=0');
+  const win = window.open('', '_blank', 'width=260,height=500,toolbar=0,menubar=0,scrollbars=0');
+  win.onload = function() {
+    // Measure exact content height after layout, set page size to match
+    const h = win.document.body.offsetHeight || win.document.body.scrollHeight;
+    const mm = Math.ceil(h * 0.2646) + 8;
+    const s = win.document.createElement('style');
+    s.textContent = `@page { size: 80mm ${mm}mm !important; margin: 0; }`;
+    win.document.head.appendChild(s);
+    win.onafterprint = () => win.close();
+    setTimeout(() => win.print(), 250);
+  };
+  win.document.open();
   win.document.write(html);
   win.document.close();
-  win.onafterprint = () => win.close();
-  // Wait for layout to finish, then measure actual height and set exact page size
-  win.onload = function() {
-    const h = win.document.body.scrollHeight;
-    const mm = Math.ceil(h * 0.2646) + 6; // px → mm + small padding
-    const s = win.document.createElement('style');
-    s.textContent = `@page { size: 80mm ${mm}mm !important; margin: 2mm 0mm; }`;
-    win.document.head.appendChild(s);
-    setTimeout(() => win.print(), 300);
-  };
 }
 
 // ============================================================
