@@ -2349,6 +2349,10 @@ function renderProducts() {
     const matchCat = activeCat === 'الكل' || p.cat === activeCat;
     const matchQ = !q || p.name.includes(q) || p.cat.includes(q) || p.size.includes(q);
     return matchCat && matchQ;
+  }).sort((a, b) => {
+    const aOOS = a.stock !== null && a.stock <= 0;
+    const bOOS = b.stock !== null && b.stock <= 0;
+    return aOOS - bOOS;
   });
 
   const grid = document.getElementById('productGrid');
