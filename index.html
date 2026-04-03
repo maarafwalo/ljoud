@@ -2760,8 +2760,7 @@ function printInvoice() {
   * { margin:0; padding:0; box-sizing:border-box; }
   body { direction:rtl; font-family:Tahoma,'Arial Unicode MS',Arial,sans-serif; font-size:15px; font-weight:bold; color:#000; }
   .header { text-align:center; border-bottom:3px solid #000; padding-bottom:6px; margin-bottom:7px; }
-  .header h1 { font-size:26px; font-weight:900; letter-spacing:3px; }
-  .header p  { font-size:13px; font-weight:bold; margin-top:2px; }
+  .header h1 { font-size:17px; font-weight:900; letter-spacing:1px; }
   .info { font-size:14px; line-height:2.1; margin-bottom:6px; }
   .info .lbl { display:inline-block; width:40%; }
   hr  { border:none; border-top:2px dashed #000; margin:7px 0; }
@@ -2773,11 +2772,11 @@ function printInvoice() {
   .sum { font-size:14px; line-height:2.3; margin-top:6px; }
   .sum .lbl { display:inline-block; width:50%; }
   .grand { font-size:22px; font-weight:900; border-top:3px solid #000; margin-top:7px; padding-top:7px; text-align:center; }
-  .foot { text-align:center; font-size:16px; font-weight:900; border-top:2px solid #000; margin-top:12px; padding-top:10px; }
+  .foot { text-align:center; font-size:12px; font-weight:bold; border-top:2px solid #000; margin-top:12px; padding-top:8px; }
 </style>
 </head>
 <body>
-<div class="header"><h1>جود</h1><p>المواد الغذائية بالجملة</p></div>
+<div class="header"><h1>المواد الغذائية بالجملة</h1></div>
 <div class="info">
   <div><span class="lbl">رقم الطلب :</span> ${orderNum}</div>
   <div><span class="lbl">التاريخ :</span> ${dateStr} ${timeStr}</div>
@@ -2797,7 +2796,6 @@ function printInvoice() {
 </table>
 <hr>
 <div class="sum">
-  <div><span class="lbl">المجموع :</span> ${total.toFixed(2)}</div>
   <div><span class="lbl">عدد الأنواع :</span> ${cart.length}</div>
   <div><span class="lbl">الدفع :</span> ${pay}</div>
 </div>
