@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ljoud - كتالوج المنتجات</title>
+<title>joud - كتالوج المنتجات</title>
 <meta name="theme-color" content="#c0392b">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ljoud">
+<meta name="apple-mobile-web-app-title" content="joud">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="application-name" content="ljoud">
+<meta name="application-name" content="joud">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
@@ -1154,8 +1154,7 @@
     <div class="logo">
       
       <div class="logo-text">
-        <span class="logo-name">ljoud</span>
-        <span class="logo-sub">joud.live</span>
+        <span class="logo-name">joud</span>
       </div>
       <button class="admin-btn" onclick="openAdmin()" title="الإدارة">⚙️</button>
     </div>
@@ -1193,7 +1192,7 @@
 </div>
 <div id="pwaHint" onclick="this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:none;align-items:flex-end;justify-content:center">
   <div style="background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 36px;width:100%;max-width:480px;text-align:center">
-    <div style="font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#b8860b">📲 تثبيت تطبيق ljoud</div>
+    <div style="font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#b8860b">📲 تثبيت تطبيق joud</div>
     <div style="font-size:0.95rem;line-height:2;color:#333;text-align:right">
       <b>Android Chrome:</b><br>
       ١. افتح القائمة ⋮ أعلى اليمين<br>
@@ -2729,7 +2728,6 @@ function printInvoice() {
   pr.innerHTML = `
     <div class="pr-header">
       <div class="pr-store">جود</div>
-      <div class="pr-phone">joud.live</div>
     </div>
     <table class="pr-meta" style="width:100%">
       <tr><td>رقم الطلب :</td><td>${orderNum}</td></tr>
@@ -3111,10 +3109,7 @@ updateMiniBar();
     x.fillStyle = '#fff';
     x.font = `900 ${size*0.2}px Arial Black,Arial`;
     x.textAlign = 'center'; x.textBaseline = 'middle';
-    x.fillText('ljoud', size/2, size*0.47);
-    // Subtitle
-    x.font = `${size*0.09}px Arial`;
-    x.fillText('الجوذ والكرم', size/2, size*0.67);
+    x.fillText('joud', size/2, size*0.5);
     return c.toDataURL('image/png');
   }
 
@@ -3123,9 +3118,9 @@ updateMiniBar();
 
   // ── Inject Manifest with real PNG icons ───────────────────
   const manifest = {
-    name: 'ljoud - كتالوج المنتجات',
-    short_name: 'ljoud',
-    description: 'كتالوج منتجات متجر ljoud',
+    name: 'joud - كتالوج المنتجات',
+    short_name: 'joud',
+    description: 'كتالوج منتجات متجر joud',
     start_url: location.pathname.replace(/\/[^/]*$/, '/') || '/',
     scope: location.pathname.replace(/\/[^/]*$/, '/') || '/',
     display: 'standalone',
@@ -3315,7 +3310,7 @@ function waOrder(id) {
   const o = loadOrders().find(x => x.id === id);
   if (!o) return;
   const phone = o.customerPhone.replace(/[^0-9]/g, '');
-  const msg = `مرحباً ${o.customerName}،\nبخصوص طلبك بتاريخ ${o.date}،\nالمجموع: ${parseFloat(o.total).toFixed(2)} درهم.\nشكراً من ljoud 🙏`;
+  const msg = `مرحباً ${o.customerName}،\nبخصوص طلبك بتاريخ ${o.date}،\nالمجموع: ${parseFloat(o.total).toFixed(2)} درهم.\nشكراً من joud 🙏`;
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
