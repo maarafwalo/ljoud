@@ -2745,10 +2745,10 @@ function printInvoice() {
   const rows = cart.map(item => {
     const rowTotal = (item.price * item.qty).toFixed(2);
     return `<tr>
-      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px;border-left:2px solid #000">${item.qty}</td>
-      <td style="text-align:right;padding:5px 3px;word-break:break-word;white-space:normal">${item.name}</td>
-      <td style="text-align:center;padding:5px 3px">${item.price.toFixed(2)}</td>
-      <td style="text-align:center;padding:5px 3px;font-weight:900;border:2px solid #000">${rowTotal}</td>
+      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px;border-left:1px solid #000;border-right:1px solid #000">${item.qty}</td>
+      <td style="text-align:right;padding:5px 3px;word-break:break-word;white-space:normal;border-left:1px solid #000">${item.name}</td>
+      <td style="text-align:center;padding:5px 3px;border-left:1px solid #000">${item.price.toFixed(2)}</td>
+      <td style="text-align:center;padding:5px 3px;font-weight:900;border-left:1px solid #000">${rowTotal}</td>
     </tr>`;
   }).join('');
 
@@ -2788,10 +2788,10 @@ function printInvoice() {
 <hr>
 <table>
   <thead><tr class="thead-row">
-    <th style="width:10%;border-left:2px solid #000">الكمية</th>
-    <th style="width:68%;text-align:right">السلعة</th>
-    <th style="width:11%">السعر</th>
-    <th style="width:11%">المجموع</th>
+    <th style="width:8%;border-left:1px solid #000;border-right:1px solid #000">الكمية</th>
+    <th style="width:72%;text-align:right;border-left:1px solid #000">السلعة</th>
+    <th style="width:10%;border-left:1px solid #000">السعر</th>
+    <th style="width:10%;border-left:1px solid #000">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
