@@ -2746,7 +2746,7 @@ function printInvoice() {
     const rowTotal = (item.price * item.qty).toFixed(2);
     return `<tr>
       <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px;border-left:1px solid #000;border-right:1px solid #000">${item.qty}</td>
-      <td style="text-align:right;padding:5px 3px;white-space:nowrap;border-left:1px solid #000">${item.name}</td>
+      <td style="text-align:right;padding:5px 3px;white-space:normal;word-break:break-word;border-left:1px solid #000">${item.name}</td>
       <td style="text-align:center;padding:5px 3px;border-left:1px solid #000">${item.price.toFixed(2)}</td>
       <td style="text-align:center;padding:5px 3px;font-weight:900;border-left:1px solid #000">${rowTotal}</td>
     </tr>`;
