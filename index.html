@@ -1275,6 +1275,21 @@
     <div id="adminMainView" style="display:none">
       <!-- STATS DASHBOARD -->
       <div class="admin-section">
+        <h3>🤝 المندوبون والعمولات</h3>
+        <button class="save-btn" style="width:100%;background:#7b1fa2;margin-bottom:10px" onclick="toggleVendorForm()">➕ إضافة مندوب</button>
+        <div id="vendorFormWrap" style="display:none;background:#faf5ff;border-radius:10px;padding:12px;margin-bottom:10px">
+          <div class="admin-form">
+            <div class="admin-form-row"><label>اسم المندوب</label><input type="text" id="vndName" placeholder="مثل: أحمد"></div>
+            <div class="admin-form-row"><label>الهاتف</label><input type="text" id="vndPhone" placeholder="0600000000"></div>
+            <div class="admin-form-row"><label>الكود (URL)</label><input type="text" id="vndCode" placeholder="تلقائي أو اكتب كوداً"></div>
+            <div class="admin-form-row"><label>العمولة %</label><input type="number" id="vndComm" placeholder="10" min="0" max="100" step="0.5"></div>
+            <button class="save-btn" style="width:100%;background:#7b1fa2" onclick="addVendor()">✔ حفظ المندوب</button>
+          </div>
+        </div>
+        <div id="vendorList"></div>
+      </div>
+
+      <div class="admin-section">
         <h3>📊 لوحة الإحصائيات</h3>
         <div class="admin-stats-grid" id="adminStatsGrid">
           <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">إجمالي المنتجات</div></div>
@@ -2645,7 +2660,8 @@ function sendOrder() {
     customerName, customerPhone, customerAddress,
     items: cart.map(i => ({...i})),
     total,
-    status: 'pending'
+    status: 'pending',
+    vendorCode: getActiveVendorCode() || null
   };
   const orders = loadOrders();
   orders.push(order);
@@ -2704,7 +2720,8 @@ function saveInvoiceFromCart() {
     payMethod: payLabels[selectedPayMethod] || 'نقداً',
     items: cart.map(i => ({...i})),
     total,
-    status: 'pending'
+    status: 'pending',
+    vendorCode: getActiveVendorCode() || null
   };
   const orders = loadOrders();
   orders.push(order);
@@ -2820,6 +2837,7 @@ function adminLogin() {
     document.getElementById('adminModeBar').classList.add('on');
     renderAdminProducts();
     renderAdminStats();
+    renderVendorList();
     renderProducts();
   } else {
     showToast('❌ كلمة السر خاطئة');
@@ -3343,6 +3361,91 @@ function renderAdminStats() {
       alert.classList.remove('show');
     }
   }
+}
+
+// ============================================================
+// VENDORS / AFFILIATES
+// ============================================================
+function loadVendors() {
+  try { return JSON.parse(localStorage.getItem('ljoud_vendors') || '[]'); } catch { return []; }
+}
+function saveVendors(arr) { localStorage.setItem('ljoud_vendors', JSON.stringify(arr)); }
+
+function getActiveVendorCode() {
+  return localStorage.getItem('ljoud_active_vendor') || null;
+}
+
+// On page load: capture ?v=CODE from URL and persist it
+(function() {
+  const param = new URLSearchParams(location.search).get('v');
+  if (param) localStorage.setItem('ljoud_active_vendor', param);
+})();
+
+function toggleVendorForm() {
+  const w = document.getElementById('vendorFormWrap');
+  w.style.display = w.style.display === 'none' ? 'block' : 'none';
+}
+
+function addVendor() {
+  const name = document.getElementById('vndName').value.trim();
+  const phone = document.getElementById('vndPhone').value.trim();
+  const rawCode = document.getElementById('vndCode').value.trim();
+  const comm = parseFloat(document.getElementById('vndComm').value) || 0;
+  if (!name) { showToast('⚠️ أدخل اسم المندوب'); return; }
+  const code = rawCode || name.toLowerCase().replace(/\s+/g, '') + Math.floor(Math.random()*100);
+  const vendors = loadVendors();
+  if (vendors.find(v => v.code === code)) { showToast('⚠️ هذا الكود مستخدم'); return; }
+  vendors.push({ id: Date.now(), name, phone, code, commission: comm, createdAt: new Date().toLocaleDateString('ar-MA') });
+  saveVendors(vendors);
+  document.getElementById('vndName').value = '';
+  document.getElementById('vndPhone').value = '';
+  document.getElementById('vndCode').value = '';
+  document.getElementById('vndComm').value = '';
+  document.getElementById('vendorFormWrap').style.display = 'none';
+  renderVendorList();
+  showToast('✔ تم إضافة المندوب');
+}
+
+function deleteVendor(id) {
+  if (!confirm('حذف هذا المندوب؟')) return;
+  saveVendors(loadVendors().filter(v => v.id !== id));
+  renderVendorList();
+}
+
+function copyVendorLink(code) {
+  const link = location.origin + location.pathname + '?v=' + code;
+  navigator.clipboard.writeText(link).then(() => showToast('✔ تم نسخ الرابط'));
+}
+
+function renderVendorList() {
+  const vendors = loadVendors();
+  const orders = loadOrders();
+  const el = document.getElementById('vendorList');
+  if (!el) return;
+  if (!vendors.length) {
+    el.innerHTML = '<p style="color:#999;text-align:center;font-size:0.85rem">لا يوجد مندوبون بعد</p>';
+    return;
+  }
+  el.innerHTML = vendors.map(v => {
+    const vOrders = orders.filter(o => o.vendorCode === v.code);
+    const total = vOrders.reduce((s, o) => s + parseFloat(o.total || 0), 0);
+    const comm = (total * v.commission / 100).toFixed(2);
+    return `
+      <div style="background:#fff;border:1.5px solid #e1bee7;border-radius:12px;padding:12px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <strong style="color:#7b1fa2">${v.name}</strong>
+          <button onclick="deleteVendor(${v.id})" style="background:#c62828;color:#fff;border:none;border-radius:8px;padding:4px 10px;cursor:pointer;font-size:0.8rem">حذف</button>
+        </div>
+        ${v.phone ? `<div style="font-size:0.82rem;color:#555">📞 ${v.phone}</div>` : ''}
+        <div style="font-size:0.82rem;color:#555">🔑 كود: <code style="background:#f3e5f5;padding:1px 5px;border-radius:4px">${v.code}</code></div>
+        <div style="display:flex;gap:8px;margin:8px 0;font-size:0.85rem">
+          <span style="background:#f3e5f5;border-radius:8px;padding:4px 10px">📦 ${vOrders.length} طلب</span>
+          <span style="background:#f3e5f5;border-radius:8px;padding:4px 10px">💰 ${total.toFixed(2)} دم</span>
+          ${v.commission ? `<span style="background:#e8f5e9;border-radius:8px;padding:4px 10px">🏷 عمولة: ${comm} دم</span>` : ''}
+        </div>
+        <button onclick="copyVendorLink('${v.code}')" style="width:100%;background:#7b1fa2;color:#fff;border:none;border-radius:8px;padding:8px;cursor:pointer;font-size:0.85rem">🔗 نسخ رابط المندوب</button>
+      </div>`;
+  }).join('');
 }
 
 // ============================================================
