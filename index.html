@@ -2745,7 +2745,7 @@ function printInvoice() {
   const rows = cart.map(item => {
     const rowTotal = (item.price * item.qty).toFixed(2);
     return `<tr>
-      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:15px">${item.qty}</td>
+      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px">${item.qty}</td>
       <td style="text-align:right;padding:5px 3px;word-break:break-word;white-space:normal">${item.name}</td>
       <td style="text-align:center;padding:5px 3px">${item.price.toFixed(2)}</td>
       <td style="text-align:center;padding:5px 3px;font-weight:900;border:2px solid #000">${rowTotal}</td>
@@ -2788,10 +2788,10 @@ function printInvoice() {
 <hr>
 <table>
   <thead><tr class="thead-row">
-    <th style="width:7%">ك</th>
-    <th style="width:70%;text-align:right">السلعة</th>
-    <th style="width:11%">السعر</th>
-    <th style="width:12%">المجموع</th>
+    <th style="width:12%">ك</th>
+    <th style="width:58%;text-align:right">السلعة</th>
+    <th style="width:15%">السعر</th>
+    <th style="width:15%">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
@@ -2812,7 +2812,7 @@ function printInvoice() {
   win.document.close();
   win.onafterprint = () => win.close();
   setTimeout(() => {
-    const h = win.document.body.scrollHeight + 10;
+    const h = win.document.body.scrollHeight + 80;
     const s = win.document.createElement('style');
     s.textContent = `@page { size: 80mm ${h}px; margin: 2mm 4mm; }`;
     win.document.head.appendChild(s);
