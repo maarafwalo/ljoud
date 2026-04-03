@@ -2805,12 +2805,18 @@ function printInvoice() {
 <div class="foot">شكرا على زيارتكم</div>
 </body></html>`;
 
-  const win = window.open('', '_blank', 'width=280,height=600,toolbar=0,menubar=0,scrollbars=0');
+  const win = window.open('', '_blank', 'width=302,height=800,toolbar=0,menubar=0,scrollbars=1');
   win.document.open();
   win.document.write(html);
   win.document.close();
   win.onafterprint = () => win.close();
-  setTimeout(() => win.print(), 500);
+  setTimeout(() => {
+    const h = win.document.body.scrollHeight + 20;
+    const dynStyle = win.document.createElement('style');
+    dynStyle.textContent = `@page { size: 80mm ${h}px !important; margin: 2mm 4mm; }`;
+    win.document.head.appendChild(dynStyle);
+    win.print();
+  }, 600);
 }
 
 // ============================================================
