@@ -2732,63 +2732,93 @@ function saveInvoiceFromCart() {
 
 function printInvoice() {
   if (!cart.length) { showToast('السلة فارغة!'); return; }
-  const info  = loadCustomerInfo() || {};
+  const info = loadCustomerInfo() || {};
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const totalQty = cart.reduce((s, i) => s + i.qty, 0);
   const payLabels = { cash:'نقداً', debt:'الدين' };
   const now = new Date();
   const dateStr = now.toLocaleDateString('ar-MA');
   const timeStr = now.toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'});
-  // Generate sequential order number per day: NNNNN/YYYY
   const orderNum = String(Date.now()).slice(-5) + '/' + now.getFullYear();
-  const pr = document.getElementById('printRoot');
-  pr.innerHTML = `
-    <div class="pr-header">
-      <div class="pr-store">جود</div>
-    </div>
-    <table class="pr-meta" style="width:100%">
-      <tr><td>رقم الطلب :</td><td>${orderNum}</td></tr>
-      <tr><td>التاريخ :</td><td>${dateStr} - ${timeStr}</td></tr>
-      <tr><td>البائع :</td><td>جود</td></tr>
+
+  const rows = cart.map(item => `
+    <tr>
+      <td style="text-align:right">${item.name.length>20?item.name.slice(0,19)+'…':item.name}</td>
+      <td>${item.price.toFixed(2)}</td>
+      <td>${item.qty}</td>
+      <td style="border:1px solid #000;font-weight:900">${(item.price*item.qty).toFixed(2)}</td>
+    </tr>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page { size: 80mm auto; margin: 3mm 2mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 76mm;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #000;
+    direction: rtl;
+    -webkit-print-color-adjust: exact;
+  }
+  .store { text-align:center; font-size:22px; font-weight:900; letter-spacing:2px; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:6px; }
+  .meta { width:100%; font-size:11px; margin-bottom:6px; border-bottom:1px dashed #000; padding-bottom:6px; }
+  .meta td:first-child { color:#555; white-space:nowrap; padding-left:4px; }
+  .cust { width:100%; font-size:12px; margin-bottom:6px; border-bottom:1px dashed #000; padding-bottom:6px; }
+  .cust td:first-child { color:#555; white-space:nowrap; padding-left:4px; }
+  .items { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:6px; }
+  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:4px 2px; text-align:center; font-size:12px; }
+  .items th:first-child { text-align:right; }
+  .items td { padding:4px 2px; text-align:center; border-bottom:1px dotted #888; }
+  .summary { border-top:2px solid #000; padding-top:6px; font-size:13px; }
+  .summary table { width:100%; }
+  .summary td { padding:2px 0; }
+  .summary td:last-child { text-align:left; font-weight:700; }
+  .grandtotal { display:flex; justify-content:space-between; font-size:18px; font-weight:900; border-top:1px dashed #000; margin-top:6px; padding-top:6px; }
+  .footer { text-align:center; font-size:14px; font-weight:900; border-top:2px solid #000; margin-top:10px; padding-top:8px; padding-bottom:4px; }
+</style>
+</head>
+<body>
+  <div class="store">جود</div>
+  <table class="meta">
+    <tr><td>رقم الطلب :</td><td>${orderNum}</td></tr>
+    <tr><td>التاريخ :</td><td>${dateStr} - ${timeStr}</td></tr>
+    <tr><td>البائع :</td><td>جود</td></tr>
+  </table>
+  <table class="cust">
+    <tr><td>الزبون :</td><td>${info.name||'—'}</td></tr>
+    <tr><td>الهاتف :</td><td>${info.phone||'—'}</td></tr>
+    ${info.address?`<tr><td>العنوان :</td><td>${info.address}</td></tr>`:''}
+  </table>
+  <table class="items">
+    <thead><tr>
+      <th style="width:40%">السلعة</th>
+      <th style="width:20%">السعر</th>
+      <th style="width:10%">ك</th>
+      <th style="width:20%">المجموع</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="summary">
+    <table>
+      <tr><td>المجموع :</td><td>${total.toFixed(2)}</td></tr>
+      <tr><td>مجموع المواد :</td><td>${totalQty}</td></tr>
+      <tr><td>الدفع :</td><td>${payLabels[selectedPayMethod]||'نقداً'}</td></tr>
     </table>
-    <table class="pr-cust" style="width:100%">
-      <tr><td>الزبون :</td><td>${info.name  || '—'}</td></tr>
-      <tr><td>الهاتف :</td><td>${info.phone || '—'}</td></tr>
-      ${info.address ? `<tr><td>العنوان :</td><td>${info.address}</td></tr>` : ''}
-    </table>
-    <table class="pr-items">
-      <thead>
-        <tr>
-          <th style="width:38%">السلعة</th>
-          <th style="width:18%">السعر</th>
-          <th style="width:12%">الكمية</th>
-          <th style="width:22%">المجموع</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${cart.map(item => `
-          <tr>
-            <td style="font-size:9px;text-align:right">${item.name.length>18?item.name.slice(0,17)+'…':item.name}</td>
-            <td>${item.price.toFixed(2)}</td>
-            <td>${item.qty}</td>
-            <td class="pr-rowtotal">${(item.price*item.qty).toFixed(2)}</td>
-          </tr>`).join('')}
-      </tbody>
-    </table>
-    <div class="pr-summary">
-      <table>
-        <tr><td>المجموع :</td><td>${total.toFixed(2)}</td></tr>
-        <tr><td>مبلغ الخصم :</td><td>0.00</td></tr>
-        <tr><td>مجموع المواد :</td><td>${totalQty}</td></tr>
-        <tr><td>الدفع :</td><td>${payLabels[selectedPayMethod]||'نقداً'}</td></tr>
-      </table>
-      <div class="pr-grandtotal">
-        <span></span>
-        <span>${total.toFixed(2)}</span>
-      </div>
-    </div>
-    <div class="pr-footer">شكرا على زيارتكم</div>`;
-  window.print();
+    <div class="grandtotal"><span>${total.toFixed(2)}</span><span></span></div>
+  </div>
+  <div class="footer">شكرا على زيارتكم</div>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank', 'width=320,height=600,toolbar=0,menubar=0,scrollbars=0');
+  win.document.write(html);
+  win.document.close();
+  win.onafterprint = () => win.close();
+  setTimeout(() => win.print(), 400);
 }
 
 // ============================================================
