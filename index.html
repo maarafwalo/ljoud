@@ -2756,9 +2756,8 @@ function printInvoice() {
 <html lang="ar">
 <head><meta charset="UTF-8">
 <style>
-  @page { size: 80mm auto; margin: 2mm 4mm; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { direction:rtl; font-family:Tahoma,'Arial Unicode MS',Arial,sans-serif; font-size:13px; font-weight:bold; color:#000; }
+  body { direction:rtl; font-family:Tahoma,'Arial Unicode MS',Arial,sans-serif; font-size:13px; font-weight:bold; color:#000; width:72mm; }
   .header { text-align:center; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:5px; }
   .header h1 { font-size:15px; font-weight:900; letter-spacing:1px; }
   .info { font-size:12px; line-height:1.7; margin-bottom:4px; }
@@ -2811,10 +2810,10 @@ function printInvoice() {
   win.document.close();
   win.onafterprint = () => win.close();
   setTimeout(() => {
-    const h = win.document.body.scrollHeight + 20;
-    const dynStyle = win.document.createElement('style');
-    dynStyle.textContent = `@page { size: 80mm ${h}px !important; margin: 2mm 4mm; }`;
-    win.document.head.appendChild(dynStyle);
+    const h = win.document.body.scrollHeight + 10;
+    const s = win.document.createElement('style');
+    s.textContent = `@page { size: 80mm ${h}px; margin: 2mm 4mm; }`;
+    win.document.head.appendChild(s);
     win.print();
   }, 600);
 }
