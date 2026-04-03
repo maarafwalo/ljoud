@@ -2788,20 +2788,22 @@ function printInvoice() {
 <hr>
 <table>
   <thead><tr class="thead-row">
-    <th style="width:8%">ك</th>
-    <th style="width:50%;text-align:right">السلعة</th>
-    <th style="width:18%">السعر</th>
-    <th style="width:24%">المجموع</th>
+    <th style="width:7%">ك</th>
+    <th style="width:70%;text-align:right">السلعة</th>
+    <th style="width:11%">السعر</th>
+    <th style="width:12%">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
 <hr>
+<div style="page-break-inside:avoid;break-inside:avoid">
 <div class="sum">
   <div><span class="lbl">عدد الأنواع :</span> ${cart.length}</div>
   <div><span class="lbl">الدفع :</span> ${pay}</div>
 </div>
 <div class="grand">الإجمالي : ${total.toFixed(2)}</div>
 <div class="foot">شكرا على زيارتكم</div>
+</div>
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=302,height=600,toolbar=0,menubar=0,scrollbars=0');
