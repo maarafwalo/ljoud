@@ -2743,13 +2743,13 @@ function printInvoice() {
   const pay = payLabels[selectedPayMethod] || 'نقداً';
 
   const rows = cart.map(item => {
-    const name = item.name.length > 16 ? item.name.slice(0,15)+'…' : item.name;
+    const name = item.name.length > 20 ? item.name.slice(0,19)+'…' : item.name;
     const rowTotal = (item.price * item.qty).toFixed(2);
     return `<tr>
-      <td style="text-align:right;padding:3px 2px">${name}</td>
-      <td style="text-align:center;padding:3px 2px">${item.price.toFixed(2)}</td>
-      <td style="text-align:center;padding:3px 2px">${item.qty}</td>
-      <td style="text-align:center;padding:3px 2px;font-weight:bold;border:1px solid #000">${rowTotal}</td>
+      <td style="text-align:right;padding:4px 2px">${name}</td>
+      <td style="text-align:center;padding:4px 2px">${item.price.toFixed(2)}</td>
+      <td style="text-align:center;padding:4px 2px">${item.qty}</td>
+      <td style="text-align:center;padding:4px 2px;font-weight:bold;border:1px solid #000">${rowTotal}</td>
     </tr>`;
   }).join('');
 
@@ -2757,38 +2757,38 @@ function printInvoice() {
 <html lang="ar">
 <head><meta charset="UTF-8">
 <style>
-  @page { size: 80mm auto; margin: 3mm 5mm; }
+  @page { size: 80mm auto; margin: 3mm 4mm; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { direction:rtl; font-family:'Courier New',monospace; font-size:12px; color:#000; }
-  h1  { text-align:center; font-size:20px; border-bottom:2px solid #000; padding-bottom:4px; margin-bottom:5px; }
-  .info { font-size:11px; line-height:1.9; margin-bottom:4px; }
-  .info b { display:inline-block; width:45%; color:#444; }
-  hr  { border:none; border-top:1px dashed #000; margin:5px 0; }
-  table { width:100%; border-collapse:collapse; font-size:11px; }
-  thead tr { border-top:2px solid #000; border-bottom:2px solid #000; }
-  th  { padding:3px 2px; text-align:center; }
+  body { direction:rtl; font-family:Arial,sans-serif; font-size:14px; color:#000; -webkit-print-color-adjust:exact; }
+  h1  { text-align:center; font-size:24px; font-weight:900; border-bottom:3px solid #000; padding-bottom:5px; margin-bottom:6px; letter-spacing:2px; }
+  .info { font-size:13px; line-height:2; margin-bottom:5px; }
+  .info span { display:inline-block; width:42%; font-weight:bold; }
+  hr  { border:none; border-top:2px dashed #000; margin:6px 0; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  thead tr { border-top:3px solid #000; border-bottom:3px solid #000; }
+  th  { padding:5px 2px; text-align:center; font-size:13px; }
   th:first-child { text-align:right; }
-  td  { padding:3px 2px; border-bottom:1px dotted #999; }
-  .sum { font-size:11px; line-height:2; margin-top:4px; }
-  .sum b { display:inline-block; width:55%; }
-  .grand { font-size:16px; font-weight:900; border-top:2px solid #000; margin-top:5px; padding-top:5px; text-align:center; }
-  .foot { text-align:center; font-size:13px; font-weight:900; border-top:2px solid #000; margin-top:8px; padding-top:6px; }
+  td  { padding:4px 2px; border-bottom:1px dotted #555; }
+  .sum { font-size:13px; line-height:2.2; margin-top:5px; }
+  .sum span { display:inline-block; width:52%; font-weight:bold; }
+  .grand { font-size:20px; font-weight:900; border-top:3px solid #000; margin-top:6px; padding-top:6px; text-align:center; }
+  .foot { text-align:center; font-size:15px; font-weight:900; border-top:2px solid #000; margin-top:10px; padding-top:8px; }
 </style>
 </head>
 <body>
 <h1>جود</h1>
 <div class="info">
-  <div><b>رقم الطلب :</b> ${orderNum}</div>
-  <div><b>التاريخ :</b> ${dateStr} ${timeStr}</div>
-  <div><b>الزبون :</b> ${info.name||'—'}</div>
-  <div><b>الهاتف :</b> ${info.phone||'—'}</div>
-  ${info.address ? `<div><b>العنوان :</b> ${info.address}</div>` : ''}
+  <div><span>رقم الطلب :</span> ${orderNum}</div>
+  <div><span>التاريخ :</span> ${dateStr} ${timeStr}</div>
+  <div><span>الزبون :</span> ${info.name||'—'}</div>
+  <div><span>الهاتف :</span> ${info.phone||'—'}</div>
+  ${info.address ? `<div><span>العنوان :</span> ${info.address}</div>` : ''}
 </div>
 <hr>
 <table>
   <thead><tr>
-    <th style="width:40%;text-align:right">السلعة</th>
-    <th style="width:22%">السعر</th>
+    <th style="width:38%;text-align:right">السلعة</th>
+    <th style="width:24%">السعر</th>
     <th style="width:10%">ك</th>
     <th style="width:28%">المجموع</th>
   </tr></thead>
@@ -2796,12 +2796,12 @@ function printInvoice() {
 </table>
 <hr>
 <div class="sum">
-  <div><b>المجموع :</b> ${total.toFixed(2)}</div>
-  <div><b>عدد المواد :</b> ${totalQty}</div>
-  <div><b>الدفع :</b> ${pay}</div>
+  <div><span>المجموع :</span> ${total.toFixed(2)}</div>
+  <div><span>عدد المواد :</span> ${totalQty}</div>
+  <div><span>الدفع :</span> ${pay}</div>
 </div>
 <div class="grand">الإجمالي : ${total.toFixed(2)}</div>
-<div class="foot">شكرا على زيارتكم</div>
+<div class="foot">شكرا على زيارتكم 🙏</div>
 </body></html>`;
 
   const win = window.open('', '_blank', 'width=280,height=600,toolbar=0,menubar=0,scrollbars=0');
