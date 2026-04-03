@@ -2744,16 +2744,11 @@ function printInvoice() {
 
   const rows = cart.map(item => {
     const rowTotal = (item.price * item.qty).toFixed(2);
-    // Scale font so name fits in max 2 lines (~20 chars/line at print resolution)
-    const charsFor2Lines = 38;
-    const nameFontSize = item.name.length > charsFor2Lines
-      ? Math.max(8, Math.floor(13 * charsFor2Lines / item.name.length))
-      : 13;
     return `<tr>
-      <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px;border-left:1px solid #000;border-right:1px solid #000">${item.qty}</td>
-      <td style="text-align:right;padding:5px 3px;word-break:break-word;border-left:1px solid #000;font-size:${nameFontSize}px;display:table-cell;overflow:hidden"><div style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${item.name}</div></td>
-      <td style="text-align:center;padding:5px 3px;border-left:1px solid #000">${item.price.toFixed(2)}</td>
-      <td style="text-align:center;padding:5px 3px;font-weight:900;border-left:1px solid #000">${rowTotal}</td>
+      <td style="text-align:center;padding:5px 2px;font-weight:900;font-size:18px;border-left:1px solid #000;border-right:1px solid #000">${item.qty}</td>
+      <td style="text-align:right;padding:5px 2px;word-break:break-word;white-space:normal;border-left:1px solid #000">${item.name}</td>
+      <td style="text-align:center;padding:5px 2px;border-left:1px solid #000;font-size:11px">${item.price.toFixed(2)}</td>
+      <td style="text-align:center;padding:5px 2px;font-weight:900;border-left:1px solid #000;font-size:11px">${rowTotal}</td>
     </tr>`;
   }).join('');
 
@@ -2793,10 +2788,10 @@ function printInvoice() {
 <hr>
 <table>
   <thead><tr class="thead-row">
-    <th style="width:8%;border-left:1px solid #000;border-right:1px solid #000">الكمية</th>
-    <th style="width:72%;text-align:right;border-left:1px solid #000">السلعة</th>
-    <th style="width:10%;border-left:1px solid #000">السعر</th>
-    <th style="width:10%;border-left:1px solid #000">المجموع</th>
+    <th style="width:8%;border-left:1px solid #000;border-right:1px solid #000;font-size:11px">الكمية</th>
+    <th style="width:80%;text-align:right;border-left:1px solid #000">السلعة</th>
+    <th style="width:6%;border-left:1px solid #000;font-size:11px">السعر</th>
+    <th style="width:6%;border-left:1px solid #000;font-size:11px">المجموع</th>
   </tr></thead>
   <tbody>${rows}</tbody>
 </table>
@@ -2823,7 +2818,7 @@ function printInvoice() {
       const h = win.document.body.scrollHeight;
       const hmm = Math.ceil(h * 25.4 / 96) + 15; // px → mm + safety
       const s = win.document.createElement('style');
-      s.textContent = `@page { size: 80mm ${hmm}mm; margin: 2mm 4mm; }`;
+      s.textContent = `@page { size: 80mm ${hmm}mm; margin: 2mm 1mm; }`;
       win.document.head.appendChild(s);
       win.print();
     }, 300);
