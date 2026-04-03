@@ -2744,14 +2744,14 @@ function printInvoice() {
 
   const rows = cart.map(item => {
     const rowTotal = (item.price * item.qty).toFixed(2);
-    // Scale font so name fits in max 2 lines (~24 chars/line at 13px)
-    const charsFor2Lines = 48;
+    // Scale font so name fits in max 2 lines (~20 chars/line at print resolution)
+    const charsFor2Lines = 38;
     const nameFontSize = item.name.length > charsFor2Lines
-      ? Math.max(9, Math.floor(13 * charsFor2Lines / item.name.length))
+      ? Math.max(8, Math.floor(13 * charsFor2Lines / item.name.length))
       : 13;
     return `<tr>
       <td style="text-align:center;padding:5px 3px;font-weight:900;font-size:18px;border-left:1px solid #000;border-right:1px solid #000">${item.qty}</td>
-      <td style="text-align:right;padding:5px 3px;white-space:normal;word-break:break-word;border-left:1px solid #000;font-size:${nameFontSize}px">${item.name}</td>
+      <td style="text-align:right;padding:5px 3px;word-break:break-word;border-left:1px solid #000;font-size:${nameFontSize}px;display:table-cell;overflow:hidden"><div style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${item.name}</div></td>
       <td style="text-align:center;padding:5px 3px;border-left:1px solid #000">${item.price.toFixed(2)}</td>
       <td style="text-align:center;padding:5px 3px;font-weight:900;border-left:1px solid #000">${rowTotal}</td>
     </tr>`;
