@@ -2743,10 +2743,10 @@ function printInvoice() {
 
   const rows = cart.map(item => `
     <tr>
-      <td style="text-align:right">${item.name.length>20?item.name.slice(0,19)+'…':item.name}</td>
+      <td>${item.name.length>14?item.name.slice(0,13)+'…':item.name}</td>
       <td>${item.price.toFixed(2)}</td>
       <td>${item.qty}</td>
-      <td style="border:1px solid #000;font-weight:900">${(item.price*item.qty).toFixed(2)}</td>
+      <td>${(item.price*item.qty).toFixed(2)}</td>
     </tr>`).join('');
 
   const html = `<!DOCTYPE html>
@@ -2754,31 +2754,35 @@ function printInvoice() {
 <head>
 <meta charset="UTF-8">
 <style>
-  @page { size: 80mm 200mm; margin: 3mm 2mm; }
+  @page { size: 80mm 200mm; margin: 2mm 0mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    width: 76mm;
+    width: 72mm;
+    padding: 0 2mm;
     font-family: 'Courier New', monospace;
-    font-size: 13px;
+    font-size: 11px;
     color: #000;
     direction: rtl;
     -webkit-print-color-adjust: exact;
   }
-  .store { text-align:center; font-size:22px; font-weight:900; letter-spacing:2px; border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:6px; }
-  .meta { width:100%; font-size:11px; margin-bottom:6px; border-bottom:1px dashed #000; padding-bottom:6px; }
-  .meta td:first-child { color:#555; white-space:nowrap; padding-left:4px; }
-  .cust { width:100%; font-size:12px; margin-bottom:6px; border-bottom:1px dashed #000; padding-bottom:6px; }
-  .cust td:first-child { color:#555; white-space:nowrap; padding-left:4px; }
-  .items { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:6px; }
-  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:4px 2px; text-align:center; font-size:12px; }
+  .store { text-align:center; font-size:20px; font-weight:900; letter-spacing:1px; border-bottom:2px solid #000; padding-bottom:5px; margin-bottom:5px; }
+  .meta { width:100%; font-size:10px; margin-bottom:5px; border-bottom:1px dashed #000; padding-bottom:5px; }
+  .meta td:first-child { color:#555; white-space:nowrap; width:30%; }
+  .meta td:last-child  { word-break:break-all; }
+  .cust { width:100%; font-size:10px; margin-bottom:5px; border-bottom:1px dashed #000; padding-bottom:5px; }
+  .cust td:first-child { color:#555; white-space:nowrap; width:25%; }
+  .items { width:100%; border-collapse:collapse; font-size:10px; margin-bottom:5px; table-layout:fixed; }
+  .items th { border-top:2px solid #000; border-bottom:2px solid #000; padding:3px 1px; text-align:center; }
   .items th:first-child { text-align:right; }
-  .items td { padding:4px 2px; text-align:center; border-bottom:1px dotted #888; }
-  .summary { border-top:2px solid #000; padding-top:6px; font-size:13px; }
+  .items td { padding:3px 1px; text-align:center; border-bottom:1px dotted #888; overflow:hidden; }
+  .items td:first-child { text-align:right; }
+  .items td:last-child { border:1px solid #000; font-weight:900; }
+  .summary { border-top:2px solid #000; padding-top:5px; font-size:11px; }
   .summary table { width:100%; }
-  .summary td { padding:2px 0; }
+  .summary td { padding:1px 0; }
   .summary td:last-child { text-align:left; font-weight:700; }
-  .grandtotal { display:flex; justify-content:space-between; font-size:18px; font-weight:900; border-top:1px dashed #000; margin-top:6px; padding-top:6px; }
-  .footer { text-align:center; font-size:14px; font-weight:900; border-top:2px solid #000; margin-top:10px; padding-top:8px; padding-bottom:4px; }
+  .grandtotal { font-size:16px; font-weight:900; border-top:1px dashed #000; margin-top:5px; padding-top:5px; text-align:left; }
+  .footer { text-align:center; font-size:13px; font-weight:900; border-top:2px solid #000; margin-top:8px; padding-top:6px; padding-bottom:4px; }
 </style>
 </head>
 <body>
@@ -2794,11 +2798,17 @@ function printInvoice() {
     ${info.address?`<tr><td>العنوان :</td><td>${info.address}</td></tr>`:''}
   </table>
   <table class="items">
+    <colgroup>
+      <col style="width:42%">
+      <col style="width:22%">
+      <col style="width:10%">
+      <col style="width:26%">
+    </colgroup>
     <thead><tr>
-      <th style="width:40%">السلعة</th>
-      <th style="width:20%">السعر</th>
-      <th style="width:10%">ك</th>
-      <th style="width:20%">المجموع</th>
+      <th>السلعة</th>
+      <th>السعر</th>
+      <th>ك</th>
+      <th>المجموع</th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>
@@ -2808,7 +2818,7 @@ function printInvoice() {
       <tr><td>مجموع المواد :</td><td>${totalQty}</td></tr>
       <tr><td>الدفع :</td><td>${payLabels[selectedPayMethod]||'نقداً'}</td></tr>
     </table>
-    <div class="grandtotal"><span>${total.toFixed(2)}</span><span></span></div>
+    <div class="grandtotal">${total.toFixed(2)}</div>
   </div>
   <div class="footer">شكرا على زيارتكم</div>
 </body>
