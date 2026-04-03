@@ -1122,17 +1122,27 @@
       font-size: 11px; color: #000; background: #fff;
       direction: rtl;
     }
-    #printRoot .pr-header { text-align: center; border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px; }
-    #printRoot .pr-store   { font-size: 14px; font-weight: 900; }
-    #printRoot .pr-date    { font-size: 9px; color: #555; }
-    #printRoot .pr-cust    { font-size: 10px; line-height: 1.7; margin-bottom: 5px; border-bottom: 1px dashed #000; padding-bottom: 5px; }
-    #printRoot table       { width: 100%; border-collapse: collapse; font-size: 10px; }
-    #printRoot th          { border-bottom: 1px solid #000; padding: 3px 2px; text-align: right; font-size: 10px; }
-    #printRoot td          { padding: 3px 2px; text-align: right; border-bottom: 1px dotted #ccc; }
-    #printRoot td:nth-child(2) { text-align: center; }
-    #printRoot .pr-total   { border-top: 1px dashed #000; margin-top: 5px; padding-top: 5px; display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; }
-    #printRoot .pr-pay     { font-size: 10px; margin-top: 4px; }
-    #printRoot .pr-footer  { text-align: center; font-size: 9px; color: #555; margin-top: 8px; border-top: 1px dashed #000; padding-top: 5px; }
+    #printRoot .pr-header  { text-align: center; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 5px; }
+    #printRoot .pr-store   { font-size: 16px; font-weight: 900; letter-spacing: 1px; }
+    #printRoot .pr-phone   { font-size: 12px; font-weight: 700; margin: 2px 0; }
+    #printRoot .pr-meta    { font-size: 9px; line-height: 1.8; text-align: right; border-bottom: 1px dashed #000; padding-bottom: 5px; margin-bottom: 5px; }
+    #printRoot .pr-meta td { padding: 0 2px; font-size: 9px; }
+    #printRoot .pr-meta td:first-child { color: #555; white-space: nowrap; }
+    #printRoot .pr-cust    { font-size: 10px; line-height: 1.8; margin-bottom: 5px; border-bottom: 1px dashed #000; padding-bottom: 5px; }
+    #printRoot .pr-cust td { padding: 0 2px; }
+    #printRoot .pr-cust td:first-child { color: #555; white-space: nowrap; }
+    #printRoot table.pr-items { width: 100%; border-collapse: collapse; font-size: 10px; }
+    #printRoot table.pr-items th { border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 3px 2px; text-align: center; }
+    #printRoot table.pr-items th:first-child { text-align: right; }
+    #printRoot table.pr-items td { padding: 3px 2px; text-align: center; border-bottom: 1px dotted #aaa; }
+    #printRoot table.pr-items td:first-child { text-align: right; }
+    #printRoot table.pr-items td.pr-rowtotal { border: 1px solid #000; font-weight: 900; }
+    #printRoot .pr-summary { border-top: 2px solid #000; margin-top: 5px; padding-top: 5px; font-size: 11px; }
+    #printRoot .pr-summary table { width: 100%; }
+    #printRoot .pr-summary td { padding: 2px; }
+    #printRoot .pr-summary td:last-child { text-align: left; font-weight: 700; }
+    #printRoot .pr-grandtotal { font-size: 14px; font-weight: 900; border-top: 1px dashed #000; padding-top: 4px; margin-top: 4px; display: flex; justify-content: space-between; }
+    #printRoot .pr-footer  { text-align: center; font-size: 12px; font-weight: 900; margin-top: 10px; border-top: 2px solid #000; padding-top: 6px; }
   }
   .pay-label { display: none; }
 </style>
@@ -2704,50 +2714,61 @@ function printInvoice() {
   if (!cart.length) { showToast('السلة فارغة!'); return; }
   const info  = loadCustomerInfo() || {};
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const totalQty = cart.reduce((s, i) => s + i.qty, 0);
   const payLabels = { cash:'نقداً', debt:'الدين' };
   const now = new Date();
+  const dateStr = now.toLocaleDateString('ar-MA');
+  const timeStr = now.toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'});
+  // Generate sequential order number per day: NNNNN/YYYY
+  const orderNum = String(Date.now()).slice(-5) + '/' + now.getFullYear();
   const pr = document.getElementById('printRoot');
   pr.innerHTML = `
     <div class="pr-header">
-      <div class="pr-store">*** ljoud ***</div>
-      <div class="pr-store" style="font-size:11px">الجوذ والكرم</div>
-      <div class="pr-date">${now.toLocaleDateString('ar-MA')} ${now.toLocaleTimeString('ar-MA',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="pr-store">جود</div>
+      <div class="pr-phone">joud.live</div>
     </div>
-    <div class="pr-cust">
-      <div>الزبون : ${info.name  || '—'}</div>
-      <div>الهاتف : ${info.phone || '—'}</div>
-      ${info.address ? `<div>العنوان: ${info.address}</div>` : ''}
-    </div>
-    <table>
+    <table class="pr-meta" style="width:100%">
+      <tr><td>رقم الطلب :</td><td>${orderNum}</td></tr>
+      <tr><td>التاريخ :</td><td>${dateStr} - ${timeStr}</td></tr>
+      <tr><td>البائع :</td><td>جود</td></tr>
+    </table>
+    <table class="pr-cust" style="width:100%">
+      <tr><td>الزبون :</td><td>${info.name  || '—'}</td></tr>
+      <tr><td>الهاتف :</td><td>${info.phone || '—'}</td></tr>
+      ${info.address ? `<tr><td>العنوان :</td><td>${info.address}</td></tr>` : ''}
+    </table>
+    <table class="pr-items">
       <thead>
         <tr>
-          <th style="width:40%">السلعة</th>
-          <th style="width:15%;text-align:center">ك</th>
-          <th style="width:20%">سعر</th>
-          <th style="width:25%">مجموع</th>
+          <th style="width:38%">السلعة</th>
+          <th style="width:18%">السعر</th>
+          <th style="width:12%">الكمية</th>
+          <th style="width:22%">المجموع</th>
         </tr>
       </thead>
       <tbody>
         ${cart.map(item => `
           <tr>
-            <td style="font-size:9px">${item.name.length>18?item.name.slice(0,17)+'…':item.name}</td>
-            <td style="text-align:center">${item.qty}</td>
+            <td style="font-size:9px;text-align:right">${item.name.length>18?item.name.slice(0,17)+'…':item.name}</td>
             <td>${item.price.toFixed(2)}</td>
-            <td style="font-weight:900">${(item.price*item.qty).toFixed(2)}</td>
+            <td>${item.qty}</td>
+            <td class="pr-rowtotal">${(item.price*item.qty).toFixed(2)}</td>
           </tr>`).join('')}
       </tbody>
     </table>
-    <div class="pr-total">
-      <span>المجموع</span>
-      <span>${total.toFixed(2)} دم</span>
+    <div class="pr-summary">
+      <table>
+        <tr><td>المجموع :</td><td>${total.toFixed(2)}</td></tr>
+        <tr><td>مبلغ الخصم :</td><td>0.00</td></tr>
+        <tr><td>مجموع المواد :</td><td>${totalQty}</td></tr>
+        <tr><td>الدفع :</td><td>${payLabels[selectedPayMethod]||'نقداً'}</td></tr>
+      </table>
+      <div class="pr-grandtotal">
+        <span></span>
+        <span>${total.toFixed(2)}</span>
+      </div>
     </div>
-    <div class="pr-pay">الدفع: ${payLabels[selectedPayMethod]||'نقداً'}</div>
-    <div class="pr-footer">
-      ================================<br>
-      شكراً على ثقتكم<br>
-      joud.live<br>
-      ================================
-    </div>`;
+    <div class="pr-footer">شكرا على زيارتكم</div>`;
   window.print();
 }
 
