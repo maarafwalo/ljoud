@@ -2754,7 +2754,7 @@ function printInvoice() {
 <head>
 <meta charset="UTF-8">
 <style>
-  @page { size: 80mm 200mm; margin: 2mm 0mm; }
+  @page { size: 80mm auto; margin: 2mm 0mm; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     width: 72mm;
@@ -2828,7 +2828,15 @@ function printInvoice() {
   win.document.write(html);
   win.document.close();
   win.onafterprint = () => win.close();
-  setTimeout(() => win.print(), 400);
+  // Wait for layout to finish, then measure actual height and set exact page size
+  win.onload = function() {
+    const h = win.document.body.scrollHeight;
+    const mm = Math.ceil(h * 0.2646) + 6; // px → mm + small padding
+    const s = win.document.createElement('style');
+    s.textContent = `@page { size: 80mm ${mm}mm !important; margin: 2mm 0mm; }`;
+    win.document.head.appendChild(s);
+    setTimeout(() => win.print(), 300);
+  };
 }
 
 // ============================================================
