@@ -2818,7 +2818,7 @@ function printInvoice() {
       const h = win.document.body.scrollHeight;
       const hmm = Math.ceil(h * 25.4 / 96) + 15; // px → mm + safety
       const s = win.document.createElement('style');
-      s.textContent = `@page { size: 80mm ${hmm}mm; margin: 2mm 1mm; }`;
+      s.textContent = `@page { size: 80mm ${hmm}mm; margin: 2mm 0mm; }`;
       win.document.head.appendChild(s);
       win.print();
     }, 300);
